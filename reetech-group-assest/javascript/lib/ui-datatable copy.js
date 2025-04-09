@@ -10,14 +10,7 @@ class GenericDataTable {
             actions: [],
             translations: {
                 emptyTable: "No data found",
-                processing: "<i class='fa fa-spinner fa-spin'></i> Loading...",
-                paginate: { // Added pagination translations
-                    first: "First",
-                    previous: "Previous",
-                    next: "Next",
-                    last: "Last"
-                }
-
+                processing: "<i class='fa fa-spinner fa-spin'></i> Loading..."
             },
             filterSettings: {
                 numberOperators: ['=', '≠', '>', '<', '≥', '≤'],
@@ -111,9 +104,6 @@ class GenericDataTable {
                 headers: this.config.ajax.headers,
                 data: (d) => this.getRequestData(d)
             },
-            paging: true, // Explicitly enable pagination
-            pagingType: 'full_numbers', // Show full pagination controls
-            lengthMenu: [10, 25, 50, 100], // Configure page length options
             columns: this.getColumnsConfig(),
             language: this.config.translations,
             createdRow: (row, data) => this.handleRowCreation(row, data),
