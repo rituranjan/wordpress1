@@ -1,13 +1,10 @@
+
 class GenericDataTable {
     constructor(config) {
         this.config = {
             container: '#data-table-container',
             tableId: '#main-data-table',
-            ajax: {
-                url: '',
-                method: 'GET',
-                headers: {}
-            },
+            ajax: { url: '', method: 'GET', headers: {} },
             filters: [],
             columns: [],
             actions: [],
@@ -22,32 +19,50 @@ class GenericDataTable {
             },
             ...config
         };
-        
+
         this.init();
     }
 
     init() {
+      //  this.initTheme();
         this.createFilterSection();
         this.initDataTable();
         this.bindEvents();
+        //if(this.config.themeSwitcher) this.initThemeSwitcher();
     }
 
-    createFilterSection() {
-        const filterHtml = `
-            <div class="filter-row">
-                <div class="row row-cols-1 row-cols-lg-3 g-2 align-items-end">
-                    ${this.config.filters.map(filter => this.createFilterControl(filter)).join('')}
-                    <div class="col">
-                        <button class="btn btn-primary w-100 reset-filters">
-                            <i class="fas fa-sync"></i> Reset
-                        </button>
-                    </div>
-                </div>
-            </div>`;
-        
-        $(this.config.container).prepend(filterHtml);
-        this.initSelectPickers();
+    initTheme() {
+        const savedTheme = localStorage.getItem('selectedTheme');
+        const defaultTheme = this.config.themes[0].url;
+        this.loadTheme(savedTheme || defaultTheme);
     }
+
+
+
+    createFilterSection() {
+    const hasFilters = this.config.filters.length > 0;
+    
+    const filterHtml =
+     ` ${hasFilters ? `
+        <div class="filter-row">
+            <div class="row row-cols-1 row-cols-lg-3 g-2 align-items-end">
+                ${this.config.filters.map(filter => this.createFilterControl(filter)).join('')}
+               
+                <div class="col">
+                    <button class="btn btn-primary w-100 reset-filters">
+                        <i class="fas fa-sync"></i> Reset
+                    </button>
+                </div>
+                            </div>
+        </div>` : ''}
+
+        <table id="${this.config.tableId.replace('#', '')}" class="table table-striped" style="width:100%"></table>
+    `;
+
+    $(this.config.container).append(filterHtml);
+    this.initSelectPickers();
+}
+
 
     createFilterControl(filter) {
         switch(filter.type) {
@@ -92,18 +107,19 @@ class GenericDataTable {
             columns: this.getColumnsConfig(),
             language: this.config.translations,
             createdRow: (row, data) => this.handleRowCreation(row, data),
-            initComplete: () => this.initHeaderFilters()
+        
+           initComplete: () => this.initHeaderFilters()
         });
     }
 
     initHeaderFilters() {
         const self = this;
+        if(self.config.columnFiltersShow){
         this.dataTable.columns().every(function(index) {
             const column = this;
             const colConfig = self.config.columns[index];
             const header = $(column.header());
             
-            // Add check for valid data field
             if (colConfig.data && colConfig.filter?.enabled !== false) {
                 header.html(`
                     <div class="column-header-content">
@@ -114,20 +130,16 @@ class GenericDataTable {
                     </div>
                 `);
             }
-        });
+        });}
     }
 
     createColumnFilterInput(colConfig) {
-       // const filterType = colConfig.filter?.type || this.detectFilterType(colConfig);
-        // operators = this.getOperatorsForType(filterType);
-
-    const filterType = this.detectFilterType(colConfig);
-    if (filterType === 'none') return ''; // Skip filter creation
-    
-    const operators = this.getOperatorsForType(filterType);
-
+        const filterType = this.detectFilterType(colConfig);
+        if (filterType === 'none') return '';
         
+        const operators = this.getOperatorsForType(filterType);
         let filterHtml = '';
+        
         if(operators.length > 1) {
             filterHtml += `
                 <select class="form-control filter-operator" data-column="${colConfig.data}">
@@ -159,23 +171,13 @@ class GenericDataTable {
         return filterHtml;
     }
 
-    // detectFilterType(colConfig) {
-    //     if(colConfig.data.includes('date')) return 'date';
-    //     if(['number', 'total', 'balance'].some(k => colConfig.data.includes(k))) return 'number';
-    //     return 'string';
-    // }
-
     detectFilterType(colConfig) {
-        // Add null check for column data
-        if (!colConfig.data) return 'none'; // Return special type for columns without data
-        
+        if (!colConfig.data) return 'none';
         const dataField = colConfig.data.toLowerCase();
-        
         if (dataField.includes('date')) return 'date';
         if (['number', 'total', 'balance', 'price', 'amount'].some(k => dataField.includes(k))) return 'number';
         return 'string';
     }
-    
 
     getOperatorsForType(type) {
         return this.config.filterSettings[`${type}Operators`] || [];
@@ -211,8 +213,6 @@ class GenericDataTable {
         };
     }
 
-    // ... rest of the existing methods (renderColumn, bindEvents, etc.) ...
-
     getColumnsConfig() {
         return this.config.columns.map(col => ({
             data: col.data,
@@ -222,25 +222,17 @@ class GenericDataTable {
             render: (data, type, row) => this.renderColumn(col, data, type, row)
         }));
     }
+
     renderColumn(col, data, type, row) {
-    // Check if render is a function first
-    if (typeof col.render === 'function') {
-        return col.render(data, type, row);
+        if (typeof col.render === 'function') return col.render(data, type, row);
+        if (col.type === 'link') return `<a href="${col.href(row)}" class="${col.class || ''}">${data}</a>`;
+        if (col.type === 'badge') {
+            const color = typeof col.color === 'function' ? col.color(data) : col.color;
+            return `<span class="badge bg-${color}">${data}</span>`;
+        }
+        if (col.type === 'actions') return this.renderActions(row);
+        return data;
     }
-    // Then check type-based renders
-    if (col.type === 'link') {
-        return `<a href="${col.href(row)}" class="${col.class || ''}">${data}</a>`;
-    }
-    if (col.type === 'badge') {
-        const color = typeof col.color === 'function' ? col.color(data) : col.color;
-        return `<span class="badge bg-${color}">${data}</span>`;
-    }
-    if (col.type === 'actions') {
-        return this.renderActions(row);
-    }
-    // Fallback to default data rendering
-    return data;
-}
 
     renderActions(row) {
         return `
@@ -252,7 +244,7 @@ class GenericDataTable {
                 <ul class="dropdown-menu">
                     ${this.config.actions.map(action => `
                         <li>
-                            <a class="dropdown-item" href="${action.url(row)}">
+                            <a class="dropdown-item" id="${action.id}" href="${action.url(row)}">
                                 ${action.icon ? `<i class="${action.icon}"></i>` : ''}
                                 ${action.label}
                             </a>
@@ -263,25 +255,21 @@ class GenericDataTable {
     }
 
     bindEvents() {
-        // Global filter changes
+        // Global filters
         this.config.filters.forEach(filter => {
             $(`#${filter.id}`).on('change', () => this.dataTable.ajax.reload());
         });
 
-        // Column filter events
+        // Column filters
         $(document).on('change keyup', '.column-filter, .filter-operator', () => {
             this.dataTable.ajax.reload();
         });
 
         // Reset filters
         $('.reset-filters').click(() => this.resetFilters());
-
-        // Prevent dropdown close
-        $(this.config.tableId).on('click', '.dropdown-menu a', (e) => e.stopPropagation());
     }
 
     resetFilters() {
-        // Reset global filters
         this.config.filters.forEach(filter => {
             const el = $(`#${filter.id}`);
             if (filter.type === 'multiselect') {
@@ -291,17 +279,14 @@ class GenericDataTable {
             }
         });
 
-        // Reset column filters
         $(`.column-filter`).val('');
         $(`.filter-operator`).val('=');
-        
         this.dataTable.ajax.reload();
     }
+
     handleRowCreation(row, data) {
         if (this.config.onRowCreated) {
             this.config.onRowCreated(row, data);
         }
     }
-
-    // ... existing renderColumn and other methods ...
 }
