@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <title>List of Invoices :: Skynova.com</title>
+
+
+
+
+
+    <meta name="viewport" content="width=900" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    
+
+    <link rel="shortcut icon" href="https://www.skynova.com/favicon.ico?v=1" />
+    <link rel="stylesheet" type="text/css" href="https://www.skynova.com/app/__common/css/common.css?v=V0002458" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://www.skynova.com/javascript/error_report.js" type="application/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        var baseHref = 'https://www.skynova.com/';
+        window.cid = "10993332"
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://www.skynova.com/app/invoices/css/module.css?v=V0002458" />
+
+    <style>
+        .table-list th:last-child {
+            padding-left: 15px;
+        }
+
+        .table-list td:last-child {
+            padding-left: 20px;
+        }
+
+        .text-customer {
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+
+
+
+    <style>
+        #tablePaginatorFirstPage,
+        #tablePaginatorPreviousPage,
+        #tablePaginatorCurrentPage,
+        #tablePaginatorNextPage,
+        #tablePaginatorLastPage,
+        #tablePaginatorAllPages {
+            line-height: normal !important;
+            padding: 3px 6px !important;
+            width: unset !important;
+        }
+
+        #innerSendForm * {
+            box-sizing: content-box !important;
+            line-height: normal;
+        }
+
+        #invoiceFormWrapper * {
+            box-sizing: content-box !important;
+        }
+
+        #divWithInfoMessage td {
+            padding: 4px !important;
+        }
+
+        .divWithFilter input {
+            box-sizing: content-box !important;
+        }
+
+        #div2 {
+            margin-left: -250px;
+            left: 50% !important;
+        }
+
+        #recordPayment_date {
+            box-sizing: content-box !important;
+        }
+
+        tr.recordPayment_paymentHistoryTR>td {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        tr.recordPayment_paymentHistoryTR>td img {
+            margin-top: 3px !important;
+        }
+
+        .btn {
+            padding: 0 16px !important;
+            line-height: 30px !important;
+        }
+
+        .btn.btn-lg {
+            padding: 2px 19px !important;
+            box-shadow: none !important;
+            border: 0.9px solid #aaa !important;
+            line-height: 30px !important;
+        }
+
+        th.table-dropdown .btn,
+        td.table-dropdown .btn {
+            height: 19px !important;
+            line-height: 19px !important;
+            padding: 0 !important;
+        }
+
+        #top-menu .dropdown-item:hover,
+        #top-menu .dropdown-item:active,
+        #utilities .dropdown-item:hover,
+        #utilities .dropdown-item:active {
+            box-shadow: none;
+            border: none;
+            text-decoration: none;
+            background-color: #54a0e7;
+            color: #fff;
+        }
+
+        #no-js-message {
+            display: none;
+            font-size: 13px;
+            line-height: 19px;
+            font-weight: normal !important;
+            text-align: center;
+            max-width: 1800px;
+          /* //  margin: 1em auto; */
+            background-color: #fffadc !important;
+            border: 2px solid #fcf5cd !important;
+            padding: 8px 40px;
+        }
+
+        .alert-danger,
+        .bg-danger {
+            background: #FFFADC url('../../images/red_error_25.gif') 6px 6px no-repeat !important;
+        }
+
+        .alert-danger:before {
+            content: none !important;
+        }
+        .logohead img {
+    max-width: 14%;
+}
+
+
+.container {
+    /* max-width: 800px; */
+    margin-left: 40px !important;
+    margin-right: 22px !important;
+    max-width: fit-content !important;
+}
+        /* hack to avoid having the icon in v3 overlaping the icon in v2 */
+    </style>
+    <noscript> <style> #no-js-message { display: block; } </style> </noscript>
+
+
+    <div id="header">
+
+        <div id="top-utilities" class="container">
+            <div class="logohead">
+                <img src="https://reetechusa.com/wp-content/uploads/2024/11/logo.png" alt="" width="100%">
+            </div>
+
+            
+            <ul id="utilities" class="menu" style="z-index:5;">
+
+                <li class="menu-text"><b>rituranjan.gupta2@gmail.com</b></li>
+                <li class="menu-border-right"></li>
+
+                <li class="menu-item ">
+
+                    <a class="menu-header">Help</a>
+                    <ul class="menu-dropdown">
+                        <li><a class="dropdown-item" href="/app/faq">F.A.Q.</a></li>
+
+
+                        <li><a class="dropdown-item" href="/app/support">Contact Support</a></li>
+                    </ul>
+
+                </li>
+
+                <li class="menu-border-right"></li>
+
+                <li class="menu-item ">
+
+                    <a class="menu-header">Settings</a>
+                    <ul class="menu-dropdown">
+
+                        <li><a class="dropdown-item" href="/app/profile">My Profile</a></li>
+                        <li><a class="dropdown-item" href="/app/changeLoginEmail">Change E-mail Address</a></li>
+                        <li><a class="dropdown-item" href="/app/changeLoginPassword">Change Password</a></li>
+                        <li><a class="dropdown-item" href="/app/onlinePayment">Online Payment</a></li>
+                        <li><a class="dropdown-item" href="/app/moduleHub?c=109">Manage Users</a></li>
+                        <li><a class="dropdown-item" href="/app/cancel">Close Account</a></li>
+                    </ul>
+
+                </li>
+
+
+
+                <li class="menu-border-right"></li>
+                <li class="menu-item">
+                    <a id="menuLogout" class="menu-header" href="/app/logout">Log out</a>
+                </li>
+
+
+            </ul>
+
+
+        </div>
+
+        <div id="no-js-message" class="alert alert-danger">
+            <strong>JavaScript is disabled in your browser! </strong> This site will not work without javascript.
+            <br/> To enable javascript follow the instructions here: <a href="https://www.enable-javascript.com" target="__blank">enable-javascript.com</a>
+        </div>
+        <div id="top-menu">
+
+            <div class="container">
+
+                <ul class="menu">
+
+                    <li class="menu-item ">
+
+                        <a class="menu-header" href="?home=home">Home</a>
+
+                    </li>
+
+
+
+
+
+
+
+
+
+
+
+                    <li class="menu-item active">
+                        <a class="menu-header" href="#">Invoices</a>
+                        <ul class="menu-dropdown">
+
+
+                            <li><a class="dropdown-item" href="/app/invoices/new">New Invoice</a></li>
+                            <li><a class="dropdown-item" href="/app/invoices/list">List of Invoices</a></li>
+                            <li><a class="dropdown-item" href="/app/invoices/listPayments">List of Payments</a></li>
+
+
+                        </ul>
+                    </li>
+
+
+                    <li class="menu-item ">
+                        <a class="menu-header" href="#">Reports</a>
+                        <ul class="menu-dropdown">
+                            <li><a class="dropdown-item" href="/incomeStatement.php">Income Statement</a></li>
+                            <li><a class="dropdown-item" href="/balanceSheet.php">Balance Sheet</a></li>
+                            <li><a class="dropdown-item" href="/cashFlowStatement.php">Cash Flow Statement</a></li>
+                            <li><a class="dropdown-item" href="/listTaxOwed.php">Sales Tax Owed</a></li>
+                        </ul>
+                    </li>
+
+
+
+
+
+
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--end header-->
+
+

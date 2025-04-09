@@ -1,0 +1,290 @@
+<!doctype html>
+<!--[if IE 8]>     <html class="ie8"> <![endif]-->
+<!--[if gt IE 8]|!(IE)><!-->
+<html lang="en">
+<!--<![endif]-->
+
+<head>
+
+   
+
+
+
+
+
+    <meta name="viewport" content="width=900" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+ 
+
+    <link rel="shortcut icon" href="https://www.skynova.com/favicon.ico?v=1" />
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+   
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    
+
+
+</head>
+
+<body>
+
+
+
+
+
+
+    <style>
+        #tablePaginatorFirstPage,
+        #tablePaginatorPreviousPage,
+        #tablePaginatorCurrentPage,
+        #tablePaginatorNextPage,
+        #tablePaginatorLastPage,
+        #tablePaginatorAllPages {
+            line-height: normal !important;
+            padding: 3px 6px !important;
+            width: unset !important;
+        }
+
+        #innerSendForm * {
+            box-sizing: content-box !important;
+            line-height: normal;
+        }
+
+        #invoiceFormWrapper * {
+            box-sizing: content-box !important;
+        }
+
+        #divWithInfoMessage td {
+            padding: 4px !important;
+        }
+
+        .divWithFilter input {
+            box-sizing: content-box !important;
+        }
+
+        #div2 {
+            margin-left: -250px;
+            left: 50% !important;
+        }
+
+        #recordPayment_date {
+            box-sizing: content-box !important;
+        }
+
+        tr.recordPayment_paymentHistoryTR>td {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        tr.recordPayment_paymentHistoryTR>td img {
+            margin-top: 3px !important;
+        }
+
+        .btn {
+            padding: 0 16px !important;
+            line-height: 30px !important;
+        }
+
+        .btn.btn-lg {
+            padding: 2px 19px !important;
+            box-shadow: none !important;
+            border: 0.9px solid #aaa !important;
+            line-height: 30px !important;
+        }
+
+        th.table-dropdown .btn,
+        td.table-dropdown .btn {
+            height: 19px !important;
+            line-height: 19px !important;
+            padding: 0 !important;
+        }
+
+        #top-menu .dropdown-item:hover,
+        #top-menu .dropdown-item:active,
+        #utilities .dropdown-item:hover,
+        #utilities .dropdown-item:active {
+            box-shadow: none;
+            border: none;
+            text-decoration: none;
+            background-color: #54a0e7;
+            color: #fff;
+        }
+
+        #no-js-message {
+            display: none;
+            font-size: 13px;
+            line-height: 19px;
+            font-weight: normal !important;
+            text-align: center;
+            max-width: 800px;
+            margin: 1em auto;
+            background-color: #fffadc !important;
+            border: 2px solid #fcf5cd !important;
+            padding: 8px 40px;
+        }
+
+        .alert-danger,
+        .bg-danger {
+            background: #FFFADC url('../../images/red_error_25.gif') 6px 6px no-repeat !important;
+        }
+
+        .alert-danger:before {
+            content: none !important;
+        }
+
+        /* hack to avoid having the icon in v3 overlaping the icon in v2 */
+    </style>
+    <noscript> <style> #no-js-message { display: block; } </style> </noscript>
+
+
+
+
+
+
+
+
+    <div class="page-body">
+        <div class="container">
+
+
+            <div class="feedback-messages">
+
+
+                <div class="alert alert-danger " id="pageError">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+                <div class="alert alert-success " id="pageSuccess">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+                <div class="alert alert-warning " id="pageWarning">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+                <div class="alert alert-info " id="pageInfo">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+                <div class="alert alert-info " id="pageUpgrade">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            </div>
+
+
+            <div class="wall activated clearfix">
+
+
+                <a href="?home=list" class="brick invoices" sel="btn106">
+                    <div class="apps-icon">
+                        <i class="material-icons">&#xe8b0;</i>
+                    </div>
+                    <h2>Invoices</h2>
+                </a>
+                <a href="?home=list3" class="brick invoices" sel="btn106">
+                    <div class="apps-icon">
+                        <i class="material-icons">&#xe8b0;</i>
+                    </div>
+                    <h2>Invoices</h2>
+                </a>
+                <div style="visibility: hidden;">
+                <a href="moduleHub?c=137" class="brick expenses">
+                    <div class="apps-icon">
+                        <i class="material-icons">&#xe53e;</i>
+                    </div>
+                    <h2>Expenses</h2>
+                </a>
+                <a href="moduleHub?c=138" class="brick profitloss">
+                    <div class="apps-icon">
+                        <i class="material-icons">&#xe3f6;</i>
+                    </div>
+                    <h2>Profit & Loss</h2>
+                </a>
+                <a href="moduleHub?c=customers" class="brick contacts" sel="btn107">
+                    <div class="apps-icon">
+                        <i class="material-icons people">&#xe7fb;</i>
+                    </div>
+                    <h2>Customers</h2>
+                </a>
+                <a href="moduleHub?c=131" class="brick timesheets" sel="btn131">
+                    <div class="apps-icon">
+                        <i class="material-icons">&#xe8b5;</i>
+                    </div>
+                    <h2>Timesheets</h2>
+                </a>
+                <a href="moduleHub?c=119" class="brick workorders" sel="btn119">
+                    <div class="apps-icon">
+                        <i class="material-icons build">&#xe869;</i>
+                    </div>
+                    <h2>Work Orders</h2>
+                </a>
+            </div>
+            </div>
+
+
+            <div class="wall clearfix" style="visibility: hidden;">
+
+
+                <div style="padding-top:50px; padding-left:30px; font-size:18px">Want more functionality?</div>
+
+                <a href="/app/addons" class="brick powerpack" sel="linkStore">
+                    <div class="apps-icon">
+                        <i class="material-icons whatshot">&#xE145;</i>
+                    </div>
+                    <h2>Add-Ons</h2>
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+
+
+<script>
+   
+    
+    var scriptFiles = ["javascript/bootstrap.min.js?v=V0002458","javascript/javascript.js"]; // JS files
+    var styleFiles = ["css/home.css"]; // CSS files
+    var images=['images/favicon.icon']
+    loadAssets(scriptFiles, styleFiles,images);
+  </script>
+
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+
+
+   
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"922f523f3ee254bc","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.1.0","token":"984c858828644809a4fdf1ea68f32b03"}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

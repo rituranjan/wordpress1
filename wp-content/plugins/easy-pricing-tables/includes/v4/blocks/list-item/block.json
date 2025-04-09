@@ -1,0 +1,36 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name":  "easy-pricing-tables/list-item",
+	"title": "Pricing Table List Item",
+	"category": "widgets",
+	"textdomain": "easy-pricing-tables",
+	"parent": [ "easy-pricing-tables/list-item" ],
+	
+	"description": "Enter a new line using shift + enter",
+	"editorScript": "fca-ept4-list-item-js",
+	
+	"attributes": {		
+		"content": {
+			"type": "string",
+			"default": "Feature"
+		}
+	},
+	"supports": {
+		"renaming": false,
+		"splitting": true,
+		"spacing": {     
+			"padding": true
+		},
+		"lock": false,
+		"typography":{
+			"fontSize": true,
+			"textAlign": true
+		},
+		"color": {
+			"background": true,
+			"text": true,
+			"enableContrastChecker": false
+		}
+	}
+}

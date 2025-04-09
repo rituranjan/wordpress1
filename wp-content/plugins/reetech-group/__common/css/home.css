@@ -1,0 +1,101 @@
+/* General Styles */
+.pp1000 {
+    display: block;
+    line-height: 22px;
+    text-align: center;
+    color: #808080;
+}
+
+/* App Icon Styles */
+.apps-icon {
+    display: block;
+    background-color: #fff;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    position: relative;
+}
+
+/* Brick Layout */
+.wall {
+    width: 800px;
+    position: relative;
+    margin-top: 22px;
+}
+
+.brick {
+    display: block;
+    width: 25%;
+    height: 180px;
+    float: left;
+    padding: 20px;
+}
+
+.brick h2 {
+    text-align: center;
+    padding-top: 15px;
+    font-size: 15px;
+    color: #3c3c3c;
+}
+
+/* Hover Effects */
+.brick:hover .apps-icon,
+.brick:active .apps-icon,
+.brick:focus .apps-icon {
+    box-shadow: 0 0 18px rgba(0, 0, 0, .4), 0 0 3px rgba(0, 0, 0, .3);
+    box-shadow: 0 0 7px rgba(0, 0, 0, 0.64), 0 0 3px rgba(0, 0, 0, .28);
+}
+
+/* Badge Styles */
+.badge {
+    display: inline-block;
+    vertical-align: top;
+    padding: 0.25em 0.4em;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border: 0.64px solid transparent;
+    border-radius: 2px;
+    position: relative;
+    top: -3px;
+    background-color: #6c6c6c;
+    font-family: sans-serif;
+}
+
+/* Color Classes for Different App Types */
+.contacts .apps-icon { background-color: #ffc04c; }
+.store .apps-icon { background-color: #5f6a99; }
+.myplan .apps-icon { background-color: #ffc04c; }
+.powerpack .apps-icon { background-color: #ff7c43; }
+/* Add all other color classes here */
+
+/* Material Icons in Apps */
+.apps-icon .material-icons {
+    display: block;
+    text-align: center;
+    line-height: 80px;
+    font-size: 48px;
+    color: #fff;
+}
+
+/* Alert Styles */
+.alert-info {
+    padding-right: 122px;
+    border-radius: 5px;
+    margin: 40px 0 30px 0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .wall {
+        width: 100%;
+    }
+    .brick {
+        width: 50%;
+    }
+}

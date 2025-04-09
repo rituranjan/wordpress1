@@ -1,0 +1,163 @@
+.creative-hero--section .content-box {
+  /* position: relative;
+  max-width: 540px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%; */
+  animation: fadeInUp 1s ease-in-out 0.6s forwards;
+}
+.creative-hero--section .content-box .hero-subtitle {
+  /* display: block;
+  font-size: 16px;
+  line-height: 22px;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  margin-bottom: 33px; */
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-in-out 0.6s forwards;
+}
+.creative-hero--section .content-box .hero-title {
+  /* color: #fff;
+  line-height: 1.1em;
+  letter-spacing: -3px;
+  text-transform: capitalize;
+  margin-bottom: 28px;
+  font-size: 75px;
+  font-weight: 600; */
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-in-out 0.9s forwards;
+}
+.creative-hero--section .content-box .hero-desc {
+  /* color: #fff;
+  margin-bottom: 40px;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 32px; */
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-in-out 1.2s forwards;
+}
+.content-box .btn-box {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-in-out 1.6s forwards;
+}
+.content-box .btn-box .hero-cta {
+  position: relative;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 18px 38px;
+  font-weight: 600;
+  overflow: hidden;
+  color: #fff;
+  background: #e95611;
+  letter-spacing: 0.8px;
+  border-radius: 0px;
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.content-box .btn-box .hero-cta:before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  content: "";
+  border-radius: 0px;
+  transform: scaleX(0);
+  transform-origin: top right;
+  transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
+  background-color: #fff;
+}
+
+.content-box .btn-box .hero-cta:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  color: #16243e;
+}
+
+.content-box .btn-box .hero-cta:hover:before {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.btn-box .hero-cta .cta-title {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.btn-box .hero-cta .cta-title i {
+  position: relative;
+  display: block;
+  margin-left: 10px;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* .hero-img-box {
+  display: grid;
+} */
+/* =================== RESPONSIVE IPAD PRO ============================= */
+@media (max-width: 1366px) {
+  .creative-hero--section .bg-overlay {
+    /* background-image: none;
+    background-color: #16243e;
+    mix-blend-mode: hard-light; */
+  }
+}
+/* =================== RESPONSIVE IPAD  ============================= */
+@media (max-width: 991px) {
+  .creative-hero--section {
+    height: auto;
+    padding: 0px;
+  }
+
+  .section-hero {
+    margin-top: 80px !important;
+    margin-bottom: 45px !important;
+  }
+
+  .creative-hero--section .content-box {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .hero-img-box {
+    display: none;
+  }
+}
+/* =================== RESPONSIVE IPHONE  ============================= */
+@media (max-width: 575px) {
+  .creative-hero--section .content-box .hero-title {
+    font-size: 44px;
+  }
+  .creative-hero--section .content-box .hero-desc {
+    font-size: 15px;
+  }
+}

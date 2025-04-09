@@ -1,0 +1,104 @@
+# Copyright (C) 2024 keywoot
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Login With SAML SSO - WP Single Sign On 1.4.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/saml-sso-wp-single-sign-on\n"
+"Last-Translator: \n"
+"Language-Team: German\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-12-17T16:32:18+00:00\n"
+"PO-Revision-Date: 2024-12-17 17:07+0000\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Domain: saml-sso-wp-single-sign-on\n"
+"Language: de_DE\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1"
+
+#. Plugin Name of the plugin
+#: keywoot-saml-sso.php
+msgid "Login With SAML SSO - WP Single Sign On"
+msgstr "Melden Sie sich mit SAML SSO – WP Single Sign On an"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: keywoot-saml-sso.php
+msgid "http://keywoot.com"
+msgstr "https://keywoot.com"
+
+#. Description of the plugin
+#: keywoot-saml-sso.php
+msgid ""
+"Simplify login with secure SAML Single Sign On (SAML SSO) using any SAML-"
+"compliant Identity Provider like Azure, Okta, Keycloak, ADFS, OneLogin. etc"
+msgstr ""
+"Vereinfachen Sie die Anmeldung mit sicherem SAML Single Sign On (SAML SSO) "
+"über jeden SAML-kompatiblen Identitätsanbieter wie Azure, Okta, Keycloak, "
+"ADFS, OneLogin. usw"
+
+#. Author of the plugin
+#: keywoot-saml-sso.php
+msgid "keywoot"
+msgstr "Keywoot"
+
+#: src/main/admin/class-kwsso-activation.php:104
+msgid ""
+"We provide Single Sign-On (SSO) integration with over 30 Identity Providers "
+"(IDP), including Azure, Azure B2C, Okta, ADFS, Keycloak, OneLogin, "
+"Salesforce, Google Workspace (formerly G Suite), Shibboleth, Centrify, Ping, "
+"Auth0, and many more."
+msgstr ""
+"Wir bieten Single Sign-On (SSO)-Integration mit über 30 Identitätsanbietern "
+"(IDP), darunter Azure, Azure B2C, Okta, ADFS, Keycloak, OneLogin, Salesforce,"
+" Google Workspace (ehemals G Suite), Shibboleth, Centrify, Ping, Auth0 und "
+"viele mehr."
+
+#: src/main/admin/class-kwsso-activation.php:105
+msgid "NOTE"
+msgstr "NOTIZ"
+
+#: src/main/admin/class-kwsso-activation.php:106
+msgid ""
+"Our premium plans include advanced features such as attribute mapping, role "
+"mapping, post-login redirection, customizable SSO buttons, and more."
+msgstr ""
+"Unsere Premium-Pläne umfassen erweiterte Funktionen wie Attributzuordnung, "
+"Rollenzuordnung, Umleitung nach der Anmeldung, anpassbare SSO-Schaltflächen "
+"und mehr."
+
+#: src/public/layout/kwsso-setup-idp-config.php:31
+msgid "Fetch or Upload Identity provider metadata"
+msgstr "Metadaten des Identitätsanbieters abrufen oder hochladen"
+
+#: src/public/layout/kwsso-setup-idp-config.php:33
+msgid "You can configure your IDP here in three ways."
+msgstr "Sie können Ihren IDP hier auf drei Arten konfigurieren."
+
+#: src/public/layout/kwsso-setup-idp-config.php:35
+msgid "You can Directly fetch the configurtaion using the Metadata Url."
+msgstr "Sie können die Konfiguration direkt über die Metadaten-URL abrufen."
+
+#: src/public/layout/kwsso-setup-idp-config.php:36
+msgid "You can Upload the the metadata file"
+msgstr "Sie können die Metadatendatei hochladen"
+
+#: src/public/layout/kwsso-setup-idp-config.php:37
+msgid ""
+"You can click on \"Configure it Manually\" button to configure it manually"
+msgstr ""
+"Sie können auf die Schaltfläche „Manuell konfigurieren“ klicken, um es "
+"manuell zu konfigurieren"
+
+#: src/public/layout/kwsso-setup-idp-config.php:47
+msgid "IDP Name"
+msgstr "IDP-Name"
+
+#: src/public/layout/kwsso-setup-idp-config.php:56
+msgid "Enter IDP MetaData URL"
+msgstr "Geben Sie die IDP-Metadaten-URL ein"
+
+#: src/public/layout/kwsso-setup-idp-config.php:57
+msgid "Enter metadata URL of your IdP."
+msgstr "Geben Sie die Metadaten-URL Ihres IdP ein."

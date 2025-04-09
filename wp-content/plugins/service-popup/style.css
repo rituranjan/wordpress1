@@ -1,0 +1,30 @@
+/* Custom CSS for the Service Popup */
+#servicePopup .modal-content {
+    border-radius: 10px;
+}
+
+#servicePopup .modal-header {
+    background-color: #007bff;
+    color: #fff;
+    border-bottom: none;
+}
+
+#servicePopup .modal-title {
+    font-size: 1.5rem;
+}
+
+#servicePopup .modal-body {
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+#servicePopup .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+#servicePopup .btn-primary:hover {
+    background-color: #0056b3;
+}

@@ -1,0 +1,93 @@
+/* -------------------------------
+   Custom Modals (Bootstrap Overrides)
+------------------------------- */
+.modal-error {
+    display: none;
+    padding: 0.5rem;
+    background-color: #f8d7da; /* Bootstrap's danger alert bg */
+    border: 1px solid #f5c6cb; /* Bootstrap's danger alert border */
+    border-radius: 0.25rem; /* Bootstrap's border-radius */
+}
+
+/* -------------------------------
+   Alerts (Extend Bootstrap's .alert)
+------------------------------- */
+.feedback-messages .alert {
+    display: none;
+    margin-bottom: 1rem;
+}
+
+.feedback-messages .alert.show {
+    display: block;
+}
+
+/* Custom Alert Icons (Material Icons) */
+.alert-success::before,
+.alert-info::before,
+.alert-warning::before,
+.alert-danger::before {
+    font-family: "Material Icons";
+    margin-right: 0.5rem;
+}
+
+.alert-success::before { content: "\e86c"; color: #198754; } /* Bootstrap success color */
+.alert-info::before { content: "\e88e"; color: #0dcaf0; } /* Bootstrap info color */
+.alert-warning::before { content: "\e000"; color: #ffc107; } /* Bootstrap warning color */
+.alert-danger::before { content: "\e5c9"; color: #dc3545; } /* Bootstrap danger color */
+
+/* -------------------------------
+   Buttons (Bootstrap Overrides)
+------------------------------- */
+.btn.btn-green {
+    background-color: #73bd0b; /* Custom color */
+    border-color: #73bd0b;
+}
+.btn.btn-green:hover {
+    background-color: #5c9904;
+    border-color: #5c9904;
+}
+
+.btn.btn-red {
+    background-color: #dc1431;
+    border-color: #dc1431;
+}
+
+/* -------------------------------
+   Dropdowns (Bootstrap Extensions)
+------------------------------- */
+.dropdown-menu.radio .dropdown-item {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.dropdown-menu.radio input[type="radio"] {
+    position: absolute;
+    left: 0.5rem;
+}
+
+/* -------------------------------
+   Tables (Bootstrap Compatibility)
+------------------------------- */
+.table-list th {
+    background-color: #54a0e7; /* Custom header color */
+    color: white;
+}
+
+/* -------------------------------
+   Spinner Animation (Custom)
+------------------------------- */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn-spinner::after {
+    /* ... (keep your custom spinner styles) ... */
+}
+
+/* -------------------------------
+   Tooltips (Bootstrap Override)
+------------------------------- */
+.has-tooltip .tip {
+    /* ... (align with Bootstrap's tooltip API) ... */
+}

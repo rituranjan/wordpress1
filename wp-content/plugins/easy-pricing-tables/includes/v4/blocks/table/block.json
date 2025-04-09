@@ -1,0 +1,79 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name":  "easy-pricing-tables/table",
+	"title": "Easy Pricing Table",
+	"category": "widgets",
+	"icon": "editor-table",
+	"keywords": [ "pricing", "table" ],
+	
+	"textdomain": "easy-pricing-tables",
+	"attributes": {
+		"templateID": {
+			"type": "integer",
+			"default": 0
+		},
+		"tableID": {
+			"type": "string",
+			"default": ""
+		},
+		"customCSS": {
+			"type": "string",
+			"default": ""
+		},
+		"gridGap": {
+			"type": "integer",
+			"default": 9
+		},		
+		"fontFamily": {
+			"type": "string",
+			"default": "sans-serif"
+		},	
+		"matchRowHeight": {
+			"type": "boolean",
+			"default": true
+		},
+		"style": {
+			"type": "object",
+			"default": {
+				"spacing": {
+					"padding": {
+						"top": "64px",
+						"bottom": "64px",
+						"left": "16px",
+						"right": "16px"					
+					}
+				}				
+			}			
+		}
+	},
+	
+	"providesContext": {
+        "easy-pricing-tables/table/templateID": "templateID"
+    },
+	
+	"supports": {
+		"renaming": false,
+		"align": [ "wide", "full" ],
+		"anchor": true,
+		"lock": false,
+		"spacing": {
+			"padding": true
+		},
+		"layout": {
+			"allowSwitching": false,
+			"allowInheriting": false,
+			"allowEditing": false,
+			"default": {
+				"type": "flex",
+				"flexWrap": "nowrap",
+				"justifyContent": "center",
+				"verticalAlignment": "stretch"
+			}
+		}
+	},
+	"script": "fca-ept4-frontend-js",
+	"editorScript": "fca-ept4-table-js",
+	"editorStyle": "fca-ept4-editor-css"
+		
+}

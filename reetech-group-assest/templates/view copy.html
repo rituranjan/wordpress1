@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>View Invoice :: Skynova.com</title>
+
+
+
+
+
+
+    <meta name="viewport" content="width=900" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    
+
+    <link rel="shortcut icon" href="https://www.skynova.com/favicon.ico?v=1" />
+    <link rel="stylesheet" type="text/css" href="https://www.skynova.com/app/__common/css/common.css?v=V0002458" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://www.skynova.com/javascript/error_report.js" type="application/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        var baseHref = 'https://www.skynova.com/';
+        window.cid = "10993332"
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://www.skynova.com/app/invoices/css/module.css?v=V0002458" />
+
+</head>
+
+<body>
+
+
+
+
+
+    <style>
+        #tablePaginatorFirstPage,
+        #tablePaginatorPreviousPage,
+        #tablePaginatorCurrentPage,
+        #tablePaginatorNextPage,
+        #tablePaginatorLastPage,
+        #tablePaginatorAllPages {
+            line-height: normal !important;
+            padding: 3px 6px !important;
+            width: unset !important;
+        }
+
+        #innerSendForm * {
+            box-sizing: content-box !important;
+            line-height: normal;
+        }
+
+        #invoiceFormWrapper * {
+            box-sizing: content-box !important;
+        }
+
+        #divWithInfoMessage td {
+            padding: 4px !important;
+        }
+
+        .divWithFilter input {
+            box-sizing: content-box !important;
+        }
+
+        #div2 {
+            margin-left: -250px;
+            left: 50% !important;
+        }
+
+        #recordPayment_date {
+            box-sizing: content-box !important;
+        }
+
+        tr.recordPayment_paymentHistoryTR>td {
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+
+        tr.recordPayment_paymentHistoryTR>td img {
+            margin-top: 3px !important;
+        }
+
+        .btn {
+            padding: 0 16px !important;
+            line-height: 30px !important;
+        }
+
+        .btn.btn-lg {
+            padding: 2px 19px !important;
+            box-shadow: none !important;
+            border: 0.9px solid #aaa !important;
+            line-height: 30px !important;
+        }
+
+        th.table-dropdown .btn,
+        td.table-dropdown .btn {
+            height: 19px !important;
+            line-height: 19px !important;
+            padding: 0 !important;
+        }
+
+        #top-menu .dropdown-item:hover,
+        #top-menu .dropdown-item:active,
+        #utilities .dropdown-item:hover,
+        #utilities .dropdown-item:active {
+            box-shadow: none;
+            border: none;
+            text-decoration: none;
+            background-color: #54a0e7;
+            color: #fff;
+        }
+
+        #no-js-message {
+            display: none;
+            font-size: 13px;
+            line-height: 19px;
+            font-weight: normal !important;
+            text-align: center;
+            max-width: 800px;
+            margin: 1em auto;
+            background-color: #fffadc !important;
+            border: 2px solid #fcf5cd !important;
+            padding: 8px 40px;
+        }
+
+        .alert-danger,
+        .bg-danger {
+            background: #FFFADC url('../../images/red_error_25.gif') 6px 6px no-repeat !important;
+        }
+
+        .alert-danger:before {
+            content: none !important;
+        }
+
+        /* hack to avoid having the icon in v3 overlaping the icon in v2 */
+    </style>
+    <noscript> <style> #no-js-message { display: block; } </style> </noscript>
+
+
+
+
+
+
+
+
+
+    <div class="page-body">
+        <div class="container">
+
+            <div class="page-header">
+                <h1>View Invoice (0000001:Draft) </h1>
+            </div>
+
+
+            <div class="feedback-messages">
+
+                <div class="alert alert-danger " id="pageError">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+                <div class="alert alert-success " id="pageSuccess">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+                <div class="alert alert-warning " id="pageWarning">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+                <div class="alert alert-info " id="pageInfo">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+                <div class="alert alert-info " id="pageUpgrade">
+                    <button type="button" class="close" aria-hidden="true"></button>
+                    <span class="msg"></span>
+                </div>
+
+
+
+
+
+
+
+
+            </div>
+
+
+            <table class="nav-content" style="">
+                <tr>
+                    <td class="minify">
+                        <a class="btn" href="https://www.skynova.com/app/invoices/edit?c=71898917" sel="btnEdit">Edit</a>
+                    </td>
+                    <td class="minify">
+                        <button type="button" class="btn btnPrint" sel="btnPrint">Print</button>
+                    </td>
+                    <td class="minify">
+                        <a class="btn btn-pdf btnPDF" href="https://www.skynova.com/app/invoices/pdf?c=71898917" sel="btnPDF">PDF</a>
+                    </td>
+                    <td class="minify">
+                        <a class="btn" href="https://www.skynova.com/app/invoices/send?c=71898917" sel="btnSend">Send</a>
+                    </td>
+                    <td class="minify">
+                        <a class="btn" href="https://www.skynova.com/app/invoices/payment?c=71898917" sel="btnPaid">Mark as Paid</a>
+                    </td>
+                    <td></td>
+
+                    <td style="width:180px">
+
+                        <form id="more_actions" method="POST" action="view?c=71898917">
+                            <input type="hidden" name="more_actions">
+                            <select name="more_actions" onchange="if (this.value!='') document.getElementById('more_actions').submit();" sel="moreActions">
+
+
+                                    <option value="" selected>More Actions...</option>
+                                    <optgroup label="Change Status to..."><option value='Sent'>Sent</option><option value='Paid'>Paid</option><option value='Partial'>Partial</option></optgroup>
+                                    
+                                </select>
+                        </form>
+
+                    </td>
+
+                </tr>
+            </table>
+
+
+
+
+            <div id="modePreview">
+                <div class="paper">
+
+                    <div class="paid-stamp">Paid</div>
+
+                    <div class="view-header">
+                        <div class="view-left">
+
+                            <address class='view-from'>
+                    test                    <br>
+                    test1                </address>
+
+
+                            <address class='view-to'>
+                    customer1                    <br>
+                    customer Address                </address>
+
+
+                        </div>
+                        <div class="view-right ">
+
+
+                            <h1 class="view-headline ">My INVOICE</h1>
+
+
+                            <table class="view-dates">
+
+                                <tr>
+                                    <td>
+                                        <b class="nowrap">Invoice #</b>
+                                    </td>
+                                    <td class="view-invoice-number">
+                                        0000001 </td>
+                                </tr>
+
+
+                                <tr>
+                                    <td>
+                                        <b>Invoice Date</b>
+                                    </td>
+                                    <td>
+                                        03/17/2025 </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <b>Due Date</b>
+                                    </td>
+                                    <td>
+                                        03/17/2025 </td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                    </div>
+
+
+
+
+
+                    <table class="view-datatable without-notes">
+
+                        <tbody>
+                            <tr>
+                                <th class="col-item">Item</th>
+                                <th class="col-desc">Description</th>
+                                <th class="col-price text-right">Unit Price</th>
+                                <th class="col-qty text-right">Quantity</th>
+                                <th class="col-amount text-right">Amount</th>
+                            </tr>
+
+
+
+
+
+                            <tr style="">
+
+                                <td class="min">
+
+                                    Expense
+                                </td>
+
+                                <td class="desc">
+
+                                    Advertising from vendor on 03/17/2025
+                                </td>
+
+                                <td class="min text-right">
+
+                                    666.00
+                                </td>
+
+                                <td class="min text-right">
+
+                                    1.00
+                                </td>
+
+
+                                <td class="min text-right">
+
+                                    666.00
+                                </td>
+
+                            </tr>
+
+
+
+
+                            <tr style="">
+
+                                <td class="min">
+
+                                    Service
+                                </td>
+
+                                <td class="desc">
+
+                                    service
+                                </td>
+
+                                <td class="min text-right">
+
+                                    8.00
+                                </td>
+
+                                <td class="min text-right">
+
+                                    7.00
+                                </td>
+
+
+                                <td class="min text-right">
+
+                                    56.00
+                                </td>
+
+                            </tr>
+
+
+
+
+                            <tr style="">
+
+                                <td class="min">
+
+                                    Product
+                                </td>
+
+                                <td class="desc">
+
+                                    test
+                                </td>
+
+                                <td class="min text-right">
+
+
+                                </td>
+
+                                <td class="min text-right">
+
+
+                                </td>
+
+
+                                <td class="min text-right">
+
+
+                                </td>
+
+                            </tr>
+
+
+
+
+                            <tr style="">
+
+                                <td class="min">
+
+                                    Hours
+                                </td>
+
+                                <td class="desc">
+
+                                    ddd
+                                </td>
+
+                                <td class="min text-right">
+
+                                    66.00
+                                </td>
+
+                                <td class="min text-right">
+
+                                    0.00
+                                </td>
+
+
+                                <td class="min text-right">
+
+                                    0.00
+                                </td>
+
+                            </tr>
+
+
+
+                        </tbody>
+                    </table>
+
+
+                    <table class="view-sums">
+                        <tbody>
+
+
+
+
+                            <tr>
+                                <td rowspan="7" class="border-right" style="width:58%;">
+
+                                    &nbsp;
+
+                                </td>
+                                <td style="padding-top:7px;padding-bottom:5px;padding-left:35px;">
+
+                                    <b>Subtotal</b>
+
+                                </td>
+                                <td class="min text-right" style="padding-top:7px;padding-bottom:5px;">
+
+                                    722.00
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="border-top" style="padding-top:7px;padding-bottom:4px;padding-left:35px;">
+                                    <b>Total</b>
+                                </td>
+                                <td class="min text-right border-top" style="padding-top:7px;padding-bottom:4px;">
+                                    722.00 </td>
+                            </tr>
+
+                            <tr>
+                                <td style="padding-top:4px;padding-bottom:7px;padding-left:35px;">
+                                    <b>Amount Paid</b>
+                                </td>
+                                <td class="min text-right" style="padding-top:4px;padding-bottom:7px;">
+                                    722.00 </td>
+                            </tr>
+
+                            <tr>
+                                <td class="bg-grey border-top" style="padding-top:7px;padding-bottom:7px;padding-left:35px;">
+                                    <b>Balance Due</b>
+                                </td>
+                                <td class="min text-right bg-grey border-top" style="padding-top:7px;padding-bottom:7px;">$0.00 </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+            <!--end #modePreview-->
+
+        </div>
+    </div>
+
+
+
+    <script src="https://www.skynova.com/javascript/bootstrap.min.js?v=V0002458"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+
+
+
+
+
+    <script src="https://www.skynova.com/app/invoices/javascript/javascript.js?v=V0002458"></script>
+    <script>
+        const account_upgrade_url = '';
+    </script>
+ 
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"rayId":"925031a53da08adf","serverTiming":{"name":{"cfExtPri":true,"cfL4":true,"cfSpeedBrain":true,"cfCacheStatus":true}},"version":"2025.1.0","token":"984c858828644809a4fdf1ea68f32b03"}'
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

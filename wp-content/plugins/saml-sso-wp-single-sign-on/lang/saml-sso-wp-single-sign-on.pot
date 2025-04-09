@@ -1,0 +1,80 @@
+# Copyright (C) 2024 Keywoot Software Solutions.
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Login With SAML SSO - WP Single Sign On 1.4.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/saml-sso-wp-single-sign-on\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-12-18T04:43:13+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.11.0\n"
+"X-Domain: saml-sso-wp-single-sign-on\n"
+
+#. Plugin Name of the plugin
+#: keywoot-saml-sso.php
+msgid "Login With SAML SSO - WP Single Sign On"
+msgstr ""
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: keywoot-saml-sso.php
+msgid "https://keywoot.com"
+msgstr ""
+
+#. Description of the plugin
+#: keywoot-saml-sso.php
+msgid "Simplify login with secure SAML Single Sign On (SAML SSO) using any SAML-compliant Identity Provider like Azure, Okta, Keycloak, ADFS, OneLogin. etc"
+msgstr ""
+
+#. Author of the plugin
+#: keywoot-saml-sso.php
+msgid "Keywoot Software Solutions."
+msgstr ""
+
+#: src/main/admin/class-kwsso-activation.php:104
+msgid "We provide Single Sign-On (SSO) integration with over 30 Identity Providers (IDP), including Azure, Azure B2C, Okta, ADFS, Keycloak, OneLogin, Salesforce, Google Workspace (formerly G Suite), Shibboleth, Centrify, Ping, Auth0, and many more."
+msgstr ""
+
+#: src/main/admin/class-kwsso-activation.php:105
+msgid "NOTE"
+msgstr ""
+
+#: src/main/admin/class-kwsso-activation.php:106
+msgid "Our premium plans include advanced features such as attribute mapping, role mapping, post-login redirection, customizable SSO buttons, and more."
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:31
+msgid "Fetch or Upload Identity provider metadata"
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:33
+msgid "You can configure your IDP here in three ways."
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:35
+msgid "You can Directly fetch the configurtaion using the Metadata Url."
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:36
+msgid "You can Upload the the metadata file"
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:37
+msgid "You can click on \"Configure it Manually\" button to configure it manually"
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:47
+msgid "IDP Name"
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:56
+msgid "Enter IDP MetaData URL"
+msgstr ""
+
+#: src/public/layout/kwsso-setup-idp-config.php:57
+msgid "Enter metadata URL of your IdP."
+msgstr ""

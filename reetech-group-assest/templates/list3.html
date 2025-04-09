@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generic Data Table with Theme Support</title>
+    
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" id="bootstrap-theme">
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+    
+    <!-- Additional Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/css/bootstrap-select.min.css">
+
+
+</head>
+<body>
+
+    <div class="page-header shown-print-and-screen"  >
+        <h6>List of Invoices</h6>
+        <span class="action-buttons" style="display: flex; justify-content: flex-end">
+          <a
+            class="btn btn-primary"
+            id="newBtn1"
+            href="?home=new"
+            >New Invoice</a
+          >
+        </span>
+      </div>
+  
+    <div class="container" id="data-table-container">
+        <!-- Filter Section and Table will be auto-generated -->
+    </div>
+    <link
+    rel="stylesheet"
+    type="text/css"
+    href="/wordpress1/reetech-group-assest/css/list.css"
+  />
+
+    <!-- Required Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta3/dist/js/bootstrap-select.min.js"></script>
+   
+    <script>
+class GenericDataTable {
+    constructor(config) {
+        this.config = {
+            container: '#data-table-container',
+            tableId: '#main-data-table',
+            ajax: { url: '', method: 'GET', headers: {} },
+            filters: [],
+            columns: [],
+            actions: [],
+            translations: {
+                emptyTable: "No data found",
+                processing: "<i class='fa fa-spinner fa-spin'></i> Loading..."
+            },
+            filterSettings: {
+                numberOperators: ['=', '≠', '>', '<', '≥', '≤'],
+                stringOperators: ['contains', 'not contains', 'starts', 'ends', '='],
+                dateOperators: ['range']
+            },
+            ...config
+        };
+
+        this.init();
+    }
+
+    init() {
+      //  this.initTheme();
+        this.createFilterSection();
+        this.initDataTable();
+        this.bindEvents();
+        //if(this.config.themeSwitcher) this.initThemeSwitcher();
+    }
+
+    initTheme() {
+        const savedTheme = localStorage.getItem('selectedTheme');
+        const defaultTheme = this.config.themes[0].url;
+        this.loadTheme(savedTheme || defaultTheme);
+    }
+
+
+
+    createFilterSection() {
+    const hasFilters = this.config.filters.length > 0;
+    
+    const filterHtml =
+     ` ${hasFilters ? `
+        <div class="filter-row">
+            <div class="row row-cols-1 row-cols-lg-3 g-2 align-items-end">
+                ${this.config.filters.map(filter => this.createFilterControl(filter)).join('')}
+               
+                <div class="col">
+                    <button class="btn btn-primary w-100 reset-filters">
+                        <i class="fas fa-sync"></i> Reset
+                    </button>
+                </div>
+                            </div>
+        </div>` : ''}
+
+        <table id="${this.config.tableId.replace('#', '')}" class="table table-striped" style="width:100%"></table>
+    `;
+
+    $(this.config.container).append(filterHtml);
+    this.initSelectPickers();
+}
+
+
+    createFilterControl(filter) {
+        switch(filter.type) {
+            case 'multiselect':
+                return `
+                    <div class="col">
+                        <label class="form-label">${filter.label}</label>
+                        <select class="selectpicker form-control ${filter.class || ''}" 
+                                id="${filter.id}" multiple 
+                                data-live-search="true" 
+                                title="${filter.placeholder || 'Select...'}">
+                            ${filter.options ? filter.options.map(opt => 
+                                `<option value="${opt.value}">${opt.label}</option>`).join('') : ''}
+                        </select>
+                    </div>`;
+            case 'date':
+                return `
+                    <div class="col">
+                        <label class="form-label">${filter.label}</label>
+                        <input type="date" class="form-control ${filter.class || ''}" 
+                               id="${filter.id}" ${filter.range ? 'data-range' : ''}>
+                    </div>`;
+            default:
+                return '';
+        }
+    }
+
+    initSelectPickers() {
+        $('.selectpicker').selectpicker();
+    }
+
+    initDataTable() {
+        this.dataTable = $(this.config.tableId).DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: this.config.ajax.url,
+                type: this.config.ajax.method,
+                headers: this.config.ajax.headers,
+                data: (d) => this.getRequestData(d)
+            },
+            columns: this.getColumnsConfig(),
+            language: this.config.translations,
+            createdRow: (row, data) => this.handleRowCreation(row, data),
+        
+           initComplete: () => this.initHeaderFilters()
+        });
+    }
+
+    initHeaderFilters() {
+        const self = this;
+        if(self.config.columnFiltersShow){
+        this.dataTable.columns().every(function(index) {
+            const column = this;
+            const colConfig = self.config.columns[index];
+            const header = $(column.header());
+            
+            if (colConfig.data && colConfig.filter?.enabled !== false) {
+                header.html(`
+                    <div class="column-header-content">
+                        ${colConfig.title}
+                        <div class="column-filter-container">
+                            ${self.createColumnFilterInput(colConfig)}
+                        </div>
+                    </div>
+                `);
+            }
+        });}
+    }
+
+    createColumnFilterInput(colConfig) {
+        const filterType = this.detectFilterType(colConfig);
+        if (filterType === 'none') return '';
+        
+        const operators = this.getOperatorsForType(filterType);
+        let filterHtml = '';
+        
+        if(operators.length > 1) {
+            filterHtml += `
+                <select class="form-control filter-operator" data-column="${colConfig.data}">
+                    ${operators.map(op => `<option value="${op}">${op}</option>`).join('')}
+                </select>
+            `;
+        }
+
+        switch(filterType) {
+            case 'number':
+                filterHtml += `<input type="number" class="form-control column-filter" 
+                                  data-column="${colConfig.data}" placeholder="Value">`;
+                break;
+            case 'string':
+                filterHtml += `<input type="text" class="form-control column-filter" 
+                                  data-column="${colConfig.data}" placeholder="Search...">`;
+                break;
+            case 'date':
+                filterHtml += `
+                    <div class="date-range-filter">
+                        <input type="date" class="form-control column-filter" 
+                               data-column="${colConfig.data}" placeholder="From">
+                        <input type="date" class="form-control column-filter" 
+                               data-column="${colConfig.data}" placeholder="To">
+                    </div>`;
+                break;
+        }
+        
+        return filterHtml;
+    }
+
+    detectFilterType(colConfig) {
+        if (!colConfig.data) return 'none';
+        const dataField = colConfig.data.toLowerCase();
+        if (dataField.includes('date')) return 'date';
+        if (['number', 'total', 'balance', 'price', 'amount'].some(k => dataField.includes(k))) return 'number';
+        return 'string';
+    }
+
+    getOperatorsForType(type) {
+        return this.config.filterSettings[`${type}Operators`] || [];
+    }
+
+    getRequestData(d) {
+        const filterData = {};
+        this.config.filters.forEach(filter => {
+            filterData[filter.id] = $(`#${filter.id}`).val();
+        });
+
+        const columnFilters = {};
+        $(`.column-filter, .filter-operator`).each(function() {
+            const column = $(this).data('column');
+            const operator = $(`.filter-operator[data-column="${column}"]`).val() || '=';
+            const values = $(`.column-filter[data-column="${column}"]`)
+                         .map((i, el) => $(el).val()).get();
+
+            if(values.some(v => v)) {
+                columnFilters[column] = { operator, values };
+            }
+        });
+
+        return {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            search: d.search.value,
+            orderby: d.columns[d.order[0].column].data,
+            order: d.order[0].dir,
+            ...filterData,
+            columnFilters
+        };
+    }
+
+    getColumnsConfig() {
+        return this.config.columns.map(col => ({
+            data: col.data,
+            title: col.title,
+            className: col.className || '',
+            orderable: col.orderable !== false,
+            render: (data, type, row) => this.renderColumn(col, data, type, row)
+        }));
+    }
+
+    renderColumn(col, data, type, row) {
+        if (typeof col.render === 'function') return col.render(data, type, row);
+        if (col.type === 'link') return `<a href="${col.href(row)}" class="${col.class || ''}">${data}</a>`;
+        if (col.type === 'badge') {
+            const color = typeof col.color === 'function' ? col.color(data) : col.color;
+            return `<span class="badge bg-${color}">${data}</span>`;
+        }
+        if (col.type === 'actions') return this.renderActions(row);
+        return data;
+    }
+
+    renderActions(row) {
+        return `
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                        type="button" data-bs-toggle="dropdown">
+                    Actions
+                </button>
+                <ul class="dropdown-menu">
+                    ${this.config.actions.map(action => `
+                        <li>
+                            <a class="dropdown-item" id="${action.id}" href="${action.url(row)}">
+                                ${action.icon ? `<i class="${action.icon}"></i>` : ''}
+                                ${action.label}
+                            </a>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>`;
+    }
+
+    bindEvents() {
+        // Global filters
+        this.config.filters.forEach(filter => {
+            $(`#${filter.id}`).on('change', () => this.dataTable.ajax.reload());
+        });
+
+        // Column filters
+        $(document).on('change keyup', '.column-filter, .filter-operator', () => {
+            this.dataTable.ajax.reload();
+        });
+
+        // Reset filters
+        $('.reset-filters').click(() => this.resetFilters());
+
+        // // Theme switcher
+        // $('#theme-list').on('click', '.dropdown-item', (e) => {
+        //     e.preventDefault();
+        //     const themeUrl = $(e.target).data('theme');
+        //     this.loadTheme(themeUrl);
+        //     $('.dropdown-item').removeClass('active');
+        //     $(e.target).addClass('active');
+        // });
+
+        // // Prevent dropdown close
+        // $(this.config.tableId).on('click', '.dropdown-menu a', (e) => e.stopPropagation());
+
+        // $(document).on('click', '#theme-list .dropdown-item', (e) => {
+        //     e.preventDefault();
+        //     const themeUrl = $(e.target).data('theme');
+        //     this.loadTheme(themeUrl);
+            
+        //     // Update active state
+        //     $('#theme-list .dropdown-item').removeClass('active');
+        //     $(e.target).addClass('active');
+        // });
+    
+    }
+
+    resetFilters() {
+        this.config.filters.forEach(filter => {
+            const el = $(`#${filter.id}`);
+            if (filter.type === 'multiselect') {
+                el.val([]).selectpicker('refresh');
+            } else {
+                el.val('');
+            }
+        });
+
+        $(`.column-filter`).val('');
+        $(`.filter-operator`).val('=');
+        this.dataTable.ajax.reload();
+    }
+
+    handleRowCreation(row, data) {
+        if (this.config.onRowCreated) {
+            this.config.onRowCreated(row, data);
+        }
+    }
+}
+
+
+class GenericDataTable2 {
+    constructor(config) {
+        this.config = {
+            container: '#data-table-container',
+            tableId: '#main-data-table',
+            ajax: { url: '', method: 'GET', headers: {} },
+            filters: [],
+            columns: [],
+            actions: [],
+            translations: {
+                emptyTable: "No data found",
+                processing: "<div class='spinner-border text-primary' role='status'></div> Loading..."
+            },
+            filterSettings: {
+                numberOperators: ['=', '≠', '>', '<', '≥', '≤'],
+                stringOperators: ['contains', 'not contains', 'starts', 'ends', '='],
+                dateOperators: ['range']
+            },
+            bootstrapConfig: {
+                style: 'striped', // bordered|striped|hover
+                responsive: true,
+                hover: true,
+                paginationType: 'full' // simple|full
+            },
+            ...config
+        };
+
+        this.init();
+    }
+
+    init() {
+        this.createFilterSection();
+        this.initDataTable();
+        this.bindEvents();
+    }
+    
+    initSelectPickers() {
+        $('.selectpicker').selectpicker();
+    }
+    getColumnsConfig() {
+        return this.config.columns.map(col => ({
+            data: col.data,
+            title: col.title,
+            className: col.className || '',
+            orderable: col.orderable !== false,
+            render: (data, type, row) => this.renderColumn(col, data, type, row)
+        }));
+    }
+
+
+    createFilterSection() {
+        const hasFilters = this.config.filters.length > 0;
+        const filterHtml = `
+            <div class="card mb-4">
+                <div class="card-body">
+                    ${hasFilters ? `
+                    <div class="row row-cols-1 row-cols-md-3 g-3 mb-3">
+                        ${this.config.filters.map(filter => this.createFilterControl(filter)).join('')}
+                    </div>` : ''}
+                    
+                    <div class="d-flex gap-2 justify-content-end">
+                        ${hasFilters ? `
+                        <button class="btn btn-outline-secondary reset-filters">
+                            <i class="bi bi-arrow-counterclockwise me-2"></i>Reset
+                        </button>` : ''}
+                        <button class="btn btn-primary toggle-columns">
+                            <i class="bi bi-columns-gap me-2"></i>Columns
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="table-responsive">
+                <table id="${this.config.tableId.replace('#', '')}" 
+                      class="table ${this.getTableClasses()}" 
+                      style="width:100%"></table>
+            </div>
+            
+            <div class="modal fade" id="columnsModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Visible Columns</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body" id="columnsList"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        $(this.config.container).html(filterHtml);
+        this.initSelectPickers();
+    }
+
+    getTableClasses() {
+        const classes = [];
+        if(this.config.bootstrapConfig.style === 'striped') classes.push('table-striped');
+        if(this.config.bootstrapConfig.style === 'bordered') classes.push('table-bordered');
+        if(this.config.bootstrapConfig.hover) classes.push('table-hover');
+        return classes.join(' ');
+    }
+
+    createFilterControl(filter) {
+        switch(filter.type) {
+            case 'multiselect':
+                return `
+                    <div class="col">
+                        <label class="form-label">${filter.label}</label>
+                        <select class="form-select selectpicker" 
+                                id="${filter.id}" multiple 
+                                data-live-search="true"
+                                title="${filter.placeholder || 'Select...'}">
+                            ${filter.options.map(opt => 
+                                `<option value="${opt.value}">${opt.label}</option>`).join('')}
+                        </select>
+                    </div>`;
+            case 'date':
+                return `
+                    <div class="col">
+                        <label class="form-label">${filter.label}</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" 
+                                   id="${filter.id}" ${filter.range ? 'data-range' : ''}>
+                            <span class="input-group-text">
+                                <i class="bi bi-calendar"></i>
+                            </span>
+                        </div>
+                    </div>`;
+            case 'search':
+                return `
+                    <div class="col">
+                        <label class="form-label">${filter.label}</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" 
+                                   id="${filter.id}" placeholder="${filter.placeholder}">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </div>
+                    </div>`;
+            default:
+                return '';
+        }
+    }
+
+    getRequestData(d) {
+        const filterData = {};
+        this.config.filters.forEach(filter => {
+            filterData[filter.id] = $(`#${filter.id}`).val();
+        });
+
+        const columnFilters = {};
+        $(`.column-filter, .filter-operator`).each(function() {
+            const column = $(this).data('column');
+            const operator = $(`.filter-operator[data-column="${column}"]`).val() || '=';
+            const values = $(`.column-filter[data-column="${column}"]`)
+                         .map((i, el) => $(el).val()).get();
+
+            if(values.some(v => v)) {
+                columnFilters[column] = { operator, values };
+            }
+        });
+
+        return {
+            draw: d.draw,
+            start: d.start,
+            length: d.length,
+            search: d.search.value,
+            orderby: d.columns[d.order[0].column].data,
+            order: d.order[0].dir,
+            ...filterData,
+            columnFilters
+        };
+    }
+    handleRowCreation(row, data) {
+        if (this.config.onRowCreated) {
+            this.config.onRowCreated(row, data);
+        }
+    }
+    initDataTable() {
+        const dtConfig = {
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: this.config.ajax.url,
+                type: this.config.ajax.method,
+                headers: this.config.ajax.headers,
+                data: (d) => this.getRequestData(d)
+            },
+            columns: this.getColumnsConfig(),
+            language: this.config.translations,
+            createdRow: (row, data) => this.handleRowCreation(row, data),
+            dom: this.getDomLayout(),
+            buttons: this.config.bootstrapConfig.responsive ? [
+                {
+                    extend: 'colvis',
+                    text: '<i class="bi bi-columns-gap"></i> Columns',
+                    className: 'btn btn-secondary'
+                }
+            ] : [],
+            responsive: this.config.bootstrapConfig.responsive,
+            initComplete: () => this.initHeaderFilters()
+        };
+
+        if(this.config.bootstrapConfig.paginationType === 'simple') {
+            dtConfig.pagingType = 'simple';
+        }
+
+        this.dataTable = $(this.config.tableId).DataTable(dtConfig);
+    }
+
+    getDomLayout() {
+        return `<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>
+                <'row'<'col-sm-12'tr>>
+                <'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>`;
+    }
+
+    initHeaderFilters() {
+        const self = this;
+        this.dataTable.columns().every(function(index) {
+            const column = this;
+            const colConfig = self.config.columns[index];
+            const header = $(column.header());
+            
+            if (colConfig.data && colConfig.filter?.enabled !== false) {
+                header.html(`
+                    <div class="d-flex flex-column gap-1">
+                        <span>${colConfig.title}</span>
+                        <div class="column-filter">
+                            ${self.createColumnFilterInput(colConfig)}
+                        </div>
+                    </div>
+                `);
+            }
+        });
+    }
+
+    createColumnFilterInput(colConfig) {
+        const filterType = this.detectFilterType(colConfig);
+        if (filterType === 'none') return '';
+        
+        const operators = this.getOperatorsForType(filterType);
+        let filterHtml = '';
+        
+        if(operators.length > 1) {
+            filterHtml += `
+                <select class="form-select form-select-sm filter-operator" 
+                        data-column="${colConfig.data}">
+                    ${operators.map(op => 
+                        `<option value="${op}">${this.formatOperator(op)}</option>`).join('')}
+                </select>
+            `;
+        }
+
+        switch(filterType) {
+            case 'number':
+                filterHtml += `
+                    <input type="number" class="form-control form-control-sm column-filter" 
+                           data-column="${colConfig.data}" placeholder="Value">`;
+                break;
+            case 'string':
+                filterHtml += `
+                    <input type="text" class="form-control form-control-sm column-filter" 
+                           data-column="${colConfig.data}" placeholder="Search...">`;
+                break;
+            case 'date':
+                filterHtml += `
+                    <div class="input-group input-group-sm">
+                        <input type="date" class="form-control column-filter" 
+                               data-column="${colConfig.data}" placeholder="From">
+                        <input type="date" class="form-control column-filter" 
+                               data-column="${colConfig.data}" placeholder="To">
+                    </div>`;
+                break;
+        }
+        
+        return filterHtml;
+    }
+
+    formatOperator(op) {
+        const operatorMap = {
+            '=': '= Equal',
+            '≠': '≠ Not Equal',
+            '>': '> Greater Than',
+            '<': '< Less Than',
+            '≥': '≥ Greater or Equal',
+            '≤': '≤ Less or Equal',
+            'contains': 'Contains',
+            'not contains': 'Not Contains',
+            'starts': 'Starts With',
+            'ends': 'Ends With'
+        };
+        return operatorMap[op] || op;
+    }
+
+    bindEvents() {
+        // Filter events
+        this.config.filters.forEach(filter => {
+            $(`#${filter.id}`).on('change', () => this.dataTable.ajax.reload());
+        });
+
+        // Column filter events
+        $(document).on('change keyup', '.column-filter, .filter-operator', 
+            () => this.dataTable.ajax.reload());
+
+        // Reset filters
+        $('.reset-filters').click(() => this.resetFilters());
+
+        // Columns visibility
+        $('.toggle-columns').click(() => this.showColumnsModal());
+        
+        // Modal columns toggle
+        $(document).on('change', '.column-toggle', (e) => {
+            const column = this.dataTable.column($(e.target).data('column'));
+            column.visible(!column.visible());
+        });
+    }
+
+    showColumnsModal() {
+        const columnsList = this.config.columns
+            .filter(col => col.data)
+            .map(col => `
+                <div class="form-check">
+                    <input class="form-check-input column-toggle" 
+                           type="checkbox" 
+                           data-column="${col.data}"
+                           ${this.dataTable.column(col.data).visible() ? 'checked' : ''}>
+                    <label class="form-check-label">${col.title}</label>
+                </div>
+            `).join('');
+        
+        $('#columnsList').html(columnsList);
+        new bootstrap.Modal('#columnsModal').show();
+    }
+
+    resetFilters() {
+        this.config.filters.forEach(filter => {
+            const el = $(`#${filter.id}`);
+            if (filter.type === 'multiselect') {
+                el.val([]).selectpicker('refresh');
+            } else {
+                el.val('');
+            }
+        });
+
+        $(`.column-filter`).val('');
+        $(`.filter-operator`).val('=');
+        this.dataTable.ajax.reload();
+    }
+
+    renderColumn(col, data, type, row) {
+        if (typeof col.render === 'function') return col.render(data, type, row);
+        
+        switch(col.type) {
+            case 'link':
+                return `<a href="${col.href(row)}" class="link-primary text-decoration-none">
+                          ${data}
+                        </a>`;
+            case 'badge':
+                const color = typeof col.color === 'function' ? col.color(data) : col.color;
+                return `<span class="badge bg-${color} rounded-pill">${data}</span>`;
+            case 'actions':
+                return this.renderActions(row);
+            case 'icon':
+                return `<i class="bi bi-${data}"></i>`;
+            default:
+                return data;
+        }
+    }
+
+    renderActions(row) {
+        return `
+            <div class="dropdown">
+                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
+                        type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                    Actions
+                </button>
+                <ul class="dropdown-menu shadow">
+                    ${this.config.actions.map(action => `
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" 
+                               href="${action.url(row)}"
+                               ${action.id ? `id="${action.id}"` : ''}>
+                                ${action.icon ? `<i class="bi bi-${action.icon}"></i>` : ''}
+                                <span>${action.label}</span>
+                            </a>
+                        </li>
+                    `).join('')}
+                </ul>
+            </div>`;
+    }
+
+    // ... rest of the class methods remain similar ...
+}
+// Example Initialization
+const invoicesTable = new GenericDataTable({
+    ajax: {
+        url: 'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices-summary'
+    },
+    filters:[],
+    filters1: [
+        {
+            id: 'customerFilter',
+            type: 'multiselect',
+            label: 'Customers',
+            options: [
+                { value: 1, label: 'Customer 1' },
+                { value: 2, label: 'Customer 2' }
+            ]
+        },
+        {
+            id: 'customerFilter2',
+            type: 'multiselect',
+            label: 'Customers2',
+            options: [
+                { value: 1, label: 'Customer 1' },
+                { value: 2, label: 'Customer 2' }
+            ]
+        },
+
+        {
+            id: 'fromDate',
+            type: 'date',
+            label: 'From Date'
+        }
+    ],
+    columnFiltersShow:false,
+     columns: [
+        { 
+            data: 'invoice_number',
+            title: 'Invoice #',
+            type: 'link',
+            href: (row) => `invoice.html?id=${row.invoice_number}`
+        },
+        { 
+            data: 'customer',
+            title: 'Customer',
+            type: 'link',
+            href: (row) => `customer.html?id=${row.customer_id}`
+        },
+        { 
+            data: 'date', 
+            title: 'Date',
+            render: (data) => data && data !== '0000-00-00' ? 
+                new Date(data).toLocaleDateString() : 'N/A'
+        },
+        { 
+            data: 'total', 
+            title: 'Total',
+            render: $.fn.dataTable.render.number(',', '.', 2, '$')
+        },
+        { 
+            data: 'status', 
+            title: 'Status',
+            render: (data) => {
+                //const statusMap = { paid: 'success', pending: 'warning', overdue: 'danger' };
+                //return `<span class="badge bg-${statusMap[data] || 'secondary'}">${data}</span>`;
+                return data
+            }
+        },
+        { 
+            data: null,
+            title: 'Actions',
+            type: 'actions',
+            orderable: false
+        }
+    ],
+    actions: [
+        {
+            label: 'Edit',
+            url: (row) => `?home=new&&id=${row.id}`,
+            icon: 'fas fa-edit',
+            id:"editBtn"
+        },
+        {
+            label: 'View',
+            url: (row) => `?home=view&&id=${row.id}`,
+            icon: 'fas fa-eye'
+        }
+    ]
+});
+</script>
+<!-- <script src="/wordpress1/reetech-group-assest/javascript/lib/modal-iframe.js"></script>
+<script src="/wordpress1/reetech-group-assest/javascript/list.js"></script>
+<script src="/wordpress1/reetech-group-assest/javascript/lib/Ajex.js"></script>
+<script src="/wordpress1/reetech-group-assest/javascript/common/common.js"></script> -->
+
+
+</body>
+</html>

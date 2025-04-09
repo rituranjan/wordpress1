@@ -1,0 +1,66 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name":  "easy-pricing-tables/button",
+	"title": "Pricing Table Button",
+	"category": "widgets",
+	"textdomain": "easy-pricing-tables",
+	"parent": [ "easy-pricing-tables/column" ],
+	"editorScript": "fca-ept4-button-js",
+	
+	"attributes": {
+		"buttonID": {
+			"type": "string",
+			"default": ""
+		},
+		"content": {
+			"type": "string",
+			"default": "Add to Cart"
+		},
+		"shortcode": {
+			"type": "string",
+			"default": ""
+		},
+		"url": {
+			"type": "string",
+			"default": "#"
+		},
+		"urlTargetBlank": {
+			"type": "boolean",
+			"default": false
+		},
+		"width": {
+			"type": "integer",
+			"default": 100
+		},
+		"textColor": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"backgroundHoverColor": {
+			"type": "string",
+			"default": ""
+		},
+		"textHoverColor": {
+			"type": "string",
+			"default": ""
+		},
+		"borderColor": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"renaming": false,
+		"typography": {
+			"fontSize": true
+		},
+		"spacing": {     
+			"padding": true
+		}
+	}
+}

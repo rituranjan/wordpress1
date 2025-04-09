@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name":  "easy-pricing-tables/column",
+	"title": "Table Column",
+	"category": "widgets",
+	"textdomain": "easy-pricing-tables",
+	"parent": [ "easy-pricing-tables/table" ],
+	"usesContext": ["easy-pricing-tables/table/templateID"],
+		
+	"attributes": {
+		"innerBlocksTemplate": {
+			"type": "array"						
+		},
+		"backgroundColor": {
+			"type": "string",
+			"default": ""
+		},
+		"borderColor": {
+			"type": "string",
+			"default": ""
+		},
+		"columnPopular": {
+			"type": "boolean",
+			"default": false
+		},
+		"showImage": {
+			"type": "boolean",
+			"default": false
+		},
+		"showButton": {
+			"type": "boolean",
+			"default": true
+		}
+	},
+	"editorScript": "fca-ept4-column-js",
+	"style": "fca-ept4-column-css",
+	"supports": {
+		"renaming": false,
+		"inserter": false,
+		"spacing": {     
+			"padding": true
+		}
+	}
+}

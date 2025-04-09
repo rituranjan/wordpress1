@@ -1,0 +1,2079 @@
+.icn ol,
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+
+.icn ol,
+.icn ul {
+  list-style: none;
+}
+
+.intuitiveIcon,
+.sociableLink__figure:before,
+.sociableLink__figure:after,
+.sociableIcon,
+.respBrowser,
+.responsiveIcon,
+.dynamicIcon,
+.clockFaceContainer__clockCircle,
+.fastClockWrap__clock,
+.fastIcon,
+.learnabilityGear__gearCircle,
+.learnabilityGear__gear,
+.learnabilityIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/*____________________________________________________________
+#### Learnability Icon
+____________________________________________________________*/
+.learnabilityIcon {
+  width: 91px;
+  height: 71px;
+}
+
+/*____________________________________________________________
+##### Learnability Editor
+____________________________________________________________*/
+.learnabilityEditor {
+  position: absolute;
+  right: 0;
+  width: 41px;
+  height: 100%;
+}
+
+/*____________________________________________________________
+###### Learnability Editor Panel
+____________________________________________________________*/
+.learnabilityEditor__panel {
+  position: relative;
+  width: 100%;
+  height: 5px;
+  background-color: #2a333c;
+}
+
+.learnabilityEditor__buttonsWrap {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  height: 2px;
+}
+
+.learnabilityEditor__button {
+  float: left;
+  margin-right: 1px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+}
+
+/*____________________________________________________________
+###### Learnability Editor Code
+____________________________________________________________*/
+.learnabilityEditor__codeWrap {
+  position: relative;
+  padding: 6px;
+  width: 100%;
+  height: calc(100% - 5px);
+  background-color: #ee6648;
+}
+
+.learnabilityEditor__scrollBox {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.learnabilityEditor__codeList {
+  position: absolute;
+  width: 100%;
+  animation: learnabilityScrollCode 0.9s linear infinite;
+}
+
+.learnabilityEditor__codeItem {
+  position: relative;
+  margin-bottom: 2px;
+  width: 100%;
+  height: 7px;
+}
+
+.learnabilityEditor__codeLine {
+  position: absolute;
+  height: 1px;
+  overflow: hidden;
+}
+.learnabilityEditor__codeLine:nth-child(1) {
+  top: 0px;
+  left: 0px;
+  width: 7px;
+}
+.learnabilityEditor__codeLine:nth-child(2) {
+  top: 0px;
+  left: 9px;
+  width: 11px;
+}
+.learnabilityEditor__codeLine:nth-child(3) {
+  top: 3px;
+  left: 4px;
+  width: 21px;
+}
+.learnabilityEditor__codeLine:nth-child(4) {
+  bottom: 0px;
+  right: 7px;
+  width: 14px;
+}
+.learnabilityEditor__codeLine:nth-child(5) {
+  bottom: 0px;
+  right: 0px;
+  width: 5px;
+}
+.learnabilityEditor__codeLine:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.learnabilityEditor__codeLine:nth-child(2):after {
+  animation-delay: 0.2s;
+}
+.learnabilityEditor__codeLine:nth-child(3):after {
+  animation-delay: 0.4s;
+}
+.learnabilityEditor__codeLine:nth-child(4):after {
+  animation-delay: 0.6s;
+}
+.learnabilityEditor__codeLine:nth-child(5):after {
+  animation-delay: 0.7s;
+}
+.learnabilityEditor__codeLine:nth-child(3):after,
+.learnabilityEditor__codeLine:nth-child(4):after,
+.learnabilityEditor__codeLine:nth-child(5):after {
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+##### Learnability Keyboard
+____________________________________________________________*/
+.learnabilityKeyboard {
+  position: absolute;
+  bottom: 0;
+  padding: 2px;
+  width: 66px;
+  height: 26px;
+  background-color: #e6e5e5;
+}
+
+.learnabilityKeyboard__line {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 3.4px;
+  overflow: hidden;
+}
+.learnabilityKeyboard__line:last-child {
+  margin-bottom: 0;
+}
+.learnabilityKeyboard__line:nth-child(1)
+  .learnabilityKeyboard__button:nth-child(14) {
+  width: 4.5px;
+}
+.learnabilityKeyboard__line:nth-child(2)
+  .learnabilityKeyboard__button:nth-child(1) {
+  width: 4.5px;
+}
+.learnabilityKeyboard__line:nth-child(3)
+  .learnabilityKeyboard__button:nth-child(1) {
+  width: 6.3px;
+}
+.learnabilityKeyboard__line:nth-child(3)
+  .learnabilityKeyboard__button:nth-child(13) {
+  width: 6.3px;
+}
+.learnabilityKeyboard__line:nth-child(4)
+  .learnabilityKeyboard__button:nth-child(1) {
+  width: 8.5px;
+}
+.learnabilityKeyboard__line:nth-child(4)
+  .learnabilityKeyboard__button:nth-child(12) {
+  width: 8.5px;
+}
+.learnabilityKeyboard__line:nth-child(5)
+  .learnabilityKeyboard__button:nth-child(5) {
+  width: 22px;
+}
+.learnabilityKeyboard__line:nth-child(2)
+  .learnabilityKeyboard__button:nth-child(4) {
+  animation: keyboardClick 4s linear infinite 0.4s;
+}
+.learnabilityKeyboard__line:nth-child(3)
+  .learnabilityKeyboard__button:nth-child(10) {
+  animation: keyboardClick 4s linear infinite 0.8s;
+}
+.learnabilityKeyboard__line:nth-child(2)
+  .learnabilityKeyboard__button:nth-child(10) {
+  animation: keyboardClick 4s linear infinite 1.2s;
+}
+.learnabilityKeyboard__line:nth-child(5)
+  .learnabilityKeyboard__button:nth-child(5) {
+  animation: keyboardClick 4s linear infinite 1.6s;
+}
+.learnabilityKeyboard__line:nth-child(2)
+  .learnabilityKeyboard__button:nth-child(3) {
+  animation: keyboardClick 4s linear infinite 2s;
+}
+.learnabilityKeyboard__line:nth-child(1)
+  .learnabilityKeyboard__button:nth-child(11) {
+  animation: keyboardClick 4s linear infinite 2.4s;
+}
+.learnabilityKeyboard__line:nth-child(2)
+  .learnabilityKeyboard__button:nth-child(5) {
+  animation: keyboardClick 4s linear infinite 2.8s;
+}
+.learnabilityKeyboard__line:nth-child(4)
+  .learnabilityKeyboard__button:nth-child(12) {
+  animation: keyboardClick 4s linear infinite 3.2s;
+}
+.learnabilityKeyboard__line:nth-child(3)
+  .learnabilityKeyboard__button:nth-child(4) {
+  animation: keyboardClick 4s linear infinite 3.6s;
+}
+
+.learnabilityKeyboard__button {
+  position: relative;
+  margin-right: 1px;
+  float: left;
+  width: 3.4px;
+  height: 3.4px;
+  background-color: #fff;
+}
+.learnabilityKeyboard__button:last-child {
+  margin-right: 0;
+}
+
+/*____________________________________________________________
+##### Learnability Gear
+____________________________________________________________*/
+.learnabilityGear {
+  position: absolute;
+  top: 4px;
+  left: 5px;
+  width: 30px;
+  height: 26px;
+}
+.learnabilityGear:before,
+.learnabilityGear:after {
+  content: "";
+  position: absolute;
+  border: solid #2a333c;
+  width: 3px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.learnabilityGear:before {
+  border-width: 1px 0 1px 1px;
+}
+.learnabilityGear:after {
+  right: 0;
+  border-width: 1px 1px 1px 0;
+}
+
+.learnabilityGear__gear {
+  width: 30px;
+  height: 30px;
+}
+.learnabilityGear__gear svg {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  fill: none;
+  stroke: #37404a;
+  stroke-width: 24px;
+  animation: rotateRays 7s linear infinite;
+}
+.learnabilityGear__gear .teeth {
+  position: absolute;
+  top: 19.32%;
+  left: 19.32%;
+  transform: translate(-19.32%, -19.32%);
+}
+
+.learnabilityGear__gearCircle {
+  width: 17px;
+  height: 17px;
+  border: 4px solid #2a333c;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+/*____________________________________________________________
+#### Fast Icon
+____________________________________________________________*/
+.fastIcon {
+  width: 69px;
+  height: 69px;
+}
+
+/*____________________________________________________________
+##### Fast Browser
+____________________________________________________________*/
+.fastBrowser {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/*____________________________________________________________
+###### Fast Browser Panel
+____________________________________________________________*/
+.fastBrowser__panel {
+  position: relative;
+  padding: 3px 5px;
+  width: 100%;
+  height: 11px;
+  background-color: #2a333c;
+}
+
+.fastBrowser__buttonsWrap {
+  float: left;
+  margin-right: 5px;
+  width: 18px;
+  height: 4px;
+}
+
+.fastBrowser__button {
+  float: left;
+  margin-right: 3px;
+  width: 4px;
+  height: 4px;
+}
+.fastBrowser__button:last-child {
+  margin-right: 0;
+}
+
+.fastBrowser__input {
+  position: relative;
+  float: left;
+  width: calc(100% - 23px);
+  height: 4px;
+  background-color: #fff;
+}
+.fastBrowser__input:after {
+  content: "";
+  position: absolute;
+  right: 0;
+  width: 7px;
+  height: 100%;
+  background-color: #ee6648;
+}
+
+/*____________________________________________________________
+###### Fast Browser Page
+____________________________________________________________*/
+.fastBrowser__page {
+  position: relative;
+  padding: 5px;
+  width: 100%;
+  height: calc(100% - 11px);
+  border: 4px solid #e6e5e5;
+  background-color: #fff;
+}
+
+.fastBrowser__lineWrap {
+  width: 100%;
+  height: 100%;
+}
+
+.fastBrowser__line {
+  position: relative;
+  margin-bottom: 2px;
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+}
+.fastBrowser__line:first-child {
+  height: 20px;
+}
+.fastBrowser__line:last-child {
+  margin-bottom: 0;
+}
+.fastBrowser__line:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #ee6648;
+  animation: slide 3.5s ease infinite;
+}
+.fastBrowser__line:nth-child(2):after {
+  animation-delay: 0.1s;
+}
+.fastBrowser__line:nth-child(3):after {
+  animation-delay: 0.2s;
+}
+.fastBrowser__line:nth-child(4):after {
+  animation-delay: 0.3s;
+}
+.fastBrowser__line:nth-child(5):after {
+  animation-delay: 0.4s;
+}
+.fastBrowser__line:nth-child(6):after {
+  animation-delay: 0.45s;
+}
+
+/*____________________________________________________________
+##### Fast Clock Wrap
+____________________________________________________________*/
+.fastClockWrap {
+  position: absolute;
+  top: 30px;
+  right: -30px;
+  width: 68px;
+  height: 68px;
+}
+
+/*____________________________________________________________
+###### Fast Clock Gear
+____________________________________________________________*/
+.fastClockWrap__gear {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.fastClockWrap__gear svg {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  fill: none;
+  stroke: #37404a;
+  stroke-width: 24px;
+  animation: rotateRays 7s linear infinite;
+}
+.fastClockWrap__gear .teeth {
+  position: absolute;
+  top: 19.32%;
+  left: 19.32%;
+  transform: translate(-19.32%, -19.32%);
+}
+
+/*____________________________________________________________
+###### Fast Clock
+____________________________________________________________*/
+.fastClockWrap__clock {
+  width: 38px;
+  height: 38px;
+  overflow: hidden;
+  border: 4px solid #2a333c;
+  border-radius: 50%;
+}
+
+.clockFaceContainer {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+.clockFaceContainer svg {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  fill: none;
+  stroke: #2a333c;
+  stroke-width: 4px;
+  stroke-linecap: round;
+}
+.clockFaceContainer .teeth {
+  position: absolute;
+  top: 19.32%;
+  left: 19.32%;
+  transform: translate(-19.32%, -19.32%);
+}
+
+.clockFaceContainer__clockHand {
+  position: absolute;
+  top: calc(50% - 4px);
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1px;
+  height: 12px;
+  transform-origin: 50% 4px;
+  background-color: #2a333c;
+  animation: rotateRays 12s linear infinite;
+}
+
+.clockFaceContainer__clockCircle {
+  width: 5px;
+  height: 5px;
+  border: 1px solid #2a333c;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+#### Dynamic Icon
+____________________________________________________________*/
+.dynamicIcon {
+  width: 47px;
+  height: 68px;
+}
+
+/*____________________________________________________________
+##### Dynamic Browser
+____________________________________________________________*/
+.dynamicBrowser {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/*____________________________________________________________
+###### Dynamic Browser Panel
+____________________________________________________________*/
+.dynamicBrowser__panel {
+  width: 100%;
+  height: 5px;
+  background-color: #2a333c;
+}
+
+.dynamicBrowser__buttonsWrap {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  height: 2px;
+}
+
+.dynamicBrowser__button {
+  float: left;
+  margin-right: 1px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+}
+
+/*____________________________________________________________
+###### Dynamic Browser Header
+____________________________________________________________*/
+.dynamicBrowser__header {
+  position: relative;
+  padding: 4px;
+  width: 100%;
+  height: 24px;
+  background-color: #e6e5e5;
+}
+
+.dynamicBrowser__lineWrap {
+  position: relative;
+  padding-top: 2px;
+  margin-bottom: 3px;
+  width: 100%;
+  height: 5px;
+  background-color: #7dcbd8;
+}
+
+.dynamicBrowser__line {
+  position: relative;
+  float: left;
+  margin-left: 3px;
+  width: 6px;
+  height: 1px;
+  overflow: hidden;
+}
+.dynamicBrowser__line:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.dynamicBrowser__line:nth-child(2):after {
+  animation-delay: 0.2s;
+}
+.dynamicBrowser__line:nth-child(3):after {
+  animation-delay: 0.4s;
+}
+.dynamicBrowser__line:nth-child(4):after {
+  animation-delay: 0.6s;
+}
+
+.dynamicBrowser__title {
+  position: relative;
+  margin-bottom: 3px;
+  width: 100%;
+  height: 3px;
+  overflow: hidden;
+}
+.dynamicBrowser__title:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #ee6648;
+  animation: slide 3.5s ease infinite;
+  animation-delay: 0.2s;
+}
+
+.dynamicBrowser__subtitle {
+  position: relative;
+  margin: 0 auto;
+  width: 60%;
+  height: 2px;
+  overflow: hidden;
+}
+.dynamicBrowser__subtitle:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+  animation-delay: 0.2s;
+}
+
+/*____________________________________________________________
+###### Dynamic Browser Main
+____________________________________________________________*/
+.dynamicBrowser__main {
+  position: relative;
+  width: 100%;
+  height: 22px;
+  background-color: #7dcbd8;
+  animation: changeDay 10s linear infinite;
+}
+.dynamicBrowser__main .landscape {
+  position: absolute;
+  top: 0;
+  left: 7px;
+  transform: scale(0.8);
+  animation: none;
+}
+.dynamicBrowser__main .landscapePicture__bg {
+  width: 100%;
+  height: 100%;
+  background: #7dcbd8;
+  opacity: 1;
+  animation: changeDay 10s linear infinite;
+}
+
+/*____________________________________________________________
+###### Dynamic Browser Footer
+____________________________________________________________*/
+.dynamicBrowser__footer {
+  position: relative;
+  padding: 2px 4px;
+  width: 100%;
+  height: 17px;
+  background-color: #e6e5e5;
+}
+
+.dynamicBrowser__productList {
+  width: 100%;
+  height: 100%;
+}
+
+.dynamicBrowser__product {
+  position: relative;
+  float: left;
+  margin-right: 5%;
+  width: 30%;
+  height: 100%;
+}
+.dynamicBrowser__product:last-child {
+  margin-right: 0;
+}
+
+.dynamicBrowser__productImg {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 7px;
+  overflow: hidden;
+}
+.dynamicBrowser__productImg:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #ee6648;
+  animation: slide 3.5s ease infinite;
+}
+
+.dynamicBrowser__productLineWrap {
+  width: 100%;
+  height: 5px;
+}
+
+.dynamicBrowser__productLine {
+  position: relative;
+  float: left;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+}
+.dynamicBrowser__productLine:nth-child(3) {
+  width: 50%;
+}
+.dynamicBrowser__productLine:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.dynamicBrowser__productLine:nth-child(1):after {
+  animation-delay: 0.2s;
+}
+.dynamicBrowser__productLine:nth-child(2):after {
+  animation-delay: 0.4s;
+}
+.dynamicBrowser__productLine:nth-child(3):after {
+  animation-delay: 0.6s;
+}
+
+/*____________________________________________________________
+##### Dynamic Dialog
+____________________________________________________________*/
+.dynamicDialog {
+  position: absolute;
+  padding: 2px;
+  animation: levitation 5s linear infinite;
+}
+.dynamicDialog.dynamicDialog_left {
+  top: 18px;
+  left: -18px;
+  width: 14px;
+  background-color: #7dcbd8;
+}
+.dynamicDialog.dynamicDialog_left .dynamicDialog__line:last-child {
+  width: 50%;
+}
+.dynamicDialog.dynamicDialog_left .dynamicDialog__line:after {
+  background-color: #fff;
+}
+.dynamicDialog.dynamicDialog_right {
+  top: 16px;
+  right: -20px;
+  width: 18px;
+  animation-delay: 2s;
+}
+.dynamicDialog.dynamicDialog_right .dynamicDialog__line:first-child {
+  width: 50%;
+}
+
+.dynamicDialog__line {
+  position: relative;
+  float: left;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+}
+.dynamicDialog__line:last-child {
+  width: 50%;
+}
+.dynamicDialog__line:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.dynamicDialog__line:nth-child(2):after {
+  animation-delay: 0.2s;
+}
+.dynamicDialog__line:nth-child(3):after {
+  animation-delay: 0.4s;
+}
+.dynamicDialog__line:nth-child(4):after {
+  animation-delay: 0.6s;
+}
+
+/*____________________________________________________________
+##### Dynamic Dashed Frame
+____________________________________________________________*/
+.dynamicDashedFrame {
+  position: absolute;
+  top: 36px;
+  left: -13px;
+  width: 22px;
+  height: 18px;
+  border: 1px dashed #f7e0b5;
+  animation: levitation 5s linear infinite 2.5s;
+}
+
+/*____________________________________________________________
+##### Dynamic Chart
+____________________________________________________________*/
+.dynamicChart {
+  position: absolute;
+  padding: 2px;
+  top: 31px;
+  right: -13px;
+  width: 18px;
+  height: 12px;
+  background-color: #e6e5e5;
+  animation: levitation 5s linear infinite 1s;
+}
+
+.dynamicChart__line {
+  position: relative;
+  bottom: 0;
+  float: left;
+  margin-right: 1px;
+  width: 2px;
+  height: 100%;
+  overflow: hidden;
+}
+.dynamicChart__line:last-child {
+  margin-right: 0;
+}
+.dynamicChart__line:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 10%;
+  background-color: #a4b4ba;
+  animation: lineDiagram 2.5s ease infinite;
+}
+.dynamicChart__line:nth-child(1):after {
+  background-color: #2a333c;
+}
+.dynamicChart__line:nth-child(4):after {
+  background-color: #ee6648;
+}
+.dynamicChart__line:nth-child(1):after {
+  animation-delay: 0.8s;
+}
+.dynamicChart__line:nth-child(2):after {
+  animation-delay: 1.4s;
+}
+.dynamicChart__line:nth-child(3):after {
+  animation-delay: 0.4s;
+}
+.dynamicChart__line:nth-child(4):after {
+  animation-delay: 1.2s;
+}
+.dynamicChart__line:nth-child(5):after {
+  animation-delay: 1.6s;
+}
+
+/*____________________________________________________________
+#### Responsive Icon
+____________________________________________________________*/
+.responsiveIcon {
+  width: 69px;
+  height: 46px;
+}
+
+/*____________________________________________________________
+##### Responsive Imac
+____________________________________________________________*/
+.respImac {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/*____________________________________________________________
+###### Responsive Imac Display
+____________________________________________________________*/
+.respImac__display {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 3.2px solid #2a333c;
+  border-radius: 2px 2px 0 0;
+  background-color: #7dcbd8;
+}
+
+/*____________________________________________________________
+####### Responsive Browser
+____________________________________________________________*/
+.respBrowser {
+  width: 60%;
+  height: 70%;
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+######## Responsive Browser Panel
+____________________________________________________________*/
+.respBrowser__panel {
+  width: 100%;
+  height: 4px;
+  background-color: #2a333c;
+}
+
+.respBrowser__buttonsWrap {
+  position: absolute;
+  top: 0.5px;
+  left: 2px;
+  height: 2px;
+}
+
+.respBrowser__button {
+  float: left;
+  margin-right: 1px;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+}
+
+/*____________________________________________________________
+######## Responsive Browser Page
+____________________________________________________________*/
+.respBrowser__page {
+  padding: 1.5px 2.5px 2.5px;
+  width: 100%;
+  height: calc(100% - 4px);
+}
+
+.respBrowser__pageLayout {
+  width: 100%;
+  height: 100%;
+}
+
+/*____________________________________________________________
+######### Responsive Browser Nav
+____________________________________________________________*/
+.respBrowser__nav {
+  margin-bottom: 1px;
+  width: 60%;
+  height: 3px;
+  background-color: #ee6648;
+}
+
+/*____________________________________________________________
+######### Responsive Browser Banner
+____________________________________________________________*/
+.respBrowser__banner {
+  margin-bottom: 1px;
+  width: 100%;
+  height: 5px;
+  background-color: #7dcbd8;
+}
+
+/*____________________________________________________________
+######### Responsive Browser Product List
+____________________________________________________________*/
+.respBrowser__productList {
+  width: 100%;
+  height: 9px;
+}
+
+.respBrowser__product {
+  position: relative;
+  float: left;
+  margin-right: 5%;
+  width: 30%;
+  height: 100%;
+}
+.respBrowser__product:last-child {
+  margin-right: 0;
+}
+
+.respBrowser__productImg {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 5px;
+  overflow: hidden;
+}
+.respBrowser__productImg:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #c3cdd1;
+  animation: slide 3.5s ease infinite;
+}
+
+.respBrowser__productLineWrap {
+  width: 100%;
+  height: 3px;
+}
+
+.respBrowser__productLine {
+  position: relative;
+  float: left;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+}
+.respBrowser__productLine:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.respBrowser__productLine:nth-child(1):after {
+  animation-delay: 0.2s;
+}
+.respBrowser__productLine:nth-child(2):after {
+  animation-delay: 0.4s;
+}
+
+/*____________________________________________________________
+###### Responsive Imac Panel
+____________________________________________________________*/
+.respImac__panel {
+  position: absolute;
+  bottom: -6px;
+  width: 100%;
+  height: 6px;
+  border-radius: 0 0 2px 2px;
+  background-color: #c3cdd1;
+}
+
+/*____________________________________________________________
+###### Responsive Imac Stand
+____________________________________________________________*/
+.respImac__stand {
+  bottom: -17px;
+  height: 0;
+  width: 23px;
+  border-bottom: 11px solid #c3cdd1;
+  border-left: 5.5px solid transparent;
+  border-right: 5.5px solid transparent;
+}
+
+.respImac__standShadow {
+  position: absolute;
+  left: 3px;
+  width: 0;
+  height: 0;
+  border-top: 11px solid #a4b4ba;
+  border-left: 12px solid transparent;
+  transform: skew(26deg, 0deg);
+}
+
+.respImac__standBase {
+  top: 11px;
+  width: 36px;
+  height: 2px;
+  border-radius: 3px 3px 0 0;
+  background-color: #a4b4ba;
+}
+
+/*____________________________________________________________
+##### Responsive Ipad
+____________________________________________________________*/
+.respIpad {
+  position: absolute;
+  bottom: -19px;
+  left: -14px;
+  width: 29px;
+  height: 42px;
+}
+
+/*____________________________________________________________
+###### Responsive Ipad Display
+____________________________________________________________*/
+.respIpad__display {
+  position: relative;
+  padding: 2px 2px 2px 1px;
+  width: 100%;
+  height: 100%;
+  border: solid #2a333c;
+  border-width: 4px 2.5px;
+  border-radius: 2px;
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+####### Ipad Browser
+____________________________________________________________*/
+.ipadBrowser {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/*____________________________________________________________
+######## Ipad Browser Nav
+____________________________________________________________*/
+.ipadBrowser__nav {
+  margin-bottom: 1px;
+  width: 60%;
+  height: 3px;
+  background-color: #ee6648;
+}
+
+/*____________________________________________________________
+######## Ipad Browser Banner
+____________________________________________________________*/
+.ipadBrowser__banner {
+  margin-bottom: 1px;
+  width: 100%;
+  height: 5px;
+  background-color: #7dcbd8;
+}
+
+/*____________________________________________________________
+######## Responsive Ipad Product List
+____________________________________________________________*/
+.ipadBrowser__productList {
+  width: 100%;
+  height: calc(100% - 10px);
+}
+
+.ipadBrowser__product {
+  position: relative;
+  margin-bottom: 2px;
+  width: 100%;
+  height: 5px;
+}
+.ipadBrowser__product:last-child {
+  margin-bottom: 0;
+}
+
+.ipadBrowser__productImg {
+  float: left;
+  position: relative;
+  margin-right: 2px;
+  width: 5px;
+  height: 5px;
+  overflow: hidden;
+}
+.ipadBrowser__productImg:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #c3cdd1;
+  animation: slide 3.5s ease infinite;
+}
+
+.ipadBrowser__productLineWrap {
+  float: left;
+  width: calc(100% - 7px);
+  height: 5px;
+}
+
+.ipadBrowser__productLine {
+  position: relative;
+  float: left;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+}
+.ipadBrowser__productLine:nth-child(3) {
+  margin-bottom: 0;
+  width: 50%;
+}
+.ipadBrowser__productLine:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.ipadBrowser__productLine:nth-child(1):after {
+  animation-delay: 0.2s;
+}
+.ipadBrowser__productLine:nth-child(2):after {
+  animation-delay: 0.4s;
+}
+.ipadBrowser__productLine:nth-child(3):after {
+  animation-delay: 0.5s;
+}
+
+/*____________________________________________________________
+###### Responsive Ipad Camera
+____________________________________________________________*/
+.respIpad__camera,
+.respIphone__camera,
+.respIpad__button,
+.respIphone__button {
+  position: absolute;
+  height: 2px;
+  background-color: #c3cdd1;
+}
+
+.respIpad__camera,
+.respIphone__camera {
+  top: 1px;
+  width: 2px;
+  border-radius: 50%;
+}
+
+.respIpad__camera {
+  left: 13.5px;
+}
+
+/*____________________________________________________________
+###### Responsive Ipad Button
+____________________________________________________________*/
+.respIpad__button,
+.respIphone__button {
+  bottom: 1px;
+  border-radius: 1px;
+}
+
+.respIpad__button {
+  left: 10.5px;
+  width: 8px;
+}
+
+/*____________________________________________________________
+##### Responsive Iphone
+____________________________________________________________*/
+.respIphone {
+  position: absolute;
+  bottom: -19px;
+  right: -6px;
+  width: 17px;
+  height: 31px;
+}
+
+/*____________________________________________________________
+###### Responsive Iphone Display
+____________________________________________________________*/
+.respIphone__display {
+  position: relative;
+  padding: 1px;
+  width: 100%;
+  height: 100%;
+  border: solid #2a333c;
+  border-width: 4px 2px;
+  border-radius: 2px;
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+####### Iphone Browser
+____________________________________________________________*/
+.iphoneBrowser {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/*____________________________________________________________
+######## Iphone Browser Nav
+____________________________________________________________*/
+.iphoneBrowser__nav {
+  margin-bottom: 1px;
+  width: 100%;
+  height: 3px;
+  background-color: #ee6648;
+}
+
+/*____________________________________________________________
+######## Responsive Iphone Product List
+____________________________________________________________*/
+.iphoneBrowser__productList {
+  width: 100%;
+  height: calc(100% - 7px);
+}
+
+.iphoneBrowser__product {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 8px;
+}
+.iphoneBrowser__product:last-child {
+  margin-bottom: 0;
+}
+
+.iphoneBrowser__productImg {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+}
+.iphoneBrowser__productImg:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #c3cdd1;
+  animation: slide 3.5s ease infinite;
+}
+
+.iphoneBrowser__productLineWrap {
+  width: 100%;
+  height: 3px;
+}
+
+.iphoneBrowser__productLine {
+  position: relative;
+  float: left;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+}
+.iphoneBrowser__productLine:nth-child(2) {
+  margin-bottom: 0;
+}
+.iphoneBrowser__productLine:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.iphoneBrowser__productLine:nth-child(1):after {
+  animation-delay: 0.2s;
+}
+.iphoneBrowser__productLine:nth-child(2):after {
+  animation-delay: 0.4s;
+}
+
+/*____________________________________________________________
+###### Responsive Iphone Camera
+____________________________________________________________*/
+.respIphone__camera {
+  left: 7.5px;
+}
+
+/*____________________________________________________________
+###### Responsive Iphone Button
+____________________________________________________________*/
+.respIphone__button {
+  left: 5.5px;
+  width: 6px;
+}
+
+/*____________________________________________________________
+#### Sociable Icon
+____________________________________________________________*/
+.sociableIcon {
+  width: 50px;
+  height: 32px;
+}
+
+/*____________________________________________________________
+##### Sociable Link
+____________________________________________________________*/
+.sociableLink {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: dashed #2a333c;
+  animation: levitation 5s linear infinite;
+}
+.sociableLink.sociableLink_posLC {
+  top: 50%;
+  left: -10px;
+  border-width: 1px 0 0 0;
+  animation-delay: 0s;
+}
+.sociableLink.sociableLink_posLC .sociableLink__figure {
+  top: -7px;
+  left: -12px;
+}
+.sociableLink.sociableLink_posLT {
+  top: -10px;
+  left: -1px;
+  border-width: 1px 1px 0 0;
+  animation-delay: 0.8s;
+}
+.sociableLink.sociableLink_posLT .sociableLink__figure {
+  top: -7px;
+  left: -12px;
+}
+.sociableLink.sociableLink_posCT {
+  top: -10px;
+  left: 50%;
+  border-width: 0 0 0 1px;
+  animation-delay: 1.5s;
+}
+.sociableLink.sociableLink_posCT .sociableLink__figure {
+  top: -12px;
+  left: -7px;
+}
+.sociableLink.sociableLink_posRT {
+  top: -10px;
+  right: -1px;
+  border-width: 1px 0 0 1px;
+  animation-delay: 2.2s;
+}
+.sociableLink.sociableLink_posRT .sociableLink__figure {
+  top: -7px;
+  right: -12px;
+}
+.sociableLink.sociableLink_posRC {
+  top: 50%;
+  right: -10px;
+  border-width: 1px 0 0 0;
+  animation-delay: 2.9s;
+}
+.sociableLink.sociableLink_posRC .sociableLink__figure {
+  top: -7px;
+  right: -12px;
+}
+.sociableLink:nth-child(2) .sociableLink__figure,
+.sociableLink:nth-child(4) .sociableLink__figure {
+  border-radius: 50%;
+  background-color: #ee6648;
+}
+.sociableLink:nth-child(2) .sociableLink__figure:before,
+.sociableLink:nth-child(4) .sociableLink__figure:before {
+  border-radius: 50%;
+}
+
+.sociableLink__figure {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background-color: #c3cdd1;
+}
+.sociableLink__figure.sociableLink__figure_mail:after {
+  content: "@";
+}
+.sociableLink__figure.sociableLink__figure_money:after {
+  content: "$";
+}
+.sociableLink__figure.sociableLink__figure_tag:after {
+  content: "#";
+}
+.sociableLink__figure.sociableLink__figure_percent:after {
+  content: "%";
+}
+.sociableLink__figure.sociableLink__figure_and:after {
+  content: "&";
+}
+.sociableLink__figure:after {
+  margin-top: 0.5px;
+}
+.sociableLink__figure:before,
+.sociableLink__figure:after {
+  font-size: 9px;
+}
+.sociableLink__figure:before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border: 1px solid #2a333c;
+}
+
+/*____________________________________________________________
+##### Sociable Display
+____________________________________________________________*/
+.sociableDisplay {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 3.2px solid #2a333c;
+  border-radius: 1px;
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+###### Sociable Panel
+____________________________________________________________*/
+.sociableDisplay__panel {
+  position: absolute;
+  top: 2.2px;
+  width: 9px;
+}
+.sociableDisplay__panel.sociableDisplay_leftSide {
+  left: 1.8px;
+}
+.sociableDisplay__panel.sociableDisplay_leftSide
+  .sociableDisplay__line:nth-child(1) {
+  margin-top: 6px;
+}
+.sociableDisplay__panel.sociableDisplay_leftSide:before {
+  content: "";
+  position: absolute;
+  margin-bottom: 2px;
+  width: 100%;
+  height: 4px;
+  background-color: #ee6648;
+}
+.sociableDisplay__panel.sociableDisplay_rightSide {
+  right: 1.8px;
+}
+.sociableDisplay__panel.sociableDisplay_rightSide
+  .sociableDisplay__line:nth-child(1) {
+  width: 50%;
+}
+
+.sociableDisplay__line {
+  position: relative;
+  margin-bottom: 1px;
+  width: 100%;
+  height: 1px;
+  overflow: hidden;
+}
+.sociableDisplay__line:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.sociableDisplay__line:nth-child(6) {
+  width: 50%;
+}
+.sociableDisplay__line:nth-child(2):after {
+  animation-delay: 0.2s;
+}
+.sociableDisplay__line:nth-child(3):after {
+  animation-delay: 0.4s;
+}
+.sociableDisplay__line:nth-child(4):after {
+  animation-delay: 0.6s;
+}
+.sociableDisplay__line:nth-child(5):after {
+  animation-delay: 0.8s;
+}
+.sociableDisplay__line:nth-child(6):after {
+  animation-delay: 1s;
+}
+
+/*____________________________________________________________
+###### Sociable Avatar
+____________________________________________________________*/
+.sociableDisplay__avatar {
+  top: 2.2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #7dcbd8;
+  background-image: url("https://i.pinimg.com/originals/05/d9/93/05d99321de948f7f4c24164eec708a15.png");
+  background-repeat: no-repeat;
+  background-position: center 2px;
+  background-size: contain;
+}
+
+/*____________________________________________________________
+###### Sociable Buttons Wrap
+____________________________________________________________*/
+.sociableDisplay__buttonsWrap {
+  bottom: 2.2px;
+  width: 16px;
+  height: 2px;
+}
+
+.sociableDisplay__button {
+  float: left;
+  width: 7px;
+  height: 2px;
+}
+.sociableDisplay__button:nth-child(1) {
+  margin-right: 2px;
+  background-color: #2a333c;
+}
+.sociableDisplay__button:nth-child(2) {
+  background-color: #ee6648;
+}
+
+/*____________________________________________________________
+##### Sociable Keyboard
+____________________________________________________________*/
+.sociableKeyboard {
+  position: relative;
+  margin-left: -8%;
+  width: calc(100% + 16%);
+  height: 10%;
+  border-radius: 0 0 3px 3px;
+  background-color: #c3cdd1;
+  overflow: hidden;
+}
+
+/*____________________________________________________________
+#### Intuitive Icon
+____________________________________________________________*/
+.intuitiveIcon {
+  width: 50px;
+  height: 59px;
+}
+
+/*____________________________________________________________
+##### Intuitive Rays
+____________________________________________________________*/
+.intuitiveRays {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  width: 110px;
+  height: 110px;
+}
+.intuitiveRays svg {
+  position: absolute;
+  max-width: 100%;
+  max-height: 100%;
+  fill: none;
+  stroke: #f7e0b5;
+  stroke-width: 5px;
+  stroke-linecap: round;
+  animation: rotateRays 3s linear infinite;
+}
+.intuitiveRays .teeth {
+  position: absolute;
+  top: 19.32%;
+  left: 19.32%;
+  transform: translate(-19.32%, -19.32%);
+}
+
+/*____________________________________________________________
+##### Intuitive Lamp
+____________________________________________________________*/
+.intuitiveLightBulb {
+  position: absolute;
+  width: 50px;
+}
+
+.intuitiveLightBulb__silhouette {
+  fill: #f7e0b5;
+}
+
+/*____________________________________________________________
+##### Intuitive Lamp Circle
+____________________________________________________________*/
+.intuitiveLightBulbCircle {
+  top: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+/*____________________________________________________________
+##### Intuitive Brain
+____________________________________________________________*/
+.intuitiveBrain {
+  position: absolute;
+  top: 9px;
+  left: 9px;
+  width: 34px;
+  height: 34px;
+  opacity: 0.9;
+  background-image: url("https://i.pinimg.com/originals/56/68/37/566837724bf672f1f538df597d55604a.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/*____________________________________________________________
+##### Intuitive Play
+____________________________________________________________*/
+.intuitivePlay {
+  position: absolute;
+  top: 35px;
+  left: -20px;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+  animation: levitation 5s linear infinite;
+}
+.intuitivePlay path {
+  fill: #f7e0b5;
+}
+
+/*____________________________________________________________
+##### Intuitive Figures
+____________________________________________________________*/
+.intuitiveBubble {
+  position: absolute;
+  border-radius: 50%;
+  animation: levitation 5s linear infinite;
+}
+
+.intuitiveBubble_sm {
+  top: 50px;
+  left: 3px;
+  width: 7px;
+  height: 7px;
+  background-color: #c3cdd1;
+  animation-delay: 1.6s;
+}
+
+.intuitiveBubble_lg {
+  top: -12px;
+  left: 12px;
+  width: 13px;
+  height: 13px;
+  background-color: #7dcbd8;
+  opacity: 0.8;
+  animation-delay: 2s;
+}
+
+.intuitiveRectangle {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 20px;
+  height: 12px;
+  border: 3px solid #2a333c;
+  animation: levitation 5s linear infinite 0.5s;
+}
+
+/*____________________________________________________________
+##### Intuitive Dialog
+____________________________________________________________*/
+.intuitiveDialog {
+  position: absolute;
+  top: 2px;
+  left: -15px;
+  width: 25px;
+  height: 20px;
+  animation: levitation 5s linear infinite 0.8s;
+}
+
+.intuitiveDialog__cloud {
+  position: absolute;
+  width: 25px;
+  height: 15px;
+  background-color: #c3cdd1;
+  opacity: 0.8;
+}
+.intuitiveDialog__cloud:before {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 5px;
+  width: 0;
+  height: 0;
+  border-top: 5px solid #c3cdd1;
+  border-right: 5px solid transparent;
+}
+
+.intuitiveDialog__lineWrap {
+  position: absolute;
+  top: 4px;
+  right: 7px;
+  width: 23px;
+  height: 6px;
+}
+
+.intuitiveDialog__line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  overflow: hidden;
+}
+.intuitiveDialog__line:nth-child(2) {
+  bottom: 0;
+  right: 0px;
+  width: 15px;
+}
+.intuitiveDialog__line:after {
+  content: "";
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: #2a333c;
+  animation: slide 3.5s ease infinite;
+}
+.intuitiveDialog__line:nth-child(2):after {
+  animation-delay: 0.3s;
+}
+
+/*____________________________________________________________
+##### Intuitive Landscape
+____________________________________________________________*/
+.landscape {
+  position: absolute;
+  top: 35px;
+  right: -26px;
+  width: 35px;
+  height: 25px;
+  animation: levitation 5s linear infinite 1.4s;
+}
+
+.landscapeShadow {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 22px;
+  background-color: #2a333c;
+}
+
+.landscapePicture {
+  position: relative;
+  width: 32px;
+  height: 22px;
+  overflow: hidden;
+}
+
+.landscapePicture__bg {
+  width: 100%;
+  height: 100%;
+  background-color: #7dcbd8;
+  opacity: 0.8;
+  animation: changeDay 10s linear infinite;
+}
+
+.landscapePicture__mountainsWrap {
+  position: absolute;
+  bottom: 3px;
+  right: 3px;
+  width: 25px;
+  height: 13px;
+}
+
+.landscapePicture__mountain {
+  position: absolute;
+  bottom: 0;
+}
+.landscapePicture__mountain:nth-child(1) {
+  border-left: 6.5px solid transparent;
+  border-right: 6.5px solid transparent;
+  border-bottom: 8px solid #fff;
+}
+.landscapePicture__mountain:nth-child(2) {
+  right: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 13px solid #fff;
+}
+
+.landscapePicture__dayWrap {
+  position: absolute;
+  top: 7px;
+  left: 1px;
+  width: 30px;
+  height: 30px;
+  animation: rotateRays 10s linear infinite;
+}
+
+.landscapePicture__dayWrap,
+.landscapePicture__sun,
+.landscapePicture__moon {
+  border-radius: 50%;
+}
+
+.landscapePicture__sun,
+.landscapePicture__moon {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.landscapePicture__sun {
+  top: -5px;
+  width: 5px;
+  height: 5px;
+  background-color: #fff;
+}
+
+.landscapePicture__moon {
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  box-shadow: 2px 2px 0 0 #fec712;
+  transform: rotate(120deg);
+}
+
+/*____________________________________________________________
+##### Intuitive Neck
+____________________________________________________________*/
+.intuitiveNeck {
+  bottom: -3px;
+  width: 22px;
+  height: 4px;
+  background-color: #f7e0b5;
+}
+
+/*____________________________________________________________
+##### Intuitive Base Housing
+____________________________________________________________*/
+.intuitiveBaseHousing {
+  bottom: -17px;
+  width: 22px;
+  height: 14px;
+  border: solid #2a333c;
+  border-width: 0 2px 0 2px;
+}
+
+.intuitiveBaseHousing__line {
+  position: absolute;
+  left: -5px;
+  width: 28px;
+  height: 2px;
+  background-color: #2a333c;
+}
+.intuitiveBaseHousing__line:nth-child(2) {
+  top: 4px;
+}
+.intuitiveBaseHousing__line:nth-child(3) {
+  top: 8px;
+}
+.intuitiveBaseHousing__line:nth-child(4) {
+  top: 12px;
+}
+
+.intuitiveBaseHousing__contact {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 2px;
+  background-color: #2a333c;
+}
+
+/*____________________________________________________________
+# Animation Pack
+____________________________________________________________*/
+@keyframes slide {
+  0% {
+    left: -100%;
+  }
+  22% {
+    left: 0%;
+  }
+  78% {
+    left: 0%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+@keyframes rotateRays {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes changeDay {
+  0% {
+    background-color: #7dcbd8;
+  }
+  25% {
+    background-color: #2a333c;
+  }
+  60% {
+    background-color: #2a333c;
+  }
+  75% {
+    background-color: #7dcbd8;
+  }
+  100% {
+    background-color: #7dcbd8;
+  }
+}
+@keyframes lineDiagram {
+  0% {
+    height: 10%;
+  }
+  50% {
+    height: 100%;
+  }
+  100% {
+    left: 10%;
+  }
+}
+@keyframes levitation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+/*____________________________________________________________
+## Animation Icons
+____________________________________________________________*/
+@keyframes learnabilityScrollCode {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -18px;
+  }
+}
+@keyframes keyboardClick {
+  0% {
+    background-color: #fff;
+  }
+  95% {
+    background-color: #fff;
+  }
+  100% {
+    background-color: #000;
+  }
+}
+/*____________________________________________________________
+# Social links
+____________________________________________________________*/
+.social {
+  position: fixed;
+  bottom: 0;
+  left: 30px;
+}
+
+.socialList {
+  list-style: none;
+}
+.socialList:after {
+  content: "";
+  display: block;
+  margin: 0 auto;
+  width: 1px;
+  height: 40px;
+  background: #f7e0b5;
+}
+
+.socialList__item {
+  margin-bottom: 10px;
+  width: 20px;
+  height: 20px;
+  transition: transform 0.2s;
+}
+.socialList__item:hover {
+  transform: translateY(-3px);
+}
+.socialList__item:hover .socialList__icon {
+  stroke: #7dcbd8;
+}
+
+.socialList__icon {
+  fill: none;
+  stroke: #f7e0b5;
+}

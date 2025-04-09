@@ -1,0 +1,28 @@
+:root {
+    --bs-body-bg: #121212;
+    --bs-body-color: #e0e0e0;
+    --bs-primary: #bb86fc;
+    --bs-secondary: #03dac6;
+    --bs-dark: #1e1e1e;
+    --bs-light: #2d2d2d;
+}
+
+.navbar {
+    --bs-navbar-color: rgba(255, 255, 255, 0.75);
+    --bs-navbar-hover-color: rgba(255, 255, 255, 0.9);
+    --bs-navbar-brand-color: white;
+    --bs-navbar-brand-hover-color: white;
+    --bs-navbar-toggler-border-color: rgba(255, 255, 255, 0.1);
+}
+
+.card {
+    --bs-card-bg: #1e1e1e;
+    --bs-card-border-color: #2d2d2d;
+}
+
+.dropdown-menu {
+    --bs-dropdown-bg: #2d2d2d;
+    --bs-dropdown-link-color: #e0e0e0;
+    --bs-dropdown-link-hover-color: #ffffff;
+    --bs-dropdown-link-hover-bg: rgba(255, 255, 255, 0.1);
+}

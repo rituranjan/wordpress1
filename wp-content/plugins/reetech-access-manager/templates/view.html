@@ -1,0 +1,357 @@
+<div class="page-body">
+    <div class="container">
+
+        <div class="page-header">
+            <h1>View Invoice (0000001:Draft) </h1>
+        </div>
+
+
+        <div class="feedback-messages">
+
+            <div class="alert alert-danger " id="pageError">
+                <button type="button" class="close" aria-hidden="true"></button>
+                <span class="msg"></span>
+            </div>
+
+
+            <div class="alert alert-success " id="pageSuccess">
+                <button type="button" class="close" aria-hidden="true"></button>
+                <span class="msg"></span>
+            </div>
+
+
+            <div class="alert alert-warning " id="pageWarning">
+                <button type="button" class="close" aria-hidden="true"></button>
+                <span class="msg"></span>
+            </div>
+
+
+            <div class="alert alert-info " id="pageInfo">
+                <button type="button" class="close" aria-hidden="true"></button>
+                <span class="msg"></span>
+            </div>
+
+            <div class="alert alert-info " id="pageUpgrade">
+                <button type="button" class="close" aria-hidden="true"></button>
+                <span class="msg"></span>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+
+        <table class="nav-content" style="">
+            <tr>
+                <td class="minify">
+                    <a class="btn" href="https://www.skynova.com/app/invoices/edit?c=71898917" sel="btnEdit">Edit</a>
+                </td>
+                <td class="minify">
+                    <button type="button" class="btn btnPrint" sel="btnPrint">Print</button>
+                </td>
+                <td class="minify">
+                    <a class="btn btn-pdf btnPDF" href="https://www.skynova.com/app/invoices/pdf?c=71898917" sel="btnPDF">PDF</a>
+                </td>
+                <td class="minify">
+                    <a class="btn" href="https://www.skynova.com/app/invoices/send?c=71898917" sel="btnSend">Send</a>
+                </td>
+                <td class="minify">
+                    <a class="btn" href="https://www.skynova.com/app/invoices/payment?c=71898917" sel="btnPaid">Mark as Paid</a>
+                </td>
+                <td></td>
+
+                <td style="width:180px">
+
+                    <form id="more_actions" method="POST" action="view?c=71898917">
+                        <input type="hidden" name="more_actions">
+                        <select name="more_actions" onchange="if (this.value!='') document.getElementById('more_actions').submit();" sel="moreActions">
+
+
+                                <option value="" selected>More Actions...</option>
+                                <optgroup label="Change Status to..."><option value='Sent'>Sent</option><option value='Paid'>Paid</option><option value='Partial'>Partial</option></optgroup>
+                                
+                            </select>
+                    </form>
+
+                </td>
+
+            </tr>
+        </table>
+
+
+
+
+        <div id="modePreview">
+            <div class="paper">
+
+                <div class="paid-stamp">Paid</div>
+
+                <div class="view-header">
+                    <div class="view-left">
+
+                        <address class='view-from'>
+                test                    <br>
+                test1                </address>
+
+
+                        <address class='view-to'>
+                customer1                    <br>
+                customer Address                </address>
+
+
+                    </div>
+                    <div class="view-right ">
+
+
+                        <h1 class="view-headline ">My INVOICE</h1>
+
+
+                        <table class="view-dates">
+
+                            <tr>
+                                <td>
+                                    <b class="nowrap">Invoice #</b>
+                                </td>
+                                <td class="view-invoice-number">
+                                    0000001 </td>
+                            </tr>
+
+
+                            <tr>
+                                <td>
+                                    <b>Invoice Date</b>
+                                </td>
+                                <td>
+                                    03/17/2025 </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <b>Due Date</b>
+                                </td>
+                                <td>
+                                    03/17/2025 </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+
+
+
+
+
+                <table class="view-datatable without-notes">
+
+                    <tbody>
+                        <tr>
+                            <th class="col-item">Item</th>
+                            <th class="col-desc">Description</th>
+                            <th class="col-price text-right">Unit Price</th>
+                            <th class="col-qty text-right">Quantity</th>
+                            <th class="col-amount text-right">Amount</th>
+                        </tr>
+
+
+
+
+
+                        <tr style="">
+
+                            <td class="min">
+
+                                Expense
+                            </td>
+
+                            <td class="desc">
+
+                                Advertising from vendor on 03/17/2025
+                            </td>
+
+                            <td class="min text-right">
+
+                                666.00
+                            </td>
+
+                            <td class="min text-right">
+
+                                1.00
+                            </td>
+
+
+                            <td class="min text-right">
+
+                                666.00
+                            </td>
+
+                        </tr>
+
+
+
+
+                        <tr style="">
+
+                            <td class="min">
+
+                                Service
+                            </td>
+
+                            <td class="desc">
+
+                                service
+                            </td>
+
+                            <td class="min text-right">
+
+                                8.00
+                            </td>
+
+                            <td class="min text-right">
+
+                                7.00
+                            </td>
+
+
+                            <td class="min text-right">
+
+                                56.00
+                            </td>
+
+                        </tr>
+
+
+
+
+                        <tr style="">
+
+                            <td class="min">
+
+                                Product
+                            </td>
+
+                            <td class="desc">
+
+                                test
+                            </td>
+
+                            <td class="min text-right">
+
+
+                            </td>
+
+                            <td class="min text-right">
+
+
+                            </td>
+
+
+                            <td class="min text-right">
+
+
+                            </td>
+
+                        </tr>
+
+
+
+
+                        <tr style="">
+
+                            <td class="min">
+
+                                Hours
+                            </td>
+
+                            <td class="desc">
+
+                                ddd
+                            </td>
+
+                            <td class="min text-right">
+
+                                66.00
+                            </td>
+
+                            <td class="min text-right">
+
+                                0.00
+                            </td>
+
+
+                            <td class="min text-right">
+
+                                0.00
+                            </td>
+
+                        </tr>
+
+
+
+                    </tbody>
+                </table>
+
+
+                <table class="view-sums">
+                    <tbody>
+
+
+
+
+                        <tr>
+                            <td rowspan="7" class="border-right" style="width:58%;">
+
+                                &nbsp;
+
+                            </td>
+                            <td style="padding-top:7px;padding-bottom:5px;padding-left:35px;">
+
+                                <b>Subtotal</b>
+
+                            </td>
+                            <td class="min text-right" style="padding-top:7px;padding-bottom:5px;">
+
+                                722.00
+                            </td>
+                        </tr>
+
+
+                        <tr>
+                            <td class="border-top" style="padding-top:7px;padding-bottom:4px;padding-left:35px;">
+                                <b>Total</b>
+                            </td>
+                            <td class="min text-right border-top" style="padding-top:7px;padding-bottom:4px;">
+                                722.00 </td>
+                        </tr>
+
+                        <tr>
+                            <td style="padding-top:4px;padding-bottom:7px;padding-left:35px;">
+                                <b>Amount Paid</b>
+                            </td>
+                            <td class="min text-right" style="padding-top:4px;padding-bottom:7px;">
+                                722.00 </td>
+                        </tr>
+
+                        <tr>
+                            <td class="bg-grey border-top" style="padding-top:7px;padding-bottom:7px;padding-left:35px;">
+                                <b>Balance Due</b>
+                            </td>
+                            <td class="min text-right bg-grey border-top" style="padding-top:7px;padding-bottom:7px;">$0.00 </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+        <!--end #modePreview-->
+
+    </div>
+</div>
+<!-- end page-body -->

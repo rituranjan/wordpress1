@@ -1,0 +1,106 @@
+# Copyright (C) 2024 keywoot
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Login With SAML SSO - WP Single Sign On 1.4.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/saml-sso-wp-single-sign-on\n"
+"Last-Translator: \n"
+"Language-Team: French (France)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-12-17T16:32:18+00:00\n"
+"PO-Revision-Date: 2024-12-17 17:13+0000\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Domain: saml-sso-wp-single-sign-on\n"
+"Language: fr_FR\n"
+"Plural-Forms: nplurals=2; plural=n > 1;\n"
+"X-Loco-Version: 2.6.14; wp-6.7.1"
+
+#. Plugin Name of the plugin
+#: keywoot-saml-sso.php
+msgid "Login With SAML SSO - WP Single Sign On"
+msgstr "Connectez-vous avec SAML SSO - WP Single Sign On"
+
+#. Plugin URI of the plugin
+#. Author URI of the plugin
+#: keywoot-saml-sso.php
+msgid "http://keywoot.com"
+msgstr "https://keywoot.com"
+
+#. Description of the plugin
+#: keywoot-saml-sso.php
+msgid ""
+"Simplify login with secure SAML Single Sign On (SAML SSO) using any SAML-"
+"compliant Identity Provider like Azure, Okta, Keycloak, ADFS, OneLogin. etc"
+msgstr ""
+"Simplifiez la connexion avec l'authentification unique SAML sécurisée (SAML "
+"SSO) à l'aide de n'importe quel fournisseur d'identité compatible SAML comme "
+"Azure, Okta, Keycloak, ADFS, OneLogin. etc."
+
+#. Author of the plugin
+#: keywoot-saml-sso.php
+msgid "keywoot"
+msgstr "keywoot"
+
+#: src/main/admin/class-kwsso-activation.php:104
+msgid ""
+"We provide Single Sign-On (SSO) integration with over 30 Identity Providers "
+"(IDP), including Azure, Azure B2C, Okta, ADFS, Keycloak, OneLogin, "
+"Salesforce, Google Workspace (formerly G Suite), Shibboleth, Centrify, Ping, "
+"Auth0, and many more."
+msgstr ""
+"Nous proposons une intégration d'authentification unique (SSO) avec plus de "
+"30 fournisseurs d'identité (IDP), notamment Azure, Azure B2C, Okta, ADFS, "
+"Keycloak, OneLogin, Salesforce, Google Workspace (anciennement G Suite), "
+"Shibboleth, Centrify, Ping, Auth0. , et bien d'autres encore."
+
+#: src/main/admin/class-kwsso-activation.php:105
+msgid "NOTE"
+msgstr "NOTE"
+
+#: src/main/admin/class-kwsso-activation.php:106
+msgid ""
+"Our premium plans include advanced features such as attribute mapping, role "
+"mapping, post-login redirection, customizable SSO buttons, and more."
+msgstr ""
+"Nos forfaits premium incluent des fonctionnalités avancées telles que le "
+"mappage d'attributs, le mappage de rôles, la redirection après la connexion, "
+"les boutons SSO personnalisables, et bien plus encore."
+
+#: src/public/layout/kwsso-setup-idp-config.php:31
+msgid "Fetch or Upload Identity provider metadata"
+msgstr "Récupérer ou télécharger les métadonnées du fournisseur d'identité"
+
+#: src/public/layout/kwsso-setup-idp-config.php:33
+msgid "You can configure your IDP here in three ways."
+msgstr "Vous pouvez configurer votre IDP ici de trois manières."
+
+#: src/public/layout/kwsso-setup-idp-config.php:35
+msgid "You can Directly fetch the configurtaion using the Metadata Url."
+msgstr ""
+"Vous pouvez récupérer directement la configuration à l'aide de l'URL des "
+"métadonnées."
+
+#: src/public/layout/kwsso-setup-idp-config.php:36
+msgid "You can Upload the the metadata file"
+msgstr "Vous pouvez télécharger le fichier de métadonnées"
+
+#: src/public/layout/kwsso-setup-idp-config.php:37
+msgid ""
+"You can click on \"Configure it Manually\" button to configure it manually"
+msgstr ""
+"Vous pouvez cliquer sur le bouton \"Configurer manuellement\" pour le "
+"configurer manuellement"
+
+#: src/public/layout/kwsso-setup-idp-config.php:47
+msgid "IDP Name"
+msgstr "Nom du PDI"
+
+#: src/public/layout/kwsso-setup-idp-config.php:56
+msgid "Enter IDP MetaData URL"
+msgstr "Entrez l'URL des métadonnées IDP"
+
+#: src/public/layout/kwsso-setup-idp-config.php:57
+msgid "Enter metadata URL of your IdP."
+msgstr "Saisissez l'URL des métadonnées de votre IdP."

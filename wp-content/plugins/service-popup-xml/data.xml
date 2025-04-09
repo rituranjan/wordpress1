@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<services>
+    <service>
+        <title>Digital Transformation</title>
+        <subheadings>
+            <subheading>
+                <name>App Development</name>
+                <link>app-development</link>
+            </subheading>
+            <subheading>
+                <name>Web Development</name>
+                <link>web-development</link>
+            </subheading>
+            <subheading>
+                <name>Intelligent Automation (AI)</name>
+                <link>intelligent-automation-ai</link>
+            </subheading>
+            <subheading>
+                <name>Digital Marketing</name>
+                <link>digital-marketing</link>
+            </subheading>
+        </subheadings>
+        <description>We provide cutting-edge digital transformation services to help your business grow.</description>
+        <redirect_link>https://example.com/digital-transformation</redirect_link>
+    </service>
+    <service>
+        <title>Managed Services</title>
+        <subheadings>
+            <subheading>
+                <name>Cloud Services</name>
+                <link>cloud-services</link>
+            </subheading>
+            <subheading>
+                <name>IT Support</name>
+                <link>it-support</link>
+            </subheading>
+            <subheading>
+                <name>Network Management</name>
+                <link>network-management</link>
+            </subheading>
+            <subheading>
+                <name>Security Services</name>
+                <link>security-services</link>
+            </subheading>
+        </subheadings>
+        <description>Our managed services ensure your IT infrastructure runs smoothly and securely.</description>
+        <redirect_link>https://example.com/managed-services</redirect_link>
+    </service>
+    <service>
+        <title>Engineering Services</title>
+        <subheadings>
+            <subheading>
+                <name>Product Design</name>
+                <link>product-design</link>
+            </subheading>
+            <subheading>
+                <name>Prototyping</name>
+                <link>prototyping</link>
+            </subheading>
+            <subheading>
+                <name>Manufacturing</name>
+                <link>manufacturing</link>
+            </subheading>
+            <subheading>
+                <name>Quality Assurance</name>
+                <link>quality-assurance</link>
+            </subheading>
+        </subheadings>
+        <description>We offer end-to-end engineering services to bring your ideas to life.</description>
+        <redirect_link>https://example.com/engineering-services</redirect_link>
+    </service>
+    <service>
+        <title>Consulting Services</title>
+        <subheadings>
+            <subheading>
+                <name>Strategy Consulting</name>
+                <link>strategy-consulting</link>
+            </subheading>
+            <subheading>
+                <name>Technology Consulting</name>
+                <link>technology-consulting</link>
+            </subheading>
+            <subheading>
+                <name>Operations Consulting</name>
+                <link>operations-consulting</link>
+            </subheading>
+            <subheading>
+                <name>Financial Consulting</name>
+                <link>financial-consulting</link>
+            </subheading>
+        </subheadings>
+        <description>Our consulting services help you make informed decisions and achieve your goals.</description>
+        <redirect_link>https://example.com/consulting-services</redirect_link>
+    </service>
+</services>
