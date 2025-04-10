@@ -30,6 +30,12 @@ class RestApi {
             'callback' =>'get_cached_items',// [__CLASS__, 'get_cached_items'],
             'permission_callback' => '__return_true'
         ]);
+
+        register_rest_route(self::$namespace, '/get-invoice', [
+            'methods' => 'GET',
+            'callback' =>'get_invoice_data',// [__CLASS__, 'get_cached_items'],
+            'permission_callback' => '__return_true'
+        ]);
     }
     function get_invoices_summary(WP_REST_Request $request) {
         global $wpdb;
@@ -268,9 +274,69 @@ class RestApi {
         ), 200);
     }
     
+    //get_invoice_data
 
+// Callback function to get invoice data
+public static function get_invoice_data(WP_REST_Request $request) {
+//function get_invoice_data(WP_REST_Request $request) {
+    global $wpdb;
+    $invoice_id = $request->get_param('id');
 
+    // Get main invoice data
+    $table_name = $wpdb->prefix . 'invoices';
+    $invoice = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $table_name WHERE id = %d", 
+        $invoice_id
+    ));
 
+    if (!$invoice) {
+        return new WP_Error('no_invoice', 'Invoice not found', array('status' => 404));
+    }
+
+    // Get line items
+    $items_table = $wpdb->prefix . 'invoice_items';
+    $items = $wpdb->get_results($wpdb->prepare(
+        "SELECT * FROM $items_table WHERE invoice_id = %d",
+        $invoice_id
+    ));
+
+    // $examples = new EntityExamples();
+    // $customer = $examples->findEntityByID(9)
+    
+
+    // Format response
+    $response = array(
+        'from' => array(
+            'name' => $invoice->from_name,
+            'address' => $invoice->from_address
+        ),
+        'to' => array(
+            'id' => $invoice->to_id,
+            'name' =>"AAA",// $customer->name,
+            'address' =>"bbb",// $customer->address
+        ),
+        'invoice_number' => $invoice->invoice_number,
+        'invoice_date' => $invoice->invoice_date,
+        'due_date' => $invoice->due_date,
+        'subtotal' => floatval($invoice->subtotal),
+        'total' => floatval($invoice->total),
+        'items' => array(),
+        'notes' => $invoice->notes
+    );
+
+    foreach ($items as $item) {
+        $response['items'][] = array(
+            'description' => $item->description,
+            'unit_price' => floatval($item->unit_price),
+            'quantity' => floatval($item->quantity),
+            'tax_rate' => $item->tax_rate,
+            'amount' => floatval($item->amount),
+            'item'=> $item->item_type,
+        );
+    }
+
+    return new WP_REST_Response($response, 200);
+}
 
 } 
 
