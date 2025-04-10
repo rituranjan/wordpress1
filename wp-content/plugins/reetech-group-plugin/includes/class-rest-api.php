@@ -6,22 +6,22 @@ use WP_REST_Request;
 use WP_Error;
 
 class RestApi {
-    private static $namespace = 'reetech-group/v1';
+    private static $namespace = 'reetech-group1/v1';
 
     public static function init() {
         add_action('rest_api_init', [__CLASS__, 'register_routes']);
+        
     }
-
     public static function register_routes() {
         register_rest_route(self::$namespace, '/invoices', [
             'methods' => 'POST',
-            'callback' => [__CLASS__, 'handle_invoice_submission'],
+            'callback' =>'handle_invoice_submission',// [__CLASS__, 'handle_invoice_submission'],
             'permission_callback' => '__return_true'
         ]);
 
         register_rest_route(self::$namespace, '/invoices-summary', [
             'methods' => 'GET',
-            'callback' => [__CLASS__, 'get_invoices_summary'],
+            'callback' =>'get_invoices_summary',// [__CLASS__, 'get_invoices_summary'],
             'permission_callback' => '__return_true'
         ]);
 
@@ -31,17 +31,6 @@ class RestApi {
             'permission_callback' => '__return_true'
         ]);
     }
-
-    public static function handle_invoice_submission1(WP_REST_Request $request) {
-
-    
-        // Implementation from original code
-    }
-
-    public static function get_invoices_summary12(WP_REST_Request $request) {
-        // Implementation from original code
-    }
-
     function get_invoices_summary(WP_REST_Request $request) {
         global $wpdb;
         
@@ -154,22 +143,18 @@ class RestApi {
     }
 
 
-   // function handle_invoice_submission(WP_REST_Request $request) {
+  
+
     public static function handle_invoice_submission(WP_REST_Request $request) {
         global $wpdb;
-        
          $parameters = $request->get_json_params();
        
-    
-    
         require_once 'entities-repository.php';
     
         $examples = new EntityExamples();
-    
         if (empty($parameters)) {
             return new WP_Error('invalid_data', 'Invalid invoice data', array('status' => 400));
-        }
-        
+        }    
         $created_id= intval($parameters['to']['id']??0);
         if($created_id==0){
             $created_id = $examples->createEntity([
@@ -178,20 +163,12 @@ class RestApi {
                 'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
                 'ContactInfo' => 'john@example.com',
                 'LoyaltyPoints' => 500
-            ]);
-       // $created_id = $entities_repo->create($new_entity);
+            ]);  
         if (is_wp_error($created_id)) {
             error_log('Creation error: ' . $created_id->get_error_message());
         } else {
             echo "Created entity ID: $created_id\n";
         }}
-        // else {
-        //     $created_id
-        // }
-    
-        
-        
-        // Process the invoice data
         $invoice_data = array(
             'from_name' => sanitize_text_field($parameters['from']['name'] ?? ''),
             'from_address' => sanitize_textarea_field($parameters['from']['address'] ?? ''),
@@ -290,9 +267,11 @@ class RestApi {
             'data' => $invoice_data
         ), 200);
     }
-
     
 
 
 
+
 } 
+
+RestApi::init();

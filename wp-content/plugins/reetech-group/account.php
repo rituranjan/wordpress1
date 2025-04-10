@@ -157,43 +157,14 @@ add_action('rest_api_init', function() {
 
 function handle_invoice_submission(WP_REST_Request $request) {
     global $wpdb;
-    
-    // require_once 'customer.php';
-    // require_once 'generic-repository.php';
-    //  // Get and validate the data
      $parameters = $request->get_json_params();
    
-
-    // Initialize repository for entities table
-    // $entities_repo = new WP_Repository('account_entities', [
-    //     'primary_key' => 'EntityID',
-    //     'required_fields' => ['Type', 'Name'],
-    //     'field_types' => [
-    //         'EntityID' => '%d',
-    //         'Type' => '%s',
-    //         'Name' => '%s',
-    //         'Address' => '%s',
-    //         'LoyaltyPoints' => '%d'
-    //     ]
-    // ]);
     require_once 'entities-repository.php';
 
     $examples = new EntityExamples();
-
-// Scenario 1: Create new entity
-
-    
-    // // Example 1: Create new entity
-    // $new_entity = [
-    //     'Type' => 'Customer',
-    //     'Name' => sanitize_text_field($parameters['to']['name'] ?? ''),
-    //     'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
-    //     'LoyaltyPoints' => 1000
-    // ];
     if (empty($parameters)) {
         return new WP_Error('invalid_data', 'Invalid invoice data', array('status' => 400));
-    }
-    
+    }    
     $created_id= intval($parameters['to']['id']??0);
     if($created_id==0){
         $created_id = $examples->createEntity([
@@ -202,20 +173,12 @@ function handle_invoice_submission(WP_REST_Request $request) {
             'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
             'ContactInfo' => 'john@example.com',
             'LoyaltyPoints' => 500
-        ]);
-   // $created_id = $entities_repo->create($new_entity);
+        ]);  
     if (is_wp_error($created_id)) {
         error_log('Creation error: ' . $created_id->get_error_message());
     } else {
         echo "Created entity ID: $created_id\n";
     }}
-    // else {
-    //     $created_id
-    // }
-
-    
-    
-    // Process the invoice data
     $invoice_data = array(
         'from_name' => sanitize_text_field($parameters['from']['name'] ?? ''),
         'from_address' => sanitize_textarea_field($parameters['from']['address'] ?? ''),
