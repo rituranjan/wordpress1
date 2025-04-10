@@ -38,7 +38,7 @@ class RestApi {
         // Implementation from original code
     }
 
-    public static function get_invoices_summary12(WP_REST_Request $request) {
+    public static function get_invoices_summary1(WP_REST_Request $request) {
         // Implementation from original code
     }
 
@@ -292,7 +292,171 @@ class RestApi {
     }
 
     
+//function get_invoices_summary(WP_REST_Request $request) {
+public static function get_invoices_summary(WP_REST_Request $request) {
+    global $wpdb;
+    
+    // Get DataTables parameters
+    $per_page = $request->get_param('per_page') ?: 10;
+    $page = $request->get_param('page') ?: 1;
+    $search = $request->get_param('search');
+    $orderby = $request->get_param('orderby') ?: 'invoice_date';
+    $order = $request->get_param('order') ?: 'DESC';
+    
+    // Validate order direction
+    $order = in_array(strtoupper($order), ['ASC', 'DESC']) ? strtoupper($order) : 'DESC';
+    
+    // Validate orderby field
+    $allowed_columns = ['invoice_number', 'customer', 'date', 'total', 'balance', 'status','id'];
+    $orderby = in_array($orderby, $allowed_columns) ? $orderby : 'invoice_date';
+    
+    // Map orderby to actual database columns
+    $column_mapping = [
+        'customer' => 'to_name',
+        'date' => 'invoice_date',
+        'balance' => 'balance_due'
+    ];
+    $orderby = $column_mapping[$orderby] ?? $orderby;
+    
+    // Base query
+    $table_name = $wpdb->prefix . 'invoices';
+    $query = "SELECT 
+                id,
+                invoice_number,
+                to_name AS customer,
+                invoice_date AS date,
+                total,
+                balance_due AS balance,
+                status
+              FROM $table_name";
+    
+    // Where clauses
+    $where_clauses = [];
+    $query_params = [];
+    
+    // Search filter
+    if ($search) {
+        $where_clauses[] = "(invoice_number LIKE %s OR to_name LIKE %s)";
+        $query_params[] = '%' . $wpdb->esc_like($search) . '%';
+        $query_params[] = '%' . $wpdb->esc_like($search) . '%';
+    }
+    
+    // Additional filters
+    if ($request->get_param('status')) {
+        $where_clauses[] = "status = %s";
+        $query_params[] = sanitize_text_field($request->get_param('status'));
+    }
+    
+    if ($request->get_param('date_from')) {
+        $where_clauses[] = "invoice_date >= %s";
+        $query_params[] = sanitize_text_field($request->get_param('date_from'));
+    }
+    
+    if ($request->get_param('date_to')) {
+        $where_clauses[] = "invoice_date <= %s";
+        $query_params[] = sanitize_text_field($request->get_param('date_to'));
+    }
+    
+    // Combine where clauses
+    if (!empty($where_clauses)) {
+        $query .= " WHERE " . implode(" AND ", $where_clauses);
+    }
+    
+    // Add sorting
+    $query .= " ORDER BY $orderby $order";
+    
+    // Add pagination
+    $offset = ($page - 1) * $per_page;
+    $query .= " LIMIT %d OFFSET %d";
+    $query_params[] = $per_page;
+    $query_params[] = $offset;
+    
+    // Prepare and execute
+    if (!empty($query_params)) {
+        $query = $wpdb->prepare($query, $query_params);
+    }
+    
+    $invoices = $wpdb->get_results($query);
+    
+    // Get total count
+    $count_query = "SELECT COUNT(*) FROM $table_name";
+    if (!empty($where_clauses)) {
+        $count_query .= " WHERE " . implode(" AND ", $where_clauses);
+        $count_query = $wpdb->prepare($count_query, array_slice($query_params, 0, count($query_params) - 2));
+    }
+    $total_items = $wpdb->get_var($count_query);
+    
+    // Format response
+    return new WP_REST_Response([
+        'success' => true,
+        'data' => $invoices,
+        'pagination' => [
+            'total_items' => (int)$total_items,
+            'per_page' => (int)$per_page,
+            'current_page' => (int)$page,
+            'total_pages' => ceil($total_items / $per_page)
+        ]
+    ], 200);
+}
 
+public static function get_invoices_summary(WP_REST_Request $request) {
+//function get_invoice_data(WP_REST_Request $request) {
+    global $wpdb;
+    $invoice_id = $request->get_param('id');
 
+    // Get main invoice data
+    $table_name = $wpdb->prefix . 'invoices';
+    $invoice = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $table_name WHERE id = %d", 
+        $invoice_id
+    ));
 
+    if (!$invoice) {
+        return new WP_Error('no_invoice', 'Invoice not found', array('status' => 404));
+    }
+
+    // Get line items
+    $items_table = $wpdb->prefix . 'invoice_items';
+    $items = $wpdb->get_results($wpdb->prepare(
+        "SELECT * FROM $items_table WHERE invoice_id = %d",
+        $invoice_id
+    ));
+
+    // $examples = new EntityExamples();
+    // $customer = $examples->findEntityByID(9)
+    
+
+    // Format response
+    $response = array(
+        'from' => array(
+            'name' => $invoice->from_name,
+            'address' => $invoice->from_address
+        ),
+        'to' => array(
+            'id' => $invoice->to_id,
+            'name' =>"AAA",// $customer->name,
+            'address' =>"bbb",// $customer->address
+        ),
+        'invoice_number' => $invoice->invoice_number,
+        'invoice_date' => $invoice->invoice_date,
+        'due_date' => $invoice->due_date,
+        'subtotal' => floatval($invoice->subtotal),
+        'total' => floatval($invoice->total),
+        'items' => array(),
+        'notes' => $invoice->notes
+    );
+
+    foreach ($items as $item) {
+        $response['items'][] = array(
+            'description' => $item->description,
+            'unit_price' => floatval($item->unit_price),
+            'quantity' => floatval($item->quantity),
+            'tax_rate' => $item->tax_rate,
+            'amount' => floatval($item->amount),
+            'item'=> $item->item_type,
+        );
+    }
+
+    return new WP_REST_Response($response, 200);
+}
 } 
