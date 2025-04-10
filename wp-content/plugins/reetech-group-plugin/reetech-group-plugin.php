@@ -37,11 +37,11 @@ Author: Your Name
  define('REETECH_PLUGIN_URL', plugin_dir_url(__FILE__));
 
 // // Load dependencies
-// require_once REETECH_PLUGIN_DIR . 'includes/class-asset-loader.php';
+ require_once REETECH_PLUGIN_DIR . 'includes/class-asset-loader.php';
  require_once REETECH_PLUGIN_DIR . 'includes/class-rest-api.php';
-// require_once REETECH_PLUGIN_DIR . 'includes/class-shortcode-handler.php';
-// require_once REETECH_PLUGIN_DIR . 'includes/class-database-manager.php';
-// //require_once REETECH_PLUGIN_DIR . 'includes/class-cache-manager.php';
+ require_once REETECH_PLUGIN_DIR . 'includes/class-shortcode-handler.php';
+ require_once REETECH_PLUGIN_DIR . 'includes/class-database-manager.php';
+require_once REETECH_PLUGIN_DIR . 'includes/class-cache-manager.php';
 
 // // Initialize components
 // add_action('plugins_loaded', function() {
@@ -51,8 +51,11 @@ Author: Your Name
 // });
 
 // Initialize components
-// add_action('plugins_loaded', function() {
+add_action('plugins_loaded', function() {
    
-//     Reetech\RestApi::init();
+    Reetech\AssetLoader::init();
+
+    Reetech\RestApi::init();
+   // Reetech\ShortcodeHandler::init();
    
-// });
+});

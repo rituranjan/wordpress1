@@ -6,7 +6,7 @@ use WP_REST_Request;
 use WP_Error;
 
 class RestApi {
-    private static $namespace = 'reetech-group1/v1';
+    private static $namespace = 'reetech-group2/v2';
 
     public static function init() {
         add_action('rest_api_init', [__CLASS__, 'register_routes']);
@@ -15,7 +15,7 @@ class RestApi {
     public static function register_routes() {
         register_rest_route(self::$namespace, '/invoices', [
             'methods' => 'POST',
-            'callback' =>'handle_invoice_submission',// [__CLASS__, 'handle_invoice_submission'],
+            'callback' =>[__CLASS__, 'handle_invoice_submission'],
             'permission_callback' => '__return_true'
         ]);
 
@@ -25,9 +25,9 @@ class RestApi {
             'permission_callback' => '__return_true'
         ]);
 
-        register_rest_route('items/v1', '/all', [
+        register_rest_route(self::$namespace, '/all', [
             'methods' => 'GET',
-            'callback' => [__CLASS__, 'get_cached_items'],
+            'callback' =>'get_cached_items',// [__CLASS__, 'get_cached_items'],
             'permission_callback' => '__return_true'
         ]);
     }
@@ -149,7 +149,7 @@ class RestApi {
         global $wpdb;
          $parameters = $request->get_json_params();
        
-        require_once 'entities-repository.php';
+        require_once 'EntityExamples.php';
     
         $examples = new EntityExamples();
         if (empty($parameters)) {
@@ -274,4 +274,4 @@ class RestApi {
 
 } 
 
-RestApi::init();
+
