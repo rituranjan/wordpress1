@@ -58,7 +58,7 @@ class RestApi {
         
          $parameters = $request->get_json_params();
        
-    
+        
     
         require_once 'entities-repository.php';
     

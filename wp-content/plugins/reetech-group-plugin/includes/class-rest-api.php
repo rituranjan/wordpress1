@@ -154,8 +154,11 @@ class RestApi {
     public static function handle_invoice_submission(WP_REST_Request $request) {
         global $wpdb;
          $parameters = $request->get_json_params();
+         define('REETECH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+         require_once REETECH_PLUGIN_DIR . 'includes/Reetech/EntityExamples.php';
+
        
-        require_once 'EntityExamples.php';
+       // require_once 'EntityExamples.php';
     
         $examples = new EntityExamples();
         if (empty($parameters)) {

@@ -1,10 +1,39 @@
-
-
 <?php
-//namespace Reetech;
- require_once 'entities-repository.php';
+require_once 'generic-repository.php';
 
-class EntityExamples {
+class EntitiesRepository extends WP_Repository {
+    public function __construct() {
+        parent::__construct('account_entities', [
+            'primary_key' => 'EntityID',
+            'required_fields' => ['Type', 'Name'],
+            'field_types' => [
+                'EntityID' => '%d',
+                'Type' => '%s',
+                'Name' => '%s',
+                'Address' => '%s',
+                'ContactInfo' => '%s',
+                'CompanyName' => '%s',
+                'ProductCategory' => '%s',
+                'LoyaltyPoints' => '%d',
+                'PropertyOwned' => '%s'
+            ]
+        ]);
+    }
+
+    // Add entity-specific methods if needed
+    public function findVendorsByCategory($category) {
+        return $this->findBy([
+            'Type' => 'Vendor',
+            'ProductCategory' => $category
+        ]);
+    }
+}
+
+
+// <?php
+// require_once 'entities-repository.php';
+
+class EntityExamples11 {
     private $repo;
 
     public function __construct() {
