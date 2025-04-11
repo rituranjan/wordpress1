@@ -1,0 +1,13 @@
+video:
+  input_dir: "C:/temp/video"  # Directory containing videos
+  output_json: "output_results.json"  # JSON output file
+  fps: 30  # Frames per second (adjust if needed)
+
+objects_to_detect:
+  - "person"  # Class 0 (girl/boy)
+  - "dog"     # Class 16
+  - "sofa"    # Class 57
+
+yolo:
+  model: "yolov8n.pt"
+  confidence_threshold: 0.5
