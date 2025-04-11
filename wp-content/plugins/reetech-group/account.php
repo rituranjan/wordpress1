@@ -307,15 +307,20 @@ function get_invoices_summary(WP_REST_Request $request) {
     
     // Base query
     $table_name = $wpdb->prefix . 'invoices';
-    $query = "SELECT 
-                id,
-                invoice_number,
-                to_name AS customer,
-                invoice_date AS date,
-                total,
-                balance_due AS balance,
-                status
-              FROM $table_name";
+    $query = "SELECT
+    id,
+    invoice_number,
+    ti.to_id AS customerId,
+    tae.Name AS customer,
+    invoice_date AS DATE,
+    total,
+    balance_due AS balance,
+`status`,
+    created_at AS created_at
+FROM
+    $table_name ti
+INNER JOIN tbl_account_entities tae ON
+    ti.to_id = tae.EntityID ";
     
     // Where clauses
     $where_clauses = [];
