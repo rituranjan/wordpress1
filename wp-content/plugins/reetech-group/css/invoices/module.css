@@ -1047,7 +1047,7 @@ input[type="checkbox"]+span {
 .focus,
 td.focus,
 #upload_area.focus {
-    background-color: #fffbe6;
+    /* background-color: #fffbe6; */
 }
 
 .input-wrapper {
@@ -2049,8 +2049,8 @@ td.day:last-child {
 #options {
     display: none;
     margin: 9px 0 20px 0;
-    background-color: #fafafa;
-    border: thin solid #d2d2d2;
+    /* background-color: #fafafa;
+    border: thin solid #d2d2d2; */
     padding: 14px 0;
     font-size: 12px;
 }
@@ -2489,6 +2489,7 @@ input[type="text"].meta-title {
 
 .form-invoice.dates {
     line-height: 26px;
+    width: 100%;
 }
 
 .logoShown .form-invoice.dates {
@@ -2702,7 +2703,7 @@ table.sums .sum-number input:focus {
 }
 
 .sum-balance td {
-    background-color: #fbff9e;
+    /* background-color: #fbff9e; */
 }
 
 table.sums .sum-discount td {
@@ -3065,10 +3066,10 @@ th.text-right a {
     resize: none;
 }
 
-.table-record td.amount,
+/* .table-record td.amount,
 .table-record td.amount.focus {
     background-color: #f8f8f8 !important;
-}
+} */
 
 .isDiscount .taxItem.focus,
 .isExpense .taxItem.focus {
