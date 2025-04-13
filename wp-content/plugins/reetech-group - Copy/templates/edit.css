@@ -1,0 +1,125 @@
+.isDiscount select {
+    display: none;
+}
+
+.isDiscount .select:after {
+    content: "";
+}
+
+.isDiscount .select:before {
+    content: "Discount";
+    display: block;
+    padding-left: 5px;
+}
+
+.isExpense select {
+    display: none;
+}
+
+.isExpense .select:after {
+    content: "";
+}
+
+.isExpense .select:before {
+    content: "Expense";
+    display: block;
+    padding-left: 5px;
+}
+
+.isInventory select {
+    display: none;
+}
+
+.isInventory .select:after {
+    content: "";
+}
+
+.isInventory .select:before {
+    content: "Product";
+    display: block;
+    padding-left: 5px;
+}
+
+.btn.btn-xs {
+    line-height: 25px !important;
+    font-size: 11px !important;
+    padding: 0 12px !important;
+}
+
+#tableTaxes .sum-label {
+    white-space: normal;
+    word-wrap: break-word !important;
+    word-break: break-all;
+    width: 170px;
+}
+
+.openTaxDropdown.dropdown-toggle:not(.placeholder) {
+    color: inherit;
+}
+
+#dateEnd,
+#dateStart {
+    color: inherit;
+    background-color: #fff;
+    border: thin solid #aaa;
+    border-color: #939393 #c1c1c1 #c1c1c1 #939393;
+    border-radius: 0;
+}
+
+#dateEnd:focus,
+#dateStart:focus {
+    background-color: #fffbe6;
+    border-color: #3892db #9edbff #9edbff #3892db;
+}
+
+.btn {
+    padding: 0 16px !important;
+    line-height: 30px !important;
+}
+
+.btn.btn-lg {
+    padding: 2px 19px !important;
+    box-shadow: none !important;
+    border: 0.9px solid #aaa !important;
+    line-height: 30px !important;
+}
+
+th.table-dropdown .btn,
+td.table-dropdown .btn {
+    height: 19px !important;
+    line-height: 19px !important;
+    padding: 0 !important;
+}
+
+#top-menu .dropdown-item:hover,
+#top-menu .dropdown-item:active,
+#utilities .dropdown-item:hover,
+#utilities .dropdown-item:active {
+    box-shadow: none;
+    border: none;
+    text-decoration: none;
+    background-color: #54a0e7;
+    color: #fff;
+}
+
+#no-js-message {
+    display: none;
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: normal !important;
+    text-align: center;
+    max-width: 800px;
+    margin: 1em auto;
+    background-color: #fffadc !important;
+    border: 2px solid #fcf5cd !important;
+    padding: 8px 40px;
+}
+
+.alert-danger,
+.bg-danger {
+    background: #FFFADC url('../../images/red_error_25.gif') 6px 6px no-repeat !important;
+}
+
+.alert-danger:before {
+    content: none !important;
+}

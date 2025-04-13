@@ -226,7 +226,7 @@
 
     <div class="page-body">
         <div class="row mb-3">
-            <div class="col-12   text-center p-3">
+            <div class="col-12 p-3">
 
 
                 <div class="container">
@@ -326,31 +326,31 @@
 
                                 <td class="minify">
                                     <button type="button"
-                                        class="btn has-tooltip tooltip-bottom disabled1 btn-outline-primary btn-primary"
+                                        class="btn has-tooltip tooltip-bottom btn-primary"
                                         tabindex="-1" sel="btnView">View <i class="tip">Please save your invoice
                                             first.</i></button>
                                 </td>
                                 <td class="minify">
                                     <button type="button"
-                                        class="btn has-tooltip tooltip-bottom disabled1 btn-outline-primary btn-primary"
+                                        class="btn has-tooltip tooltip-bottom btn-primary"
                                         tabindex="-1" sel="btnPrint">Print <i class="tip">Please save your invoice
                                             first.</i></button>
                                 </td>
                                 <td class="minify">
                                     <button type="button"
-                                        class="btn has-tooltip tooltip-bottom disabled1 btn-outline-primary btn-primary"
+                                        class="btn has-tooltip tooltip-bottom btn-primary"
                                         tabindex="-1" sel="btnPDF">PDF <i class="tip">Please save your invoice
                                             first.</i></button>
                                 </td>
                                 <td class="minify">
                                     <button type="button"
-                                        class="btn has-tooltip tooltip-bottom disabled1 btn-outline-primary btn-primary"
+                                        class="btn has-tooltip tooltip-bottom btn-primary"
                                         tabindex="-1" sel="btnSend">Send <i class="tip">Please save your invoice
                                             first.</i></button>
                                 </td>
                                 <td class="minify">
                                     <button type="button"
-                                        class="btn has-tooltip tooltip-bottom disabled1 btn-outline-primary btn-primary"
+                                        class="btn has-tooltip tooltip-bottom btn-primary"
                                         tabindex="-1" sel="btnPaid">Mark as Paid <i class="tip">Please save your invoice
                                             first.</i></button>
 
@@ -362,8 +362,7 @@
 
                                 <td class="minify">
                                     <button type="button" onclick="submitInvoiceToWordPress()"
-                                        class="btn btn-primary">Save
-                                        Invoice</button>
+                                        class="btn has-tooltip tooltip-bottom btn-primary">Save Invoice</button>
 
 
                                 </td>
@@ -520,7 +519,11 @@
 
                                         <table class="form-invoice dates">
                                             <tr>
-                                                <td class="label-header">Invoice #</td>
+                                                <td class="label-header form-invoice">
+                                                    <div class="form-invoice">
+                                                    Invoice #
+                                                </div>
+                                                </td>
                                                 <td>
 
                                                     <input type="text" name="invoice_number" id="doc_number"

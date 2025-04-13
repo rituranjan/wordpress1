@@ -72,7 +72,7 @@ input[type="submit"] {
     background-clip: padding-box;
 }
 
-.btn1 {
+.btn {
     display: inline-block;
     vertical-align: top;
     margin: 0;
@@ -108,7 +108,7 @@ input[type="submit"] {
     width: 100%;
 }
 
-/* .btn-primary,
+.btn-primary,
 .btn-green {
     color: #fff;
     background-color: #73bd0b;
@@ -126,23 +126,23 @@ input[type="submit"] {
     color: #fff;
     background-color: #1b5fa1;
     background-image: linear-gradient(to bottom, #3776b3, #1b5fa1);
-} */
+}
 
-/* .btn-primary,
+.btn-primary,
 .btn-green,
 .btn-danger,
 .btn-red,
 .btn-blue {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
-} */
-/* 
+}
+
 .btn-primary:focus,
 .btn-green:focus,
 .btn-danger:focus,
 .btn-red:focus,
 .btn-blue:focus {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15), inset 0 0 0 2px rgba(255, 255, 255, .3);
-} */
+}
 
 .btn-select {
     filter: none;

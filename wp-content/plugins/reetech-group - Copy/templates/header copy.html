@@ -3,7 +3,7 @@
 
 <head>
 
-    <title>List of Invoices</title>
+    <title>List of Invoices :: Skynova.com</title>
 
 
 
@@ -12,46 +12,25 @@
     <meta name="viewport" content="width=900" />
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     
-    <link rel="shortcut icon" href="https://www.skynova.com/images/favicon.ico?v=1" />
-<script>
-  window.baseUrl='http://localhost/wordpress1/reetech-group/';
 
-   function loadAssets( scripts = [], styles = [], images = [],baseUrl=window.baseUrl) {
-  // Load JavaScript files
-  scripts.forEach(file => {
-    let script = document.createElement("script");
-    script.src = baseUrl + file;
-    script.type = "application/javascript";
-    document.head.appendChild(script);
-  });
+    <!-- <link rel="shortcut icon" href="https://www.skynova.com/favicon.ico?v=1" /> -->
+    <!-- In header.html -->
 
-  // Load CSS files
-  styles.forEach(file => {
-    let link = document.createElement("link");
-    link.href = baseUrl + file;
-    link.rel = "stylesheet";
-    document.head.appendChild(link);
-  });
-
-  // Preload images (doesn't add to DOM, just loads them into cache)
-  images.forEach(file => {
-    let img = new Image();
-    img.src = baseUrl + file;
-  });
-}
-
-    
-    baseUrl="http://localhost/wordpress1/wp-content/plugins/reetech-group/"
-    var scriptFiles = ["javascript/error_report.js"]; // JS files
-    var styleFiles = ["__common/css/common.css", "css/invoices/module.css"]; // CSS files
-  
-    loadAssets(scriptFiles, styleFiles);
-  </script>
-
-<link id="themeStylesheet" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap-light.min.css">
+    <!-- <link rel="stylesheet" type="text/css" href="https://www.skynova.com/app/__common/css/common.css?v=V0002458" /> -->
+    <link rel="stylesheet" href="http://localhost/wordpress1/wp-content/plugins/reetech-group/__common/css/common.css">
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <script src="https://www.skynova.com/javascript/error_report.js" type="application/javascript"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <script>
+        var baseHref = 'https://www.skynova.com/';
+        window.cid = "10993332"
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://www.skynova.com/app/invoices/css/module.css?v=V0002458" />
+
     <style>
         .table-list th:last-child {
             padding-left: 15px;
@@ -68,52 +47,14 @@
         }
     </style>
 
-    <script>
-        /* filepath: c:\xampp\htdocs\wordpress1\wp-content\plugins\reetech-group\templates\list.js */
-
-// Global function to initialize iframeModal with a given button ID
-function initIframeModal(buttonId) {
-    $(document).ready(function () {
-        // Fully Custom Modal
-        $('#' + buttonId).iframeModal({
-            modalId: 'customModal',
-            title: function (url) {
-                return 'Custom: ' + new URL(url, window.location.href).searchParams.get('id');
-            },
-            size: 'modal-lg',
-            header: false,
-            footer: false,
-            closeButton: true,
-            fullHeight: true,
-            footerButtons: [
-                { text: 'Done', class: 'btn-success', action: 'customAction' },
-                { text: 'Close', class: 'btn-danger', action: 'close' },
-            ],
-            footerButtonActions: {
-                customAction: function () {
-                    alert('Custom action triggered!');
-                },
-            },
-            beforeClose: function () {
-                return confirm('Are you sure you want to close?');
-            },
-        });
-    });
-}
-
-// Initialize with 'editBtn' as the parameter
-
-    </script>
-
 </head>
 
 <body>
 
 
 
-    
 
-    
+
     <style>
         #tablePaginatorFirstPage,
         #tablePaginatorPreviousPage,
@@ -219,9 +160,9 @@ function initIframeModal(buttonId) {
 
 .container {
     /* max-width: 800px; */
-    /* margin-left: 40px !important;
+    margin-left: 40px !important;
     margin-right: 22px !important;
-    max-width: fit-content !important; */
+    max-width: fit-content !important;
 }
         /* hack to avoid having the icon in v3 overlaping the icon in v2 */
     </style>
@@ -280,7 +221,6 @@ function initIframeModal(buttonId) {
 
             </ul>
 
-            
 
         </div>
 
@@ -316,7 +256,7 @@ function initIframeModal(buttonId) {
 
 
                             <li><a class="dropdown-item" href="/app/invoices/new">New Invoice</a></li>
-                            <li><a class="dropdown-item" href="?home=list">List of Invoices</a></li>
+                            <li><a class="dropdown-item" href="/app/invoices/list">List of Invoices</a></li>
                             <li><a class="dropdown-item" href="/app/invoices/listPayments">List of Payments</a></li>
 
 
@@ -324,7 +264,7 @@ function initIframeModal(buttonId) {
                     </li>
 
 
-                    <!-- <li class="menu-item ">
+                    <li class="menu-item ">
                         <a class="menu-header" href="#">Reports</a>
                         <ul class="menu-dropdown">
                             <li><a class="dropdown-item" href="/incomeStatement.php">Income Statement</a></li>
@@ -332,7 +272,7 @@ function initIframeModal(buttonId) {
                             <li><a class="dropdown-item" href="/cashFlowStatement.php">Cash Flow Statement</a></li>
                             <li><a class="dropdown-item" href="/listTaxOwed.php">Sales Tax Owed</a></li>
                         </ul>
-                    </li> -->
+                    </li>
 
 
 

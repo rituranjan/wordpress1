@@ -1,0 +1,97 @@
+#tablePaginatorFirstPage,
+#tablePaginatorPreviousPage,
+#tablePaginatorCurrentPage,
+#tablePaginatorNextPage,
+#tablePaginatorLastPage,
+#tablePaginatorAllPages {
+    line-height: normal !important;
+    padding: 3px 6px !important;
+    width: unset !important;
+}
+
+#innerSendForm * {
+    box-sizing: content-box !important;
+    line-height: normal;
+}
+
+#invoiceFormWrapper * {
+    box-sizing: content-box !important;
+}
+
+#divWithInfoMessage td {
+    padding: 4px !important;
+}
+
+.divWithFilter input {
+    box-sizing: content-box !important;
+}
+
+#div2 {
+    margin-left: -250px;
+    left: 50% !important;
+}
+
+#recordPayment_date {
+    box-sizing: content-box !important;
+}
+
+tr.recordPayment_paymentHistoryTR > td {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+tr.recordPayment_paymentHistoryTR > td img {
+    margin-top: 3px !important;
+}
+
+.btn {
+    padding: 0 16px !important;
+    line-height: 30px !important;
+}
+
+.btn.btn-lg {
+    padding: 2px 19px !important;
+    box-shadow: none !important;
+    border: 0.9px solid #aaa !important;
+    line-height: 30px !important;
+}
+
+th.table-dropdown .btn,
+td.table-dropdown .btn {
+    height: 19px !important;
+    line-height: 19px !important;
+    padding: 0 !important;
+}
+
+#top-menu .dropdown-item:hover,
+#top-menu .dropdown-item:active,
+#utilities .dropdown-item:hover,
+#utilities .dropdown-item:active {
+    box-shadow: none;
+    border: none;
+    text-decoration: none;
+    background-color: #54a0e7;
+    color: #fff;
+}
+
+#no-js-message {
+    display: none;
+    font-size: 13px;
+    line-height: 19px;
+    font-weight: normal !important;
+    text-align: center;
+    max-width: 800px;
+    margin: 1em auto;
+    background-color: #fffadc !important;
+    border: 2px solid #fcf5cd !important;
+    padding: 8px 40px;
+}
+
+.alert-danger,
+.bg-danger {
+    background: #FFFADC url('../../images/red_error_25.gif') 6px 6px no-repeat !important;
+}
+
+.alert-danger:before {
+    content: none !important;
+}

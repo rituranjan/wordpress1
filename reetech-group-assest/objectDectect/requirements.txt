@@ -1,4 +1,5 @@
-opencv-python==4.9.0.80
+opencv-python-headless==4.9.0.80
 ultralytics==8.2.7
+torch==2.0.0  # Explicitly use PyTorch 2.0 (most stable with YOLOv8)
 numpy==1.26.4
 PyYAML==6.0.1
