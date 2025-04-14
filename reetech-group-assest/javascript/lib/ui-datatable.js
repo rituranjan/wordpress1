@@ -8,7 +8,11 @@ class GenericDataTable {
             filters: [],
             columns: [],
             actions: [],
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             translations: {
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+
                 emptyTable: "No data found",
                 processing: "<i class='fa fa-spinner fa-spin'></i> Loading...",
                 paginate: { // Added pagination translations
@@ -113,7 +117,8 @@ class GenericDataTable {
             },
             paging: true, // Explicitly enable pagination
             pagingType: 'full_numbers', // Show full pagination controls
-            lengthMenu: [10, 25, 50, 100], // Configure page length options
+           // lengthMenu: [1, 2, 3, 10], // Configure page length options
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             columns: this.getColumnsConfig(),
             language: this.config.translations,
             createdRow: (row, data) => this.handleRowCreation(row, data),
@@ -213,8 +218,8 @@ class GenericDataTable {
 
         return {
             draw: d.draw,
-            start: d.start,
-            length: d.length,
+            page: d.start,
+            per_page: d.length,
             search: d.search.value,
             orderby: d.columns[d.order[0].column].data,
             order: d.order[0].dir,
