@@ -153,6 +153,12 @@ add_action('rest_api_init', function() {
         'callback' => 'get_cached_items',
         'permission_callback' => '__return_true'
     ]);
+
+    register_rest_route('reetech-group/v1', '/getdata', [
+        'methods' => 'GET',
+        'callback' => 'getdata',
+        'permission_callback' => '__return_true'
+    ]);
 });
 
 function handle_invoice_submission(WP_REST_Request $request) {
@@ -537,3 +543,18 @@ $results = array_map(function($item) {
 add_action('save_item', function ($item_id) {
     delete_transient('account_item_all');
 });
+
+
+ function getData(WP_REST_Request $request) {
+    global $wpdb;
+     $parameters = $request->get_json_params();
+     define('REETECH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+     require_once REETECH_PLUGIN_DIR . 'wp_db_query_helper.php';
+     $db_helper = new WP_DB_Query_Helper();
+    // Get account entities as objects (default)
+    $entities = $db_helper->get_account_entities();
+    return new WP_REST_Response([
+        'success' => true,
+        'data' => $entities,
+    ], 200);
+}

@@ -893,8 +893,9 @@ NREUM.info = {
 
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('id');
-if (myParam)
-    loadInvoiceData(myParam)
+if (myParam){
+    loadInvoiceData(myParam);
+    LoadData(myParam);}
 
 
 const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
@@ -1036,8 +1037,6 @@ function loadInvoiceData(invoiceId) {
             }
         },
         function(response) {
-
-                    // Populate main fields
             $('#from_name').val(response.from.name);
             $('#from_address').val(response.from.address);
             $('#to_name').val(response.to.id).trigger('change');
@@ -1045,13 +1044,9 @@ function loadInvoiceData(invoiceId) {
             $('#dateStart').val(response.invoice_date);
             $('#dateEnd').val(response.due_date);
             $('#doc_notes').val(response.notes);
+            $('#dataTable tr.line').not(':first').remove();            
             
-            // Clear existing items
-            $('#dataTable tr.line').not(':first').remove();
-            
-            // Populate line items
             response.items.forEach((item, index) => {
-                // Add new row if not first item
                 if(index > 0) {
                     addRow();
                 // addNewRow();
@@ -1079,57 +1074,52 @@ function loadInvoiceData(invoiceId) {
 }
 
 
-function loadInvoiceData1(invoiceId) {
-// Get nonce for API authentication
-// const nonce = wpApiSettings.nonce; // Make sure to localize script with wp_localize_script()
+function LoadData(invoiceId) {
+    wpApiRequest(
+        'Get', 
+        `http://localhost/wordpress1/wp-json/reetech-group/v1/getdata/?id=${invoiceId}`,
+        null,
+        {
+            showSpinner: true,
+            toastOptions: {
+                wait: 'wait...',
+                success: 'Items loaded successfully!',
+                error: 'Failed to load items!',
+                complete: 'Request completed'
+            }
+        },
+        function(response) {
 
-$.ajax({
-url: `http://localhost/wordpress1/wp-json/reetech-group/v1/get-invoice/?id=${invoiceId}`,
-method: 'GET',
-headers: {
-   // 'X-WP-Nonce': nonce
-},
-success: function(response) {
-    // Populate main fields
-    $('#from_name').val(response.from.name);
-    $('#from_address').val(response.from.address);
-    $('#to_name').val(response.to.id).trigger('change');
-    $('#doc_number').val(response.invoice_number);
-    $('#dateStart').val(response.invoice_date);
-    $('#dateEnd').val(response.due_date);
-    $('#doc_notes').val(response.notes);
-    
-    // Clear existing items
-    $('#dataTable tr.line').not(':first').remove();
-    
-    // Populate line items
-    response.items.forEach((item, index) => {
-        // Add new row if not first item
-        if(index > 0) {
-            addRow();
-           // addNewRow();
-        }
-        
-        // Get current row
-        const row = $('#dataTable tr.line').eq(index);
-        
-        // Populate fields
-        row.find('select[name="item[]"]').val(item.item);
-        row.find('textarea[name="description[]"]').val(item.description);
-        row.find('input[name="unit_price[]"]').val(item.unit_price.toFixed(2));
-        row.find('input[name="qty[]"]').val(item.quantity);
-        row.find('.jtaxTotal').text(item.tax_rate);
-        row.find('input[name="total[]"]').val(item.amount.toFixed(2));
+            initializeComboAutoComplete({
+                            selector: '.combo-select',
+                            sourceData: response.data,
+                            itemValueKey: 'id',
+                            itemTextKey: 'Name',
+                            minChars: 1,
+                            maxItems: 8
+                        });
+            console.log('Items:', response.data);
+
+           // $('#to_name').empty();
+          
+    $('#to_name').append($('<option selected>', {
+        value: 0,
+        text: 'New Customer'
+    }));   
+  
+    $.each(response.data, function(index, item) {
+        $('#to_name').append($('<option>', {
+            value: item.id,
+            text:  item.Name
+        }));
     });
-    
-    // Update totals
-    updateTotals();
-},
-error: function(xhr) {
-    console.error('Error loading invoice:', xhr.responseJSON);
-    alert('Failed to load invoice: ' + xhr.responseJSON.message);
-}
-});
+        },
+        function(xhr) {
+            console.error('Error:', xhr);
+          
+        }
+    );
+
 }
 
 // Usage example - call this when you want to load an invoice

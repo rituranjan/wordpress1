@@ -36,6 +36,11 @@ class RestApi {
             'callback' =>'get_invoice_data',// [__CLASS__, 'get_cached_items'],
             'permission_callback' => '__return_true'
         ]);
+        register_rest_route(self::$namespace, '/getdata', [
+            'methods' => 'GET',
+            'callback' =>'getData',// [__CLASS__, 'get_cached_items'],
+            'permission_callback' => '__return_true'
+        ]);
     }
     function get_invoices_summary(WP_REST_Request $request) {
         global $wpdb;
@@ -339,6 +344,21 @@ public static function get_invoice_data(WP_REST_Request $request) {
     }
 
     return new WP_REST_Response($response, 200);
+}
+
+
+public static function getData(WP_REST_Request $request) {
+    global $wpdb;
+     $parameters = $request->get_json_params();
+     define('REETECH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+     require_once REETECH_PLUGIN_DIR . 'includes/Reetech/wp_db_query_helper.php';
+     $db_helper = new WP_DB_Query_Helper();
+    // Get account entities as objects (default)
+    $entities = $db_helper->get_account_entities();
+    return new WP_REST_Response([
+        'success' => true,
+        'data' => $entities,
+    ], 200);
 }
 
 } 
