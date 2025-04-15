@@ -992,57 +992,27 @@ debugger;
 // Collect the data
 const invoiceData = collectInvoiceData();
 
-
-
-    wpApiRequest(
-        'POST', 
-        'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices', 
-        invoiceData,
-        {
-            showSpinner: true,
-            toastOptions: {
-                wait: 'wait...',
-                success: 'Items loaded successfully!',
-                error: 'Failed to load items!',
-                complete: 'Request completed'
-            }
-        },
-        function(response) {
-           // alert('Invoice saved successfully!');
-            console.log('Items:', response.data);
-        },
-        function(xhr) {
-            console.error('Error:', xhr);
-           // alert('Error saving invoice: ' + xhr);
-        }
-    );
-
-   
-
-
-// // Prepare the AJAX request
-// $.ajax({
-// url: 'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices', // Replace with your actual endpoint
-// type: 'POST',
-// data: JSON.stringify(invoiceData),
-// contentType: 'application/json',
-// contentType: 'application/json',
-// beforeSend: function(xhr) {
-//     // Add WordPress nonce for security if needed
-//    let i=0
-//   //  xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-// },
-// success: function(response) {
-//     console.log('Invoice submitted successfully:', response);
-//     alert('Invoice saved successfully!');
-// },
-// error: function(xhr, status, error) {
-//     console.error('Error submitting invoice:', error);
-//     alert('Error saving invoice: ' + error);
-// }
-// });
-
-
+// Prepare the AJAX request
+$.ajax({
+url: 'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices', // Replace with your actual endpoint
+type: 'POST',
+data: JSON.stringify(invoiceData),
+contentType: 'application/json',
+contentType: 'application/json',
+beforeSend: function(xhr) {
+    // Add WordPress nonce for security if needed
+   let i=0
+  //  xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+},
+success: function(response) {
+    console.log('Invoice submitted successfully:', response);
+    alert('Invoice saved successfully!');
+},
+error: function(xhr, status, error) {
+    console.error('Error submitting invoice:', error);
+    alert('Error saving invoice: ' + error);
+}
+});
 }
 
 function loadInvoiceData(invoiceId) {

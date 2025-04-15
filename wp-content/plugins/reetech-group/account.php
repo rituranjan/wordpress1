@@ -177,7 +177,7 @@ function handle_invoice_submission(WP_REST_Request $request) {
     if (is_wp_error($created_id)) {
         error_log('Creation error: ' . $created_id->get_error_message());
     } else {
-        echo "Created entity ID: $created_id\n";
+       // echo "Created entity ID: $created_id\n";
     }}
     $invoice_data = array(
         'from_name' => sanitize_text_field($parameters['from']['name'] ?? ''),
