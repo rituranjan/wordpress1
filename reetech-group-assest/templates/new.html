@@ -1230,86 +1230,7 @@
 
 
 
-                    <script>
-                        function showFeedback(status) {
-
-                            var msg;
-
-                            if (status == 'success') {
-                                msg = 'Your default note was successfully updated!'
-                            } else {
-                                msg = 'There was an error updating your default message.  Please try again later or contact support.'
-                            }
-
-                            $('#modalForm').hide();
-                            $('#modalFeedback').find('.feedbackMessage').text(msg);
-                            $('#modalFeedback').show();
-                        }
-
-                        $(function () {
-
-
-                            //reset modal
-                            $('#defaultNote').on('show.bs.modal', function (e) {
-
-                                $('#modalForm').find('.btn-spinner').prop('disabled1 btn-outline-primary', false).removeClass('btn-spinner');
-                                $('#modalForm').show();
-                                $('#modalFeedback').hide();
-
-                            })
-
-
-                            var request;
-
-                            $('#btnSaveDefaultNote').click(function () {
-
-                                //disable this button & add spinner
-                                $(this).prop('disabled1 btn-outline-primary', true).addClass('btn-spinner');
-                                //reenable button if form fails to submit the first time
-                                setTimeout(function () {
-                                    $(this).prop('disabled1 btn-outline-primary', false).removeClass('btn-spinner');
-                                }, 6000);
-
-
-                                var notes = $('#default_note').val();
-                                var newdata = "type=invoices&notes=" + encodeURIComponent(notes);
-
-                                //Update the main form's notes to match
-                                if (document.getElementById('copy_to_current_document').checked) document.getElementById('doc_notes').value = notes;
-
-                                // Abort any pending request to server
-                                if (request) {
-                                    request.abort();
-                                }
-
-                                request = $.ajax({
-                                    url: "/app/invoices/defaultnotes",
-                                    type: "post",
-                                    data: newdata
-                                });
-
-                                // Callback handler that will be called on success
-                                request.done(function (response, textStatus, jqXHR) {
-
-                                    showFeedback('success');
-
-                                });
-
-                                // Callback handler that will be called on failure
-                                request.fail(function (jqXHR, textStatus, errorThrown) {
-
-                                    showFeedback('error');
-
-                                });
-
-                                $('#default_note').each(growTextarea);
-
-                            });
-
-
-
-                        })
-                    </script>
+                   
                 </form>
 
 
@@ -1382,8 +1303,357 @@
 <!-- end modal -->
 
 
+<style type="text/css">
+    #modalAttachExpense .modal-dialog {
+        max-width: 470px;
+    }
 
+    #modalAttachExpense .modal-body .label {
+        display: block;
+        width: 100%;
+        padding-bottom: 4px;
+    }
+
+    #modalAttachExpense .modal .alert {
+        margin: 0px 0px 25px 0px;
+    }
+
+    #modalAttachExpense .modal-title {
+        margin: 0;
+        line-height: 18px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #modalAttachExpense .form-group {
+        margin-bottom: 15px;
+    }
+
+    #modalAttachExpense .row {
+        margin-right: -10px;
+        margin-left: -10px;
+    }
+
+    #modalAttachExpense .error {
+        display: none;
+        color: #be1e2d;
+        margin-top: 3px;
+    }
+
+    #modalAttachExpense .input-vendor {
+        position: relative;
+    }
+
+    #modalAttachExpense .input-vendor input {
+        padding-right: 30px;
+        z-index: 0;
+    }
+
+    #modalAttachExpense .dropdown-menu {
+        max-height: 320px;
+        max-width: 100%;
+        overflow-y: auto;
+        top: 29px;
+    }
+
+    #modalAttachExpense .dropdown-radio {
+        display: block;
+        overflow: hidden;
+    }
+
+    #modalAttachExpense .dropdown-radio ins {
+        display: block;
+        padding: 6px 8px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+    }
+
+    #modalAttachExpense :checked+ins {
+        background-color: #54a0e7;
+        color: #fff;
+    }
+
+    #modalAttachExpense .label {
+        user-select: none;
+    }
+
+    #btnShowVendors {
+        position: absolute;
+        right: 0;
+        line-height: 28px;
+        width: 29px;
+        z-index: 1;
+        background: none;
+        border-left: thin solid #c1c1c1;
+    }
+
+    #btnShowVendors i.material-icons {
+        display: block;
+    }
+
+    #btnNewVendor.bg-muted {
+        background-color: #f2f2f2;
+    }
+
+    #btnNewVendor:hover {
+        background-color: #54a0e7;
+        color: #fff;
+    }
+
+    .loading .dropdown.vendors {
+        height: 30px;
+        border: thin solid #d2d2d2;
+        background-color: #f8f8f8;
+    }
+
+    .loading .input-vendor {
+        opacity: 0;
+    }
+
+    .loading-input {
+        display: none;
+    }
+
+    .loading .loading-input {
+        display: block;
+    }
+
+    .loading-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        font-size: 12px;
+        font-weight: bold;
+        color: #c0c0c0;
+        line-height: 29px;
+        padding: 0 7px;
+        user-select: none;
+    }
+
+    .loading-input .input-spinner {
+        position: absolute;
+        right: 5px;
+        top: 7px;
+    }
+
+    .input-spinner:after {
+        content: "";
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: block;
+        border-radius: 50%;
+        width: 16px !important;
+        height: 16px !important;
+        border: 3px solid #dadada;
+        border-top-color: #73bd0b;
+        animation: spin 1s infinite linear;
+    }
+</style>
+
+
+<div class="modal" id="modalAttachExpense" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Add an expense</h4>
+            </div>
+            <div class="modal-body" style="padding:20px 25px 35px 25px;">
+
+                <div class="alert alert-danger" style="display:none"></div>
+
+                <table class="form form-invoice" style="width:330px; max-width:100%; margin:0 auto;">
+                    <tr>
+                        <td>
+                            <label class="label" for="inputVendor">Vendor</label>
+
+                            <div class="dropdown vendors has-vendors">
+
+                                <div class="input-vendor">
+                                    <button type="button" id="btnShowVendors" style="display:none"><i
+                                            class="material-icons arrow_drop_down">&#xe5c5;</i></button>
+                                    <input type="text" id="inputVendor" class="required" autocomplete="off"
+                                        placeholder="Vendor name" maxlength="200">
+                                    <small class="help-block error">Please choose or enter a new vendor.</small>
+                                </div>
+                                <!--end input-vendor -->
+
+                                <div class="dropdown-menu radio">
+                                    <label class="dropdown-radio bg-muted" id="btnNewVendor" tabindex="0"
+                                        style="display:none">
+                                        <input type="radio" name="choose_vendor" tabindex="-1" value="0" checked>
+                                        <ins></ins>
+                                    </label>
+                                    <div id="dropdownVendors">
+
+
+                                    </div>
+                                    <!--end dropdownVendors -->
+
+                                </div>
+                                <!--end dropdown-menu-->
+
+
+                                <div class="loading-input"><span>Loading vendors...</span> <span
+                                        class="input-spinner"></span></div>
+
+
+                            </div>
+                            <!-- end dropdown-->
+
+
+
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="label" for="expenseCategory">Category</label>
+                            <select id="expenseCategory" style="padding:0 5px">
+                                <option value="600000">Advertising</option>
+                                <option value="601800">Airfare, Taxi, Lodging, etc.</option>
+                                <option value="600100">Car and Truck</option>
+                                <option value="600200">Commissions and Fees</option>
+                                <option value="600300">Contract Labor</option>
+                                <option value="600600">Employee Benefits</option>
+                                <option value="601300">Equipment Rental</option>
+                                <option value="600700">Insurance</option>
+                                <option value="600900">Interest</option>
+                                <option value="600800">Interest Mortgage</option>
+                                <option value="601000">Legal and Professional Services</option>
+                                <option value="601900">Meals and Entertainment</option>
+                                <option value="601100">Office Expense</option>
+                                <option value="600550">Payroll Tax Expense</option>
+                                <option value="601200">Pensions and Profit-sharing Plans</option>
+                                <option value="601400">Rent</option>
+                                <option value="601500">Repairs and Maintenance</option>
+                                <option value="602100">Salaries and Wages</option>
+                                <option value="601600">Supplies</option>
+                                <option value="601700">Taxes and Licenses</option>
+                                <option value="602000">Utilities</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="input-daterange">
+                            <label class="label" for="expenseDate">Date</label>
+                            <input type="text" name="new_expense_due_date" id="expenseDate"
+                                class="required hasDatepicker" value="03/31/2025" maxlength="30">
+                            <small class="help-block error">Please enter a valid date.</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="label" for="inputExpense">Amount</label>
+                            <input type="text" name="new_expense_amount" class="text-right required" id="inputExpense"
+                                autocomplete="off" placeholder="0.00" oninput="validatePositiveAmount(this)"
+                                maxlength="9">
+                            <small class="help-block error">Please enter a positive amount.</small>
+                        </td>
+                    </tr>
+                </table>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnAttachExpense">Save expense</button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- end modal -->
+
+
+
+
+<!-- 
 <script>
+    function showFeedback(status) {
+
+        var msg;
+
+        if (status == 'success') {
+            msg = 'Your default note was successfully updated!'
+        } else {
+            msg = 'There was an error updating your default message.  Please try again later or contact support.'
+        }
+
+        $('#modalForm').hide();
+        $('#modalFeedback').find('.feedbackMessage').text(msg);
+        $('#modalFeedback').show();
+    }
+
+    $(function () {
+
+
+        //reset modal
+        $('#defaultNote').on('show.bs.modal', function (e) {
+
+            $('#modalForm').find('.btn-spinner').prop('disabled1 btn-outline-primary', false).removeClass('btn-spinner');
+            $('#modalForm').show();
+            $('#modalFeedback').hide();
+
+        })
+
+
+        var request;
+
+        $('#btnSaveDefaultNote').click(function () {
+
+            //disable this button & add spinner
+            $(this).prop('disabled1 btn-outline-primary', true).addClass('btn-spinner');
+            //reenable button if form fails to submit the first time
+            setTimeout(function () {
+                $(this).prop('disabled1 btn-outline-primary', false).removeClass('btn-spinner');
+            }, 6000);
+
+
+            var notes = $('#default_note').val();
+            var newdata = "type=invoices&notes=" + encodeURIComponent(notes);
+
+            //Update the main form's notes to match
+            if (document.getElementById('copy_to_current_document').checked) document.getElementById('doc_notes').value = notes;
+
+            // Abort any pending request to server
+            if (request) {
+                request.abort();
+            }
+
+            request = $.ajax({
+                url: "/app/invoices/defaultnotes",
+                type: "post",
+                data: newdata
+            });
+
+            // Callback handler that will be called on success
+            request.done(function (response, textStatus, jqXHR) {
+
+                showFeedback('success');
+
+            });
+
+            // Callback handler that will be called on failure
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+
+                showFeedback('error');
+
+            });
+
+            $('#default_note').each(growTextarea);
+
+        });
+
+
+
+    })
+
     var table = $('#dataTable');
 
     table.on('click', '.openTaxDropdown', function (e) {
@@ -1694,281 +1964,6 @@
 
 
     })
-</script>
-
-<style type="text/css">
-    #modalAttachExpense .modal-dialog {
-        max-width: 470px;
-    }
-
-    #modalAttachExpense .modal-body .label {
-        display: block;
-        width: 100%;
-        padding-bottom: 4px;
-    }
-
-    #modalAttachExpense .modal .alert {
-        margin: 0px 0px 25px 0px;
-    }
-
-    #modalAttachExpense .modal-title {
-        margin: 0;
-        line-height: 18px;
-        font-size: 18px;
-        font-weight: bold;
-    }
-
-    #modalAttachExpense .form-group {
-        margin-bottom: 15px;
-    }
-
-    #modalAttachExpense .row {
-        margin-right: -10px;
-        margin-left: -10px;
-    }
-
-    #modalAttachExpense .error {
-        display: none;
-        color: #be1e2d;
-        margin-top: 3px;
-    }
-
-    #modalAttachExpense .input-vendor {
-        position: relative;
-    }
-
-    #modalAttachExpense .input-vendor input {
-        padding-right: 30px;
-        z-index: 0;
-    }
-
-    #modalAttachExpense .dropdown-menu {
-        max-height: 320px;
-        max-width: 100%;
-        overflow-y: auto;
-        top: 29px;
-    }
-
-    #modalAttachExpense .dropdown-radio {
-        display: block;
-        overflow: hidden;
-    }
-
-    #modalAttachExpense .dropdown-radio ins {
-        display: block;
-        padding: 6px 8px;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        word-break: break-word;
-    }
-
-    #modalAttachExpense :checked+ins {
-        background-color: #54a0e7;
-        color: #fff;
-    }
-
-    #modalAttachExpense .label {
-        user-select: none;
-    }
-
-    #btnShowVendors {
-        position: absolute;
-        right: 0;
-        line-height: 28px;
-        width: 29px;
-        z-index: 1;
-        background: none;
-        border-left: thin solid #c1c1c1;
-    }
-
-    #btnShowVendors i.material-icons {
-        display: block;
-    }
-
-    #btnNewVendor.bg-muted {
-        background-color: #f2f2f2;
-    }
-
-    #btnNewVendor:hover {
-        background-color: #54a0e7;
-        color: #fff;
-    }
-
-    .loading .dropdown.vendors {
-        height: 30px;
-        border: thin solid #d2d2d2;
-        background-color: #f8f8f8;
-    }
-
-    .loading .input-vendor {
-        opacity: 0;
-    }
-
-    .loading-input {
-        display: none;
-    }
-
-    .loading .loading-input {
-        display: block;
-    }
-
-    .loading-input {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        font-size: 12px;
-        font-weight: bold;
-        color: #c0c0c0;
-        line-height: 29px;
-        padding: 0 7px;
-        user-select: none;
-    }
-
-    .loading-input .input-spinner {
-        position: absolute;
-        right: 5px;
-        top: 7px;
-    }
-
-    .input-spinner:after {
-        content: "";
-        position: absolute;
-        right: 0;
-        top: 0;
-        display: block;
-        border-radius: 50%;
-        width: 16px !important;
-        height: 16px !important;
-        border: 3px solid #dadada;
-        border-top-color: #73bd0b;
-        animation: spin 1s infinite linear;
-    }
-</style>
-
-
-<div class="modal" id="modalAttachExpense" tabindex="-1" role="dialog" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                <h4 class="modal-title">Add an expense</h4>
-            </div>
-            <div class="modal-body" style="padding:20px 25px 35px 25px;">
-
-                <div class="alert alert-danger" style="display:none"></div>
-
-                <table class="form form-invoice" style="width:330px; max-width:100%; margin:0 auto;">
-                    <tr>
-                        <td>
-                            <label class="label" for="inputVendor">Vendor</label>
-
-                            <div class="dropdown vendors has-vendors">
-
-                                <div class="input-vendor">
-                                    <button type="button" id="btnShowVendors" style="display:none"><i
-                                            class="material-icons arrow_drop_down">&#xe5c5;</i></button>
-                                    <input type="text" id="inputVendor" class="required" autocomplete="off"
-                                        placeholder="Vendor name" maxlength="200">
-                                    <small class="help-block error">Please choose or enter a new vendor.</small>
-                                </div>
-                                <!--end input-vendor -->
-
-                                <div class="dropdown-menu radio">
-                                    <label class="dropdown-radio bg-muted" id="btnNewVendor" tabindex="0"
-                                        style="display:none">
-                                        <input type="radio" name="choose_vendor" tabindex="-1" value="0" checked>
-                                        <ins></ins>
-                                    </label>
-                                    <div id="dropdownVendors">
-
-
-                                    </div>
-                                    <!--end dropdownVendors -->
-
-                                </div>
-                                <!--end dropdown-menu-->
-
-
-                                <div class="loading-input"><span>Loading vendors...</span> <span
-                                        class="input-spinner"></span></div>
-
-
-                            </div>
-                            <!-- end dropdown-->
-
-
-
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="label" for="expenseCategory">Category</label>
-                            <select id="expenseCategory" style="padding:0 5px">
-                                <option value="600000">Advertising</option>
-                                <option value="601800">Airfare, Taxi, Lodging, etc.</option>
-                                <option value="600100">Car and Truck</option>
-                                <option value="600200">Commissions and Fees</option>
-                                <option value="600300">Contract Labor</option>
-                                <option value="600600">Employee Benefits</option>
-                                <option value="601300">Equipment Rental</option>
-                                <option value="600700">Insurance</option>
-                                <option value="600900">Interest</option>
-                                <option value="600800">Interest Mortgage</option>
-                                <option value="601000">Legal and Professional Services</option>
-                                <option value="601900">Meals and Entertainment</option>
-                                <option value="601100">Office Expense</option>
-                                <option value="600550">Payroll Tax Expense</option>
-                                <option value="601200">Pensions and Profit-sharing Plans</option>
-                                <option value="601400">Rent</option>
-                                <option value="601500">Repairs and Maintenance</option>
-                                <option value="602100">Salaries and Wages</option>
-                                <option value="601600">Supplies</option>
-                                <option value="601700">Taxes and Licenses</option>
-                                <option value="602000">Utilities</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="input-daterange">
-                            <label class="label" for="expenseDate">Date</label>
-                            <input type="text" name="new_expense_due_date" id="expenseDate"
-                                class="required hasDatepicker" value="03/31/2025" maxlength="30">
-                            <small class="help-block error">Please enter a valid date.</small>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="label" for="inputExpense">Amount</label>
-                            <input type="text" name="new_expense_amount" class="text-right required" id="inputExpense"
-                                autocomplete="off" placeholder="0.00" oninput="validatePositiveAmount(this)"
-                                maxlength="9">
-                            <small class="help-block error">Please enter a positive amount.</small>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnAttachExpense">Save expense</button>
-                <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
-            </div>
-
-        </div>
-    </div>
-</div>
-<!-- end modal -->
-
-
-
-
-
-
-<script>
     var modalExpense = $('#modalAttachExpense');
     var btnNewVendor = $('#btnNewVendor');
     var btnShowVendors = $('#btnShowVendors');
@@ -2348,8 +2343,26 @@
         }
 
     }
-</script>
-<script>
+    const preselectCustomer = () => {
+// Check if the URL contains the "&customer=16" parameter
+const urlParams = new URLSearchParams(location.search);
+for (const [key, value] of urlParams) {
+    if (key === 'customer') {
+        const customerSelectBox = document.getElementById('to_name');
+
+        // Loop through the available customers select box
+        for (let i = 0; i < customerSelectBox.options.length; i++) {
+            if (customerSelectBox.options[i].value === value) {
+                // Set the selected attribute to 'true' for the matching customer id
+                customerSelectBox.options[i].selected = true;
+                customerSelectBox.dispatchEvent(new Event("change"));
+            }
+        }
+    }
+}
+}
+
+
     preselectCustomer();
    // const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
 
@@ -2440,9 +2453,7 @@
     $(document).on('blur', "#dateStart, #dateEnd", function () {
         correctEmptyDates();
     });
-</script>
 
-<script type="text/javascript">
     window.NREUM || (NREUM = {});
     NREUM.info = {
         "beacon": "bam.nr-data.net",
@@ -2455,17 +2466,12 @@
         "errorBeacon": "bam.nr-data.net",
         "agent": ""
     }
-</script>
 
-<script>
     const urlParams = new URLSearchParams(window.location.search);
     const myParam = urlParams.get('id');
     if (myParam)
         loadInvoiceData(myParam)
-</script>
 
-
-<script>
 
 const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
 
@@ -2700,24 +2706,6 @@ resizeTextarea($(elem));
 
 
 //MODULE functions
-const preselectCustomer1 = () => {
-// Check if the URL contains the "&customer=16" parameter
-const urlParams = new URLSearchParams(location.search);
-for (const [key, value] of urlParams) {
-    if (key === 'customer') {
-        const customerSelectBox = document.getElementById('to_name');
-
-        // Loop through the available customers select box
-        for (let i = 0; i < customerSelectBox.options.length; i++) {
-            if (customerSelectBox.options[i].value === value) {
-                // Set the selected attribute to 'true' for the matching customer id
-                customerSelectBox.options[i].selected = true;
-                customerSelectBox.dispatchEvent(new Event("change"));
-            }
-        }
-    }
-}
-}
 
 
 function getCustomerAddress(customerId) {
@@ -3964,4 +3952,8 @@ $(document).on("keydown", ":input:not(textarea):not(:submit)", function (event) 
 
 
 
-    </script>
+    </script> -->
+
+
+
+    <script src="/wordpress1/reetech-group-assest/javascript/javascript.js?v=V0002467"></script>
