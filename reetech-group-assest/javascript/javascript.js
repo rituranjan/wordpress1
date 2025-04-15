@@ -1,9 +1,185 @@
+
+// Add row
+
+function addRow() {
+
+    $('.hasAutocomplete').unbind();
+
+    table.find('.taxDropdown').hide();
+    table.find('.focus').removeClass('focus');
+
+    //Clone row and attached functions
+    var lastRow = table.find('.line').last();
+    var newRow = lastRow.clone(true, false);
+
+    //Reset all values except tax
+    newRow.find('input.linePrice, input.lineQty, textarea, select, input.hasAutocomplete').val('');
+
+    // Set default item list for selection; prevent multiple instances of Prodcut being added via Inventory
+    // Skip if pub
+    if (typeof defaultItemsList !== 'undefined') {
+        loadDefaultItemCategories(newRow)
+    }
+
+    newRow.find('.growTextarea').css('height', 'auto');
+    newRow.find('[name="expense_id[]"]').val('0');
+    newRow.find('.clearOnNew').val('');
+    newRow.find('.lineTotal').val('0.00');
+    newRow.find('.openTaxDropdown').prop('disabled', false)
+    newRow.find('.focus').removeClass('focus');
+    newRow.removeClass('isDiscount isExpense isInventory onlyPositive');
+    newRow.find('.hidden-inputs').remove(); //remove any attached expenses (see modal)
+    newRow.insertAfter(lastRow);
+
+    if ($('.zap').length > 1) {
+        $('.zap').find('.btnDeleteRow').show();
+    }
+
+    $('.hasAutocomplete').each(createAuto);  //unbind then reattach, so it understands itself as separate
+    $('.growTextarea').each(growTextarea);
+
+}
+
+
+function collectInvoiceData() {
+    // Basic invoice information
+    const invoiceData = {
+        from: {
+            name: $('#from_name').val(),
+            address: $('#from_address').val()
+        },
+        to: {
+            id: $('#to_name').val(),
+            name: $('#to_name option:selected').text(),
+            address: $('#to_address').val()
+        },
+        logo: $('#customization_logoFilename').val(),
+        heading: $('#doc_heading').val(),
+        invoice_number: $('#doc_number').val(),
+        po_number: $('#po_number').val(),
+        invoice_date: $('#dateStart').val(),
+        due_date: $('#dateEnd').val(),
+        items: [],
+        notes: $('#doc_notes').val(),
+        subtotal: parseFloat($('#sum_subtotal').val().replace('$', '') || 0),
+        total: parseFloat($('#sum_total').val().replace('$', '') || 0),
+        amount_paid: parseFloat($('#amount_paid').val().replace('$', '') || 0),
+        balance_due: parseFloat($('#balance_due').val().replace(/[^0-9.-]+/g, '') || 0)
+    };
+
+    // Collect line items
+    $('#dataTable tr.line').each(function() {
+        const row = $(this);
+        const item = {
+            type: row.find('select[name="item[]"]').val(),
+            description: row.find('textarea[name="description[]"]').val(),
+            unit_price: parseFloat(row.find('input[name="unit_price[]"]').val() || 0),
+            quantity: parseFloat(row.find('input[name="qty[]"]').val() || 0),
+            tax_rate: row.find('.jtaxTotal').text().trim(),
+            tax_amount: parseFloat(row.find('input[name="tax_total[]"]').val() || 0),
+            amount: parseFloat(row.find('input[name="total[]"]').val() || 0),
+            expense_id: row.find('input[name="expense_id[]"]').val()
+        };
+        
+        invoiceData.items.push(item);
+    });
+
+    return invoiceData;
+}
+
+function submitInvoiceToWordPress() {
+    debugger;
+    // Collect the data
+    const invoiceData = collectInvoiceData();
+    
+    // Prepare the AJAX request
+    $.ajax({
+        url: 'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices', // Replace with your actual endpoint
+        type: 'POST',
+        data: JSON.stringify(invoiceData),
+        contentType: 'application/json',
+        contentType: 'application/json',
+        beforeSend: function(xhr) {
+            // Add WordPress nonce for security if needed
+           let i=0
+          //  xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        },
+        success: function(response) {
+            console.log('Invoice submitted successfully:', response);
+            alert('Invoice saved successfully!');
+        },
+        error: function(xhr, status, error) {
+            console.error('Error submitting invoice:', error);
+            alert('Error saving invoice: ' + error);
+        }
+    });
+}
+
+function loadInvoiceData(invoiceId) {
+    // Get nonce for API authentication
+   // const nonce = wpApiSettings.nonce; // Make sure to localize script with wp_localize_script()
+
+    $.ajax({
+        url: `http://localhost/wordpress1/wp-json/reetech-group/v1/get-invoice/?id=${invoiceId}`,
+        method: 'GET',
+        headers: {
+           // 'X-WP-Nonce': nonce
+        },
+        success: function(response) {
+            // Populate main fields
+            $('#from_name').val(response.from.name);
+            $('#from_address').val(response.from.address);
+            $('#to_name').val(response.to.id).trigger('change');
+            $('#doc_number').val(response.invoice_number);
+            $('#dateStart').val(response.invoice_date);
+            $('#dateEnd').val(response.due_date);
+            $('#doc_notes').val(response.notes);
+            
+            // Clear existing items
+            $('#dataTable tr.line').not(':first').remove();
+            
+            // Populate line items
+            response.items.forEach((item, index) => {
+                // Add new row if not first item
+                if(index > 0) {
+                    addRow();
+                   // addNewRow();
+                }
+                
+                // Get current row
+                const row = $('#dataTable tr.line').eq(index);
+                
+                // Populate fields
+                row.find('select[name="item[]"]').val(item.item);
+                row.find('textarea[name="description[]"]').val(item.description);
+                row.find('input[name="unit_price[]"]').val(item.unit_price.toFixed(2));
+                row.find('input[name="qty[]"]').val(item.quantity);
+                row.find('.jtaxTotal').text(item.tax_rate);
+                row.find('input[name="total[]"]').val(item.amount.toFixed(2));
+            });
+            
+            // Update totals
+            updateTotals();
+        },
+        error: function(xhr) {
+            console.error('Error loading invoice:', xhr.responseJSON);
+            alert('Failed to load invoice: ' + xhr.responseJSON.message);
+        }
+    });
+}
+
+// Usage example - call this when you want to load an invoice
+// loadInvoiceData(123); // Where 123 is the invoice ID
+
+
+
+
 //GLOBAL
 var table = $('#dataTable');
 
 function is_touch_device() {
     var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ');
-    var mq = function(query) {
+    var mq = function (query) {
         return window.matchMedia(query).matches;
     }
     if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
@@ -27,8 +203,7 @@ function sanitizeNames(obj) {
 
     if (obj.value.search(regex) != -1) {
         var match = obj.value.match(regex);
-        if (match == " ") var space = "Empty space";
-        else var space = "";
+        if (match == " ") var space = "Empty space"; else var space = "";
         obj.value = obj.value.replace(regex, '');
         alert('Illegal Character Removed: ' + match + space + "\n\nAllowed Input:\n------------------\nletters\nnumbers: 0-9\nempty space\nparentheses: ( )\nunderscore: _\nperiod: .\ncomma: ,\napostrophe: \'\nampersand: &\nhyphen: -");
     }
@@ -38,14 +213,14 @@ function sanitizeNames(obj) {
 //Textarea
 function growTextarea(i, elem) {
     var elem = $(elem);
-    var resizeTextarea = function(elem) {
+    var resizeTextarea = function (elem) {
         var scrollLeft = window.pageXOffset || (document.documentElement || document.body.parentNode || document.body).scrollLeft;
         var scrollTop = window.pageYOffset || (document.documentElement || document.body.parentNode || document.body).scrollTop;
         elem.css('height', 'auto').css('height', elem.prop('scrollHeight'));
         window.scrollTo(scrollLeft, scrollTop);
     };
 
-    elem.on('input', function() {
+    elem.on('input', function () {
         resizeTextarea($(this));
     });
 
@@ -55,7 +230,7 @@ function growTextarea(i, elem) {
 
 
 //MODULE functions
-const preselectCustomer = () => {
+const preselectCustomer1 = () => {
     // Check if the URL contains the "&customer=16" parameter
     const urlParams = new URLSearchParams(location.search);
     for (const [key, value] of urlParams) {
@@ -91,7 +266,7 @@ function getCustomerAddress(customerId) {
 
         document.getElementById('rowNewCustomer').style.display = 'none';
 
-        ajax_get("/getCustomerAddress.inc.php?customer=" + customerId, function() {
+        ajax_get("/getCustomerAddress.inc.php?customer=" + customerId, function () {
 
             //alert(xmlhttp.responseText); 
 
@@ -103,8 +278,7 @@ function getCustomerAddress(customerId) {
                 // to_address
                 var to_address = node[0].getElementsByTagName("to_address")[0];
 
-                if (to_address.hasChildNodes()) var address = to_address.firstChild.nodeValue;
-                else var address = '';
+                if (to_address.hasChildNodes()) var address = to_address.firstChild.nodeValue; else var address = '';
 
                 document.getElementById("to_address").innerHTML = address;
                 $('#to_address').each(growTextarea);
@@ -116,23 +290,14 @@ function getCustomerAddress(customerId) {
                     var node = xmlhttp.responseXML.documentElement.getElementsByTagName("taxes");
 
                     var taxes = node[0].getElementsByTagName("tax_id")[0];
-                    if (taxes.hasChildNodes()) {
-                        if (taxes.firstChild.nodeValue > 0) var tax_id = taxes.firstChild.nodeValue ? .trim();
-                        else var tax_id = ''
-                    };
+                    if (taxes.hasChildNodes()) { if (taxes.firstChild.nodeValue > 0) var tax_id = taxes.firstChild.nodeValue?.trim(); else var tax_id = '' };
                     taxes = node[0].getElementsByTagName("tax2_id")[0];
-                    if (taxes.hasChildNodes()) {
-                        if (taxes.firstChild.nodeValue > 0) var tax2_id = taxes.firstChild.nodeValue ? .trim();
-                        else var tax2_id = ''
-                    };
+                    if (taxes.hasChildNodes()) { if (taxes.firstChild.nodeValue > 0) var tax2_id = taxes.firstChild.nodeValue?.trim(); else var tax2_id = '' };
                     taxes = node[0].getElementsByTagName("tax3_id")[0];
-                    if (taxes.hasChildNodes()) {
-                        if (taxes.firstChild.nodeValue > 0) var tax3_id = taxes.firstChild.nodeValue ? .trim();
-                        else var tax3_id = ''
-                    };
+                    if (taxes.hasChildNodes()) { if (taxes.firstChild.nodeValue > 0) var tax3_id = taxes.firstChild.nodeValue?.trim(); else var tax3_id = '' };
 
                     //Clear all taxes selected: 
-                    $.each($('.NoTax'), function(i, obj) {
+                    $.each($('.NoTax'), function (i, obj) {
 
                         $(obj).prop("checked", true);
                         changeTaxSelect(obj);
@@ -147,7 +312,7 @@ function getCustomerAddress(customerId) {
                         tax_lines = $('.SingleTax[data-component_id="' + tax_id + '"], .SingleTax[data-component_id="' + tax2_id + '"], .SingleTax[data-component_id="' + tax3_id + '"]');
 
                         //Update each tax line with the customer preselected tax: 
-                        $.each(tax_lines, function(i, obj) {
+                        $.each(tax_lines, function (i, obj) {
 
                             $(obj).prop("checked", true);
                             changeTaxSelect(obj);
@@ -184,7 +349,7 @@ function numberFormat(value, precision = 2) {
     const rounding_scale = Math.pow(10, precision);
     // Rounding scale is used to multiply and divide the provided value by, so that in between we can work with int (whole number). 
     // add the smallest representable number (epsilon) to make sure we round up
-    const roundedValue = Math.round((value * rounding_scale) * (1 + Number.EPSILON)) / rounding_scale;
+    const roundedValue =  Math.round((value * rounding_scale) * (1 + Number.EPSILON)) / rounding_scale;
     return roundedValue.toFixed(precision);
 }
 
@@ -211,7 +376,7 @@ function reCalculate() {
 
     //Calculate total discount
     var total_discount = 0;
-    table.find('.isDiscount').find('.lineTotal').each(function() {
+    table.find('.isDiscount').find('.lineTotal').each(function () {
         total_discount += Math.abs(Number($(this).val()));
     });
 
@@ -221,7 +386,7 @@ function reCalculate() {
 
     //Calculate subtotal
     var subtotal = 0;
-    table.find('.line').not('.isDiscount').find('.lineTotal').each(function() {
+    table.find('.line').not('.isDiscount').find('.lineTotal').each(function () {
         subtotal += Number($(this).val());
     });
     $('#sum_subtotal').val(numberToCurrency(subtotal));
@@ -264,8 +429,7 @@ function reCalculateTax() {
         if (rowAmount > 0) subtotal_positive_lines = sum(subtotal_positive_lines, rowAmount);
 
     }
-    if (subtotal_positive_lines > 0) var discount_per_subtotal = discount / subtotal_positive_lines;
-    else var discount_per_subtotal = 0;
+    if (subtotal_positive_lines > 0) var discount_per_subtotal = discount / subtotal_positive_lines; else var discount_per_subtotal = 0;
 
 
     var taxPct = [];
@@ -274,7 +438,7 @@ function reCalculateTax() {
     var taxComponentNameValue;
 
 
-    table.find('.line').each(function() {
+    table.find('.line').each(function () {
 
         lineTotal = numberFormat($(this).find('.lineTotal').val() || '0', 2);
         var cell = $(this).find('.tax1');
@@ -318,7 +482,7 @@ function reCalculateTax() {
 
         }
 
-    }); // end each
+    });  // end each
 
     // Sort the two arrays 
     if (taxPct.length > 1) {
@@ -358,7 +522,9 @@ function reCalculateTax() {
         taxPct = tempPct;
         taxSums = tempSums;
         taxComponentName = tempName;
-    } else {
+    }
+
+    else {
 
         if (taxSums[0] * 1 > 0) {
             sum_of_all_taxes = numberFormat(taxSums[0], 2);
@@ -395,7 +561,7 @@ function reCalculateTax() {
 
 
 //delete row
-table.on('click', '.btnDeleteRow', function(e) {
+table.on('click', '.btnDeleteRow', function (e) {
     var rowCount = table.find('.zap').length;
 
     if (rowCount > 1) {
@@ -419,46 +585,6 @@ const loadDefaultItemCategories = (row) => {
 }
 
 
-// Add row
-
-function addRow() {
-
-    $('.hasAutocomplete').unbind();
-
-    table.find('.taxDropdown').hide();
-    table.find('.focus').removeClass('focus');
-
-    //Clone row and attached functions
-    var lastRow = table.find('.line').last();
-    var newRow = lastRow.clone(true, false);
-
-    //Reset all values except tax
-    newRow.find('input.linePrice, input.lineQty, textarea, select, input.hasAutocomplete').val('');
-
-    // Set default item list for selection; prevent multiple instances of Prodcut being added via Inventory
-    // Skip if pub
-    if (typeof defaultItemsList !== 'undefined') {
-        loadDefaultItemCategories(newRow)
-    }
-
-    newRow.find('.growTextarea').css('height', 'auto');
-    newRow.find('[name="expense_id[]"]').val('0');
-    newRow.find('.clearOnNew').val('');
-    newRow.find('.lineTotal').val('0.00');
-    newRow.find('.openTaxDropdown').prop('disabled', false)
-    newRow.find('.focus').removeClass('focus');
-    newRow.removeClass('isDiscount isExpense isInventory onlyPositive');
-    newRow.find('.hidden-inputs').remove(); //remove any attached expenses (see modal)
-    newRow.insertAfter(lastRow);
-
-    if ($('.zap').length > 1) {
-        $('.zap').find('.btnDeleteRow').show();
-    }
-
-    $('.hasAutocomplete').each(createAuto); //unbind then reattach, so it understands itself as separate
-    $('.growTextarea').each(growTextarea);
-
-}
 
 function toggleLogo() {
 
@@ -581,7 +707,7 @@ function ajax_get(url, passedFunction) {
     xmlhttp.send(null);
 }
 
-table.on('change', 'select.selectItem', function(e) {
+table.on('change', 'select.selectItem', function (e) {
 
     //reset active (selected) line
     $('.line').removeClass('active');
@@ -683,7 +809,8 @@ function updateQueryString(key, value, url) {
                 url += '#' + hash[1];
             return url;
         }
-    } else {
+    }
+    else {
         if (typeof value !== 'undefined' && value !== null) {
             var separator = url.indexOf('?') !== -1 ? '&' : '?';
             hash = url.split('#');
@@ -691,7 +818,8 @@ function updateQueryString(key, value, url) {
             if (typeof hash[1] !== 'undefined' && hash[1] !== null)
                 url += '#' + hash[1];
             return url;
-        } else
+        }
+        else
             return url;
     }
 }
@@ -715,19 +843,19 @@ function createAuto(i, elem) {
     var listItems = dropdown.find('.dropdown-radio');
 
     listItems.hide();
-    listItems.each(function() {
+    listItems.each(function () {
         $(this).data('value', $(this).text());
         //!important, keep this copy of the text outside of keyup/input function
     });
 
-    input.on("input", function(e) {
+    input.on("input", function (e) {
 
         var query = input.val().toLowerCase();
         if (query.length > 1) {
 
             dropdown.addClass('open').addClass('in');
 
-            listItems.each(function() {
+            listItems.each(function () {
 
                 var text = $(this).data('value');
                 if (text.toLowerCase().indexOf(query) > -1) {
@@ -755,7 +883,7 @@ function createAuto(i, elem) {
 
 
 
-    input.on("keyup", function(e) {
+    input.on("keyup", function (e) {
         switch (e.keyCode) {
             case 13: //enter
                 dropdown.removeClass('open').removeClass('in');
@@ -769,7 +897,7 @@ function createAuto(i, elem) {
 
     });
 
-    listItems.on("keyup", function(e) {
+    listItems.on("keyup", function (e) {
 
         var li = $(this);
 
@@ -792,18 +920,18 @@ function createAuto(i, elem) {
     });
 
     //prevent page to scroll when scrolling the pricelist
-    listItems.on("keydown", function(e) {
-        if (e.keyCode === 38 || e.keyCode === 40) e.preventDefault();
+    listItems.on("keydown", function(e){
+      if (e.keyCode === 38 || e.keyCode === 40) e.preventDefault();
     });
 
-    listItems.on('click', function(e) {
+    listItems.on('click', function (e) {
 
         var elem = $(this);
         var row = elem.closest('.line');
 
         row.find('.usedOnlyForArrowKeysToFocus').prop('checked', false);
 
-        var txt = elem.text().replace(/^\s+|\s+$/g, ""); //remove leading and trailing whitespace
+        var txt = elem.text().replace(/^\s+|\s+$/g, "");  //remove leading and trailing whitespace
         input.val(txt);
         dropdown.removeClass('open').removeClass('in');
 
@@ -855,17 +983,46 @@ function createAuto(i, elem) {
 }
 
 
+// jQuery(document).ready(function($) {
 
+
+//     wpApiRequest(
+//         'GET',
+//         'http://localhost/wordpress1/wp-json/items/v1/all',
+//         {},
+//         {showSpinner: true},
+//         successGetData
+//     );
+
+//     function successGetData(data){
+//             const response =data; 
+//             const mySelect = new CustomSelect('#mySelect', {
+//                 placeholder: 'Choose item type',
+//                 data: data.data,
+//                 initialValue: 'Expense' // Optional default value
+//             });
+            
+//             // Get selected value
+//             mySelect.on('change', () => {
+//                 console.log('Selected value:', mySelect.getValue());
+//                 console.log('Selected text:', mySelect.getSelectedText());
+//             });           
+            
+//             }    
+
+    
+
+// });
 // FUNCTIONS ON PAGE LOAD //
 
-(function($) {
+(function ($) {
 
 
     $('.hasAutocomplete').each(createAuto);
 
 
     // Toggle options above the form
-    $('#btnToggleOptions').click(function() {
+    $('#btnToggleOptions').click(function () {
         $('#options').toggleClass('open');
         var buttontext = ($('#options').hasClass('open')) ? "Hide Customization Options" : "Show Customization Options";
         $(this).text(buttontext);
@@ -873,12 +1030,12 @@ function createAuto(i, elem) {
 
 
     //Focus background
-    table.on('click', 'td', function(e) {
+    table.on('click', 'td', function (e) {
         $('.focus').not($(this)).removeClass('focus');
         $(this).addClass('focus');
         $(this).find('input,textarea,select').filter(':visible:first').focus();
     });
-    table.on('focusin', 'td', function(e) {
+    table.on('focusin', 'td', function (e) {
         $('.focus').not($(this)).removeClass('focus');
         $(this).addClass('focus');
     });
@@ -905,8 +1062,8 @@ function createAuto(i, elem) {
     });
 
     //Date range in the table filter app/__common/html/date_range.php
-    $('.hasDaterange .startDate').each(function() {
-        $(this).on('changeDate', function(e) {
+    $('.hasDaterange .startDate').each(function () {
+        $(this).on('changeDate', function (e) {
 
             var url = window.location.href;
             var datequery = createDateQuery(e.date);
@@ -920,8 +1077,8 @@ function createAuto(i, elem) {
         });
     });
 
-    $('.hasDaterange .endDate').each(function() {
-        $(this).on('changeDate', function(e) {
+    $('.hasDaterange .endDate').each(function () {
+        $(this).on('changeDate', function (e) {
 
             var url = window.location.href;
             var datequery = createDateQuery(e.date);
@@ -935,7 +1092,7 @@ function createAuto(i, elem) {
     });
 
     //Dropdown options in the table filter
-    $('.dateOption').click(function() {
+    $('.dateOption').click(function () {
         var today = new Date();
 
         var dd = today.getDate();
@@ -981,7 +1138,7 @@ function createAuto(i, elem) {
 
 
     //Filter Customer
-    $('.filterCustomer').click(function(page) {
+    $('.filterCustomer').click(function (page) {
         var customerID = $(this).data('value');
         var url = window.location.href;
         url = updateQueryString('customer', customerID, url);
@@ -989,7 +1146,7 @@ function createAuto(i, elem) {
         window.location = url;
     });
 
-    $('.filterStatus').click(function(page) {
+    $('.filterStatus').click(function (page) {
         var status = $(this).data('value');
         var url = window.location.href;
         url = updateQueryString('status', encodeURI(status), url);
@@ -1015,27 +1172,27 @@ function createAuto(i, elem) {
 
 
     //Print Button
-    $('.btnPrint').click(function() {
+    $('.btnPrint').click(function () {
         if (isFormEdited()) {
             $('#modalSave').modal('show');
         } else if (typeof account_upgrade_url !== 'undefined' && !!account_upgrade_url) {
             const currentUrl = window.location.href;
-            window.history.pushState({}, '', '/app/invoices/print');
+            window.history.pushState({ }, '', '/app/invoices/print');
             window.location.href = account_upgrade_url;
-            window.history.replaceState({}, '', currentUrl);
+            window.history.replaceState({ }, '', currentUrl);
         } else {
             window.print();
         }
     });
 
     //Dismissable alert
-    $(".alert .close").click(function(e) {
+    $(".alert .close").click(function (e) {
         $(this).closest('.alert').removeClass('show');
     });
 
 
     //Submit form button with spinner
-    $('.btnSubmit').click(function(e) {
+    $('.btnSubmit').click(function (e) {
         e.preventDefault();
 
         //disable submit button & add spinner
@@ -1043,7 +1200,7 @@ function createAuto(i, elem) {
         $(this).closest('form').submit();
 
         //reenable button if form failed to submit the first time
-        setTimeout(function() {
+        setTimeout(function () {
             $(this).prop('disabled', false).removeClass('btn-spinner');
         }, 6000);
 
@@ -1051,7 +1208,7 @@ function createAuto(i, elem) {
 
 
     //Toggle PO
-    $('#customization_poNumber').change(function() {
+    $('#customization_poNumber').change(function () {
 
         if ($(this).is(':checked')) {
             $('#po_numberTR').show();
@@ -1064,7 +1221,7 @@ function createAuto(i, elem) {
 
 
     //Toggle Tax
-    $('#customization_tax').change(function() {
+    $('#customization_tax').change(function () {
 
         if ($(this).is(':checked')) {
             $('.taxItem').show();
@@ -1083,11 +1240,11 @@ function createAuto(i, elem) {
 
     //Logo Input
 
-    $('#logo_file_input').click(function() {
-        $(this).val(''); //Reset value of file input onClick so onChange event is always called after upload
+    $('#logo_file_input').click(function () {
+        $(this).val('');  //Reset value of file input onClick so onChange event is always called after upload
     });
 
-    $('#logo_file_input').change(function() {
+    $('#logo_file_input').change(function () {
 
         // checking for allowed file types before upload starts
         var ext = $('#logo_file_input').val().split('.').pop().toLowerCase();
@@ -1107,22 +1264,21 @@ function createAuto(i, elem) {
         }
 
         $('#upload_area').removeClass('yournamehere').addClass('uploading');
-
+        
         // function ajaxUpload(form,url_action,id_element,html_show_loading,html_error_http)
-        ajaxUpload(this.form, '/ajaxuploader.php', 'upload_area', '<div class="is-uploading"><i class="spinner"></i><p>File Uploading Please Wait...</p></div>', '<div class="error-uploading"><i class="xe033"></i><span>There was an error; please try again.</span></div>');
-        return false;
+        ajaxUpload(this.form, '/ajaxuploader.php', 'upload_area', '<div class="is-uploading"><i class="spinner"></i><p>File Uploading Please Wait...</p></div>', '<div class="error-uploading"><i class="xe033"></i><span>There was an error; please try again.</span></div>'); return false;
 
     });
 
     toggleLogo();
 
     //hide dropdown
-    table.on('focus', ".lineQty, .linePrice", function() {
+    table.on('focus', ".lineQty, .linePrice", function () {
         $('.dropdown').removeClass('open').removeClass('in');
     });
 
     //row sums
-    table.on('blur', ".lineQty, .linePrice", function() {
+    table.on('blur', ".lineQty, .linePrice", function () {
         correctInputValue($(this));
         calculateLineTotal($(this));
         reCalculate();
@@ -1144,11 +1300,11 @@ function createAuto(i, elem) {
 
     //Numbers 
 
-    table.on('input', ".numbersOnly", function() {
+    table.on('input', ".numbersOnly", function () {
         numbersOnly($(this));
     });
 
-    $(document).on('blur', ".isCurrency", function() {
+    $(document).on('blur', ".isCurrency", function () {
         var elem = $(this);
         var v = elem.val();
         if ($.isNumeric(v)) {
@@ -1156,7 +1312,7 @@ function createAuto(i, elem) {
         }
     });
 
-    $(document).on('input', ".isCurrency", function() {
+    $(document).on('input', ".isCurrency", function () {
         numbersOnly($(this));
     });
 
@@ -1164,7 +1320,7 @@ function createAuto(i, elem) {
     //const roundAccurately = (number, decimalPlaces) => Number(Math.round(number + "e" + decimalPlaces) + "e-" + decimalPlaces);
     //$(this).val( roundAccurately( $(this).val(), 5 ) );  //Future: Qty shouldnt require .00
 
-    table.on('blur', ".lineQty, .linePrice", function() {
+    table.on('blur', ".lineQty, .linePrice", function () {
         var elem = $(this);
         var v = elem.val();
         if ($.isNumeric(v)) {
@@ -1174,7 +1330,7 @@ function createAuto(i, elem) {
 
 
     //Expense 
-    table.on('blur', ".onlyPositive", function() {
+    table.on('blur', ".onlyPositive", function () {
         var elem = $(this);
         if ($.isNumeric(elem.val())) {
             elem.val(Math.abs(elem.val())).toFixed(2);
@@ -1183,7 +1339,7 @@ function createAuto(i, elem) {
 
 
     //Typing only alphanumeric minus coding and non-ascii chars
-    $('.typeAlpha').on("input", function(e) {
+    $('.typeAlpha').on("input", function (e) {
         var pos = this.selectionStart;
         //remove anything that is not:  A-z, 0-9 and #@_.,'& ()-/"*
         const toBeReplaced = /[^A-Za-z\n\r0-9#@_.,\'& ()-\/"*]/g;
@@ -1195,7 +1351,7 @@ function createAuto(i, elem) {
 
 
     //up/down arrow keys
-    table.on('keyup', ".lineQty, .linePrice", function(e) {
+    table.on('keyup', ".lineQty, .linePrice", function (e) {
         var code = e.keyCode || e.which;
         if (code == 38 || code == 40) {
             var row = $(this).closest('.line');
@@ -1213,18 +1369,16 @@ function createAuto(i, elem) {
 
 
     //Deactivate pdf-button for 3 sec. after being clicked
-    $(".btnPDF").on('click', function() {
+    $(".btnPDF").on('click', function () {
 
         $(".btnPDF").addClass('btn-spinner');
-        setTimeout(function() {
-            $(".btnPDF").removeClass('btn-spinner');
-        }, 3000);
+        setTimeout(function () { $(".btnPDF").removeClass('btn-spinner'); }, 3000);
 
     });
 
 
     //Recalculate on page load to show tax sums
-    $("select.selectItem").each(function() {
+    $("select.selectItem").each(function () {
         var elem = $(this);
         var row = elem.closest('.line');
         if (elem.val() == "Discount_aynax") row.addClass('isDiscount');
@@ -1242,7 +1396,7 @@ function createAuto(i, elem) {
 
 
     //Document event listeners
-    $(document).on('click', function(e) {
+    $(document).on('click', function (e) {
         var origin = $(e.target);
 
         //Hide taxDropdown on click outside
@@ -1264,20 +1418,20 @@ function createAuto(i, elem) {
     //Submit form
     var form = $('#invoice_form');
     var formdata = null;
-    window.onload = function() {
-        formdata = $.param($.map(form.serializeArray(), function(v, i) {
+    window.onload = function () {
+        formdata = $.param($.map(form.serializeArray(), function (v, i) {
             return (v.name == "cf-turnstile-response" || v.name == "emailaddress" || v.name == "password") ? null : v;
         }));
     };
 
-    form.submit(function() {
+    form.submit(function () {
         window.onbeforeunload = null
     })
 
-    window.onbeforeunload = function() {
+    window.onbeforeunload = function () {
 
         //serialize without login name or password (pub)
-        var newdata = $.param($.map(form.serializeArray(), function(v, i) {
+        var newdata = $.param($.map(form.serializeArray(), function (v, i) {
             return (v.name == "cf-turnstile-response" || v.name == "emailaddress" || v.name == "password") ? null : v;
         }));
 
@@ -1288,7 +1442,7 @@ function createAuto(i, elem) {
     }
 
     function isFormEdited() {
-        var newdata = $.param($.map(form.serializeArray(), function(v, i) {
+        var newdata = $.param($.map(form.serializeArray(), function (v, i) {
             return (v.name == "cf-turnstile-response" || v.name == "emailaddress" || v.name == "password") ? null : v;
         }));
         if (newdata != formdata) {
@@ -1297,23 +1451,19 @@ function createAuto(i, elem) {
 
     }
 
-    $(".saveFirst").on('click', function(e) {
+    $(".saveFirst").on('click', function (e) {
         var elem = $(this);
         if (isFormEdited()) {
             e.preventDefault();
             $('#modalSave').modal('show');
         } else {
-            if (elem.attr('sel') == "btnPDF") {
-                elem.addClass('btn-spinner')
-            };
+            if (elem.attr('sel') == "btnPDF") { elem.addClass('btn-spinner') };
             window.location.replace(elem.attr('href'));
-            setTimeout(function() {
-                elem.removeClass('btn-spinner');
-            }, 4000);
+            setTimeout(function () { elem.removeClass('btn-spinner'); }, 4000);
         }
     });
 
-    $("#formPayment").submit(function(e) {
+    $("#formPayment").submit(function (e) {
 
         //Bind functions to form submit (not button click!)
         e.preventDefault();
@@ -1323,7 +1473,7 @@ function createAuto(i, elem) {
     });
 
     //Edited to allow more characters than other v3 modules
-    $("#formPayment").find('textarea').on("input", function(e) {
+    $("#formPayment").find('textarea').on("input", function (e) {
         var pos = this.selectionStart;
         //replace ~`<>^*{}[]|\" with nothing
         var str = $(this).val().replace(/[\~\`\<\>\^\*{\}\[\]\|\\\"]/g, '').replace(/\.{2,}/g, '.');
@@ -1332,7 +1482,7 @@ function createAuto(i, elem) {
         this.selectionEnd = pos - (len - str.length);
     });
 
-    $(document).on("keydown", ":input:not(textarea):not(:submit)", function(event) {
+    $(document).on("keydown", ":input:not(textarea):not(:submit)", function (event) {
         if (event.keyCode == 13) {
             event.preventDefault();
             return false;
@@ -1340,4 +1490,6 @@ function createAuto(i, elem) {
     });
 
 })(jQuery);
+
+
 

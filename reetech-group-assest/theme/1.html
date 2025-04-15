@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Window Theme</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Minimal Custom CSS -->
+    <style>
+        body {
+            background-color: #e0e0e0;
+            background-image: radial-gradient(circle at 1px 1px, #ccc 1px, transparent 0);
+            background-size: 20px 20px;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .window {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            min-width: 300px;
+            min-height: 200px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+        }
+        
+        .window.active {
+            z-index: 1000;
+        }
+        
+        .window-resize-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            bottom: 0;
+            right: 0;
+            cursor: nwse-resize;
+        }
+        
+        .window.minimized {
+            display: none;
+        }
+        
+        .window.maximized {
+            top: 0 !important;
+            left: 0 !important;
+            width: 100% !important;
+            height: calc(100vh - 40px) !important;
+            border-radius: 0 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Taskbar -->
+    <div class="position-fixed bottom-0 start-0 end-0 bg-light bg-opacity-90 d-flex align-items-center px-3 border-top" style="height: 40px; backdrop-filter: blur(5px); z-index: 10000;">
+        <button class="btn btn-sm btn-outline-secondary me-2" id="open-file-manager">
+            <i class="fas fa-folder me-1"></i> File Manager
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" id="open-settings">
+            <i class="fas fa-cog me-1"></i> Settings
+        </button>
+    </div>
+
+    <!-- File Manager Window -->
+    <div class="window bg-white rounded overflow-hidden border" id="file-manager-window" style="top: 100px; left: 100px; width: 600px; height: 400px;">
+        <div class="d-flex align-items-center bg-gradient bg-light border-bottom px-3" style="height: 40px;">
+            <div class="d-flex gap-2 me-3">
+                <button class="window-control-close btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 16px; height: 16px;">
+                    <i class="fas fa-times fs-6"></i>
+                </button>
+                <button class="window-control-minimize btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 16px; height: 16px;">
+                    <i class="fas fa-minus fs-6"></i>
+                </button>
+                <button class="window-control-maximize btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 16px; height: 16px;">
+                    <i class="fas fa-square fs-6"></i>
+                </button>
+            </div>
+            <div class="fw-medium flex-grow-1">
+                <i class="fas fa-folder me-2"></i>File Manager
+            </div>
+        </div>
+        <div class="flex-grow-1 overflow-auto p-3">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3 border-end">
+                        <div class="list-group list-group-flush">
+                            <a href="#" class="list-group-item list-group-item-action active">
+                                <i class="fas fa-home me-2"></i>Home
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-download me-2"></i>Downloads
+                            </a>
+                            <a href="#" class="list-group-item list-group-item-action">
+                                <i class="fas fa-image me-2"></i>Pictures
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="d-flex justify-content-between mb-3">
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-arrow-up me-1"></i> Up
+                            </button>
+                            <div>
+                                <button class="btn btn-sm btn-outline-secondary me-1">
+                                    <i class="fas fa-list me-1"></i> List
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    <i class="fas fa-th-large me-1"></i> Grid
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Date Modified</th>
+                                        <th>Type</th>
+                                        <th>Size</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><i class="fas fa-folder text-warning me-2"></i> Documents</td>
+                                        <td>2023-06-15</td>
+                                        <td>Folder</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><i class="fas fa-file-pdf text-danger me-2"></i> Report.pdf</td>
+                                        <td>2023-06-10</td>
+                                        <td>PDF</td>
+                                        <td>2.4 MB</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="window-resize-handle"></div>
+    </div>
+
+    <!-- Settings Window -->
+    <div class="window bg-white rounded overflow-hidden border" id="settings-window" style="top: 150px; left: 200px; width: 500px; height: 350px;">
+        <div class="d-flex align-items-center bg-primary text-white border-bottom px-3" style="height: 40px;">
+            <div class="d-flex gap-2 me-3">
+                <button class="window-control-close btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 16px; height: 16px;">
+                    <i class="fas fa-times fs-6"></i>
+                </button>
+                <button class="window-control-minimize btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 16px; height: 16px;">
+                    <i class="fas fa-minus fs-6"></i>
+                </button>
+                <button class="window-control-maximize btn btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 16px; height: 16px;">
+                    <i class="fas fa-square fs-6"></i>
+                </button>
+            </div>
+            <div class="fw-medium flex-grow-1">
+                <i class="fas fa-cog me-2"></i>Settings
+            </div>
+        </div>
+        <div class="flex-grow-1 overflow-auto p-3">
+            <ul class="nav nav-tabs mb-3" id="settingsTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">General</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="appearance-tab" data-bs-toggle="tab" data-bs-target="#appearance" type="button" role="tab">Appearance</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="privacy-tab" data-bs-toggle="tab" data-bs-target="#privacy" type="button" role="tab">Privacy</button>
+                </li>
+            </ul>
+            <div class="tab-content" id="settingsTabsContent">
+                <div class="tab-pane fade show active" id="general" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label">Language</label>
+                        <select class="form-select">
+                            <option>English</option>
+                            <option>Spanish</option>
+                            <option>French</option>
+                        </select>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="autoUpdate" checked>
+                        <label class="form-check-label" for="autoUpdate">Check for updates automatically</label>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="appearance" role="tabpanel">
+                    <div class="mb-3">
+                        <label class="form-label">Theme</label>
+                        <select class="form-select">
+                            <option>Light</option>
+                            <option>Dark</option>
+                            <option>System</option>
+                        </select>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="animations" checked>
+                        <label class="form-check-label" for="animations">Enable animations</label>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="privacy" role="tabpanel">
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="telemetry" checked>
+                        <label class="form-check-label" for="telemetry">Send usage statistics</label>
+                    </div>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="crashReports" checked>
+                        <label class="form-check-label" for="crashReports">Send crash reports</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="window-resize-handle"></div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Window Management JS -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const windows = document.querySelectorAll('.window');
+            
+            windows.forEach(window => {
+                const titlebar = window.querySelector('.d-flex.align-items-center');
+                const closeBtn = window.querySelector('.window-control-close');
+                const minimizeBtn = window.querySelector('.window-control-minimize');
+                const maximizeBtn = window.querySelector('.window-control-maximize');
+                
+                // Bring to front when clicked
+                titlebar.addEventListener('mousedown', () => {
+                    windows.forEach(w => w.classList.remove('active'));
+                    window.classList.add('active');
+                });
+                
+                // Close button
+                closeBtn.addEventListener('click', () => {
+                    window.style.display = 'none';
+                });
+                
+                // Minimize button
+                minimizeBtn.addEventListener('click', () => {
+                    window.classList.toggle('minimized');
+                });
+                
+                // Maximize button
+                maximizeBtn.addEventListener('click', () => {
+                    window.classList.toggle('maximized');
+                    maximizeBtn.innerHTML = window.classList.contains('maximized') ? 
+                        '<i class="fas fa-clone fs-6"></i>' : '<i class="fas fa-square fs-6"></i>';
+                });
+                
+                // Drag functionality
+                let isDragging = false;
+                let offsetX, offsetY;
+                
+                titlebar.addEventListener('mousedown', (e) => {
+                    if (window.classList.contains('maximized')) return;
+                    
+                    isDragging = true;
+                    offsetX = e.clientX - window.getBoundingClientRect().left;
+                    offsetY = e.clientY - window.getBoundingClientRect().top;
+                    window.classList.add('active');
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    window.style.left = (e.clientX - offsetX) + 'px';
+                    window.style.top = (e.clientY - offsetY) + 'px';
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+            });
+            
+            // Taskbar buttons
+            document.getElementById('open-file-manager').addEventListener('click', function() {
+                const window = document.getElementById('file-manager-window');
+                window.style.display = 'flex';
+                window.classList.remove('minimized');
+                window.classList.add('active');
+            });
+            
+            document.getElementById('open-settings').addEventListener('click', function() {
+                const window = document.getElementById('settings-window');
+                window.style.display = 'flex';
+                window.classList.remove('minimized');
+                window.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
