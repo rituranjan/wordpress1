@@ -119,7 +119,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
             const errorMessage = xhr.responseJSON?.message || 'An error occurred';
             toastQueue.push({
                 type: 'error',
-                message: settings.toastOptions?.error || errorMessage
+                message: errorMessage || settings.toastOptions?.error 
             });
             
             if(typeof errorCallback === 'function') {

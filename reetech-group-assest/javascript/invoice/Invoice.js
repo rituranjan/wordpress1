@@ -1017,35 +1017,69 @@ const invoiceData = collectInvoiceData();
         }
     );
 
-   
-
-
-// // Prepare the AJAX request
-// $.ajax({
-// url: 'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices', // Replace with your actual endpoint
-// type: 'POST',
-// data: JSON.stringify(invoiceData),
-// contentType: 'application/json',
-// contentType: 'application/json',
-// beforeSend: function(xhr) {
-//     // Add WordPress nonce for security if needed
-//    let i=0
-//   //  xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-// },
-// success: function(response) {
-//     console.log('Invoice submitted successfully:', response);
-//     alert('Invoice saved successfully!');
-// },
-// error: function(xhr, status, error) {
-//     console.error('Error submitting invoice:', error);
-//     alert('Error saving invoice: ' + error);
-// }
-// });
-
 
 }
 
 function loadInvoiceData(invoiceId) {
+
+    wpApiRequest(
+        'Get', 
+        `http://localhost/wordpress1/wp-json/reetech-group2/v2/get-invoice/?id=${invoiceId}`,
+        null,
+        {
+            showSpinner: true,
+            toastOptions: {
+                wait: 'wait...',
+                success: 'Items loaded successfully!',
+                error: 'Failed to load items!',
+                complete: 'Request completed'
+            }
+        },
+        function(response) {
+
+                    // Populate main fields
+            $('#from_name').val(response.from.name);
+            $('#from_address').val(response.from.address);
+            $('#to_name').val(response.to.id).trigger('change');
+            $('#doc_number').val(response.invoice_number);
+            $('#dateStart').val(response.invoice_date);
+            $('#dateEnd').val(response.due_date);
+            $('#doc_notes').val(response.notes);
+            
+            // Clear existing items
+            $('#dataTable tr.line').not(':first').remove();
+            
+            // Populate line items
+            response.items.forEach((item, index) => {
+                // Add new row if not first item
+                if(index > 0) {
+                    addRow();
+                // addNewRow();
+                }
+                
+                // Get current row
+                const row = $('#dataTable tr.line').eq(index);
+                
+                // Populate fields
+                row.find('select[name="item[]"]').val(item.item);
+                row.find('textarea[name="description[]"]').val(item.description);
+                row.find('input[name="unit_price[]"]').val(item.unit_price.toFixed(2));
+                row.find('input[name="qty[]"]').val(item.quantity);
+                row.find('.jtaxTotal').text(item.tax_rate);
+                row.find('input[name="total[]"]').val(item.amount.toFixed(2));
+            });
+        },
+        function(xhr) {
+            console.error('Error:', xhr);
+          
+        }
+    );
+
+
+}
+
+
+function loadInvoiceData1(invoiceId) {
 // Get nonce for API authentication
 // const nonce = wpApiSettings.nonce; // Make sure to localize script with wp_localize_script()
 
