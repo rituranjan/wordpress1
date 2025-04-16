@@ -49,10 +49,18 @@ class WP_DB_Query_Helper {
      */
     public function get_account_entities($output_type = OBJECT) {
         $table_name = $this->wpdb->prefix . 'account_entities'; // Adds WordPress prefix
+        $table_name2 = $this->wpdb->prefix . 'account_item_master'; // Adds WordPress prefix
+      
         
         $sql = "SELECT `EntityID` as id, `Type` as type, `Name` 
                 FROM `{$table_name}` 
                 WHERE EntityID > %d";
+
+        $sql="SELECT CAST(group_id AS UNSIGNED) as id, CAST(item_id AS UNSIGNED) as item_id, '' as type,
+         item_value as Name FROM `{$table_name2}` tbl_account_item_master UNION SELECT CAST(EntityID AS UNSIGNED) as id
+         , 1 as item_id,`Type` ,`Name` FROM `{$table_name}`";
+
+         
                 
         return $this->execute_query(
             $this->wpdb->prepare($sql, 4),
