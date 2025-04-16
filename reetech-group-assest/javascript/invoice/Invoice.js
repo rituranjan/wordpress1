@@ -1,4 +1,4 @@
-
+let masterData=[];
 function showFeedback(status) {
 
     var msg;
@@ -451,7 +451,7 @@ modalExpense.on('shown.bs.modal', async function () {
 
 
     //get the list of vendors
-    const vendors = await getVendors();
+    const vendors =masterData;// await getVendors();
 
     // enable interactions
     btnSaveExpense.prop("disabled1 btn-outline-primary", false);
@@ -480,10 +480,10 @@ function buildList(list) {
     //add ajax list of dropdown-items
     for (var i = 0; i < count; i++) {
         htm += '<label class="dropdown-radio listItem" tabindex="0" style="display:none"';
-        htm += 'data-text="' + list[i].name + '">';
+        htm += 'data-text="' + list[i].Name + '">';
         htm += '<input type="radio" name="choose_vendor" tabindex="-1"';
         htm += 'value="' + list[i].id + '">';
-        htm += '<ins>' + list[i].name + '</ins></label>';
+        htm += '<ins>' + list[i].Name + '</ins></label>';
 
     }
     dropdownVendors.append(htm);
@@ -666,7 +666,7 @@ btnNewVendor.mouseup(async function () {
     }
 
     btnSaveExpense.addClass('btn-spinner');
-    const updatedVendorsList = await getVendors()
+    const updatedVendorsList =masterData;// await getVendors()
     btnSaveExpense.removeClass('btn-spinner');
 
     buildList(updatedVendorsList); //rebuild list with item added.
@@ -897,8 +897,9 @@ if (myParam){
     loadInvoiceData(myParam);
     LoadData(myParam);}
 
+    let defaultItemsList = null;
 
-const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
+//const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
 
 // Add row
 
@@ -1089,7 +1090,24 @@ function LoadData(invoiceId) {
             }
         },
         function(response) {
+            masterData=response.data;
 
+          //  const _ = require('lodash');
+
+const result = _.chain(response.data)
+  // Filter out items with empty Name
+  .filter(item => !_.isEmpty(item.Name))
+  // Create pairs of [Name, Name]
+  .map(item => [item.Name, item.Name])
+  // Convert to object entries
+  .fromPairs()
+  // Merge with the base object that has empty string key
+  .assign({ '': '' })
+  // Convert to JSON string
+  //.thru(obj => `const defaultItemsList = JSON.parse(\`${JSON.stringify(obj)}\`);`)
+ // .thru(obj => `(\`${JSON.stringify(obj)}\`);`)
+  .value();
+            defaultItemsList= result;
             initializeComboAutoComplete({
                             selector: '.combo-select',
                             sourceData: response.data,
@@ -1101,6 +1119,7 @@ function LoadData(invoiceId) {
             console.log('Items:', response.data);
 
            // $('#to_name').empty();
+            $('#expenseCategory').empty();
           
     $('#to_name').append($('<option selected>', {
         value: 0,
@@ -1109,6 +1128,10 @@ function LoadData(invoiceId) {
   
     $.each(response.data, function(index, item) {
         $('#to_name').append($('<option>', {
+            value: item.id,
+            text:  item.Name
+        }));
+        $('#expenseCategory').append($('<option>', {
             value: item.id,
             text:  item.Name
         }));
