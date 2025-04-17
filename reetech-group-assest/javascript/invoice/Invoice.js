@@ -469,6 +469,12 @@ modalExpense.on('hidden.bs.modal', function (e) {
     }
 })
 
+$(document).ready(function(){
+    $('[data-dismiss="modal"]').click(function(){
+    
+      $(this).closest('.modal').modal('hide');
+    });
+  });
 
 function buildList(list) {
     var count = list.length;
