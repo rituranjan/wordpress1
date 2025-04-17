@@ -1,4 +1,4 @@
-let masterData=[];
+let masterVendorData=[];
 function showFeedback(status) {
 
     var msg;
@@ -451,7 +451,7 @@ modalExpense.on('shown.bs.modal', async function () {
 
 
     //get the list of vendors
-    const vendors =masterData;// await getVendors();
+    const vendors =masterVendorData;// await getVendors();
 
     // enable interactions
     btnSaveExpense.prop("disabled1 btn-outline-primary", false);
@@ -672,7 +672,7 @@ btnNewVendor.mouseup(async function () {
     }
 
     btnSaveExpense.addClass('btn-spinner');
-    const updatedVendorsList =masterData;// await getVendors()
+    const updatedVendorsList =masterVendorData;// await getVendors()
     btnSaveExpense.removeClass('btn-spinner');
 
     buildList(updatedVendorsList); //rebuild list with item added.
@@ -1096,27 +1096,26 @@ function LoadData(invoiceId) {
             }
         },
         function(response) {
-            masterData=response.data;
+            let masterData=response.data;
+            const Invoice_type = _.filter(masterData, { type: "Invoice_type" });
+            const expense_type = _.filter(masterData, { type: "expense" });
+            const Customer_type = _.filter(masterData, { type: "Customer" });
+            masterVendorData = _.filter(masterData, { type: "Vendor" });
+
+
 
           //  const _ = require('lodash');
 
-const result = _.chain(response.data)
-  // Filter out items with empty Name
+const result = _.chain(Invoice_type) 
   .filter(item => !_.isEmpty(item.Name))
-  // Create pairs of [Name, Name]
-  .map(item => [item.Name, item.Name])
-  // Convert to object entries
-  .fromPairs()
-  // Merge with the base object that has empty string key
-  .assign({ '': '' })
-  // Convert to JSON string
-  //.thru(obj => `const defaultItemsList = JSON.parse(\`${JSON.stringify(obj)}\`);`)
- // .thru(obj => `(\`${JSON.stringify(obj)}\`);`)
+   .map(item => [item.Name, item.Name]) 
+  .fromPairs()  
+  .assign({ '': '' })  
   .value();
             defaultItemsList= result;
             initializeComboAutoComplete({
                             selector: '.combo-select',
-                            sourceData: response.data,
+                            sourceData: Customer_type,
                             itemValueKey: 'id',
                             itemTextKey: 'Name',
                             minChars: 1,
@@ -1132,15 +1131,21 @@ const result = _.chain(response.data)
         text: 'New Customer'
     }));   
   
-    $.each(response.data, function(index, item) {
-        $('#to_name').append($('<option>', {
-            value: item.id,
-            text:  item.Name
-        }));
+    
+    $.each(expense_type, function(index, item) {
+       
         $('#expenseCategory').append($('<option>', {
             value: item.id,
             text:  item.Name
         }));
+    });
+
+    $.each(Customer_type, function(index, item) {
+        $('#to_name').append($('<option>', {
+            value: item.id,
+            text:  item.Name
+        }));
+        
     });
         },
         function(xhr) {
