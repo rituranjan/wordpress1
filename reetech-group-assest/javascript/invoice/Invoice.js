@@ -505,14 +505,14 @@ function buildList(list) {
 async function createVendor(vendorName,data) {
     wpApiRequest(
         'POST', 
-        '/v1/vendors', 
+        '/v1/entity', 
         data,
         {
             showSpinner: true,
             toastOptions: {
                 wait: 'wait...',
                 success: 'Items loaded successfully!',
-                error: 'An error occurred creating'+data.type+'. Please try again!',
+               // error: 'An error occurred creating'+data.type+'. Please try again!',
                 complete: 'Request completed'
             }
         },
@@ -684,8 +684,8 @@ btnNewVendor.mouseup(async function () {
     if (dropdownVendors.find('.dropdown-item').length > 1) {
         btnShowVendors.show()
     }
-
-    const newVendorResponse = await createVendor(inputVendor.val());
+    var vendor ={name: inputVendor.val().trim(),type:'vendor'};
+    const newVendorResponse = await createVendor(inputVendor.val(),vendor);
 
     // if vendor created in backend, update the dropdown with received id of the created vendor 
     // and set is as selected 
@@ -734,15 +734,16 @@ $('#btnAttachExpense').mouseup(async function () {
     // send request to .expense.php to create new expense in db
     const saveExpenseRequest = {
         save: true,
-        vendor: ven,// ? .[0] ? .value ? ? 0,
+      //  vendor: ven,// ? .[0] ? .value ? ? 0,
         new_vendor: ven_text,
         category: cat.val(),
-        amount,
+        amount:amount,
         paid: true,
         payment_date: date,
         bill_date: date,
         due_date: date,
         payment_source: 100000,
+        type:'saveExpenseRequest',
     };
     let expenseSaved={}
     wpApiRequest(
@@ -765,18 +766,7 @@ $('#btnAttachExpense').mouseup(async function () {
         function(xhr) {
             console.error('Error:', xhr);           
         }
-    );
-
-
-    const expenseSaved1 = await $.ajax({
-        url: '/app/invoices/expense-save',
-        type: 'POST',
-        cache: false,
-        data: saveExpenseRequest,
-        dataType: 'json',
-    }).catch(error => {
-        alert("An error occurred while saving. Please try again.");
-    })
+    );    
 
     $(this).prop('disabled1 btn-outline-primary', false).removeClass('btn-spinner');
 
@@ -1076,7 +1066,7 @@ function loadInvoiceData(invoiceId) {
 
     wpApiRequest(
         'Get', 
-        `http://localhost/wordpress1/wp-json/reetech-group2/v2/get-invoice/?id=${invoiceId}`,
+        `/v1/get-invoice/?id=${invoiceId}`,
         null,
         {
             showSpinner: true,

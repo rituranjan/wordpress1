@@ -410,17 +410,18 @@
 
                                     <tr>
                                         <td class="dropdown-toggle select">
-                                            <select name="to_id" id="to_name" 
+                                            <select name="to_id" id="to_name"  onchange="getCustomerAddressWithDebouncing(this.value);"
                                                 class="form-select">
                                                 <optgroup label="-----------------------------">
-                                                    <option value="0" selected>Add New Customer</option>
+                                                    <option value="0" selected>Add New Customer1</option>
+                                                    </optgroup>
 
                                             </select>
 
                                         </td>
                                     </tr>
 
-                                    <tr id="rowNewCustomer" style="">
+                                    <tr id="rowNewCustomer" style="display: none;">
                                         <td>
 
 

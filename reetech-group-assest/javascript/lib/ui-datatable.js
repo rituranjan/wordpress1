@@ -106,19 +106,20 @@ class GenericDataTable {
     }
 
     initDataTable() {
+        let path='http://localhost/wordpress1/wp-json/reetech-group';
         this.dataTable = $(this.config.tableId).DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: this.config.ajax.url,
+                url: path+this.config.ajax.url,
                 type: this.config.ajax.method,
                 headers: this.config.ajax.headers,
                 data: (d) => this.getRequestData(d)
             },
             paging: true, // Explicitly enable pagination
             pagingType: 'full_numbers', // Show full pagination controls
-           // lengthMenu: [1, 2, 3, 10], // Configure page length options
-            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
+            lengthMenu: [2, 4, 3, 10], // Configure page length options
+            //lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             columns: this.getColumnsConfig(),
             language: this.config.translations,
             createdRow: (row, data) => this.handleRowCreation(row, data),

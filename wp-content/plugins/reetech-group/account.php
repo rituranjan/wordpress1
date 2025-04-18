@@ -159,7 +159,40 @@ add_action('rest_api_init', function() {
         'callback' => 'getdata',
         'permission_callback' => '__return_true'
     ]);
+
+
+    register_rest_route('reetech-group/v1', '/entity', array(
+        'methods' => 'POST',
+        'callback' => 'Create_Entity',
+        'permission_callback' => '__return_true' 
+           ));
+    
 });
+
+function Create_Entity(WP_REST_Request $request) {
+    $parameters = $request->get_json_params();
+    if (empty($parameters)) {
+        return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
+    }
+    
+    require_once 'entities-repository.php';
+    $examples = new EntityExamples();
+    $created_id = $examples->createEntity([
+        'Type' => $parameters['type'],
+        'Name' => sanitize_text_field($parameters['name'] ?? ''),
+        'Address' => sanitize_textarea_field($parameters['address'] ?? '')]);
+    if (is_wp_error($created_id)) {
+        error_log('Creation error: ' . $created_id->get_error_message());
+    } else {
+        return new WP_REST_Response(array(
+            'success' => true,
+            'invoice_id' => $created_id,
+            'message' => $parameters['type'].' created successfully',
+            'data' => $created_id
+        ), 200);
+        echo "Created entity ID21: $created_id\n";
+    }
+    }    // 'ContactInfo' => '
 
 function handle_invoice_submission(WP_REST_Request $request) {
     global $wpdb;
@@ -176,9 +209,9 @@ function handle_invoice_submission(WP_REST_Request $request) {
         $created_id = $examples->createEntity([
             'Type' => 'Customer',
             'Name' => sanitize_text_field($parameters['to']['name'] ?? ''),
-            'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
-            'ContactInfo' => 'john@example.com',
-            'LoyaltyPoints' => 500
+            'Address' => sanitize_textarea_field($parameters['to']['address'] ?? '')
+           // 'ContactInfo' => 'john@example.com',
+            //'LoyaltyPoints' => 500
         ]);  
     if (is_wp_error($created_id)) {
         error_log('Creation error: ' . $created_id->get_error_message());

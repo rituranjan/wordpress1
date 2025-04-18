@@ -14,7 +14,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
         showSpinner: true,
         toastOptions: null
     };
-    endpoint='http://localhost/wordpress1/wp-json/reetech-group'+endpoint;
+    endpoint='http://localhost/wordpress1/wp-json/reetech-group'+endpoint+'?XDEBUG_SESSION_START=VSCODE'
     
     const settings = {...defaults, ...options};
     const $spinner = $('#apiSpinner');
@@ -86,7 +86,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
             'Content-Type': 'application/json'
         },
         data: method === 'GET' ? data : JSON.stringify(data),
-        dataType: 'json',
+                dataType: 'json',
         xhrFields: {withCredentials: true},
         
         beforeSend: function() {
