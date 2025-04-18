@@ -14,6 +14,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
         showSpinner: true,
         toastOptions: null
     };
+    endpoint='http://localhost/wordpress1/wp-json/reetech-group'+endpoint;
     
     const settings = {...defaults, ...options};
     const $spinner = $('#apiSpinner');

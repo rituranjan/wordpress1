@@ -502,29 +502,51 @@ function buildList(list) {
 
 
 
-async function createVendor(vendorName) {
-
-    const createVendorResult = await $.ajax({
-        url: '/app/invoices/vendors',
-        type: 'POST',
-        data: {
-            new_vendor: vendorName
+async function createVendor(vendorName,data) {
+    wpApiRequest(
+        'POST', 
+        '/v1/vendors', 
+        data,
+        {
+            showSpinner: true,
+            toastOptions: {
+                wait: 'wait...',
+                success: 'Items loaded successfully!',
+                error: 'An error occurred creating'+data.type+'. Please try again!',
+                complete: 'Request completed'
+            }
         },
-        dataType: 'json',
-        cache: false,
-        async: false
-    }).catch(error => {
-        showExpenseError("An error occurred creating vendor. Please try again.");
-    })
+        function(response) {
+            console.log('Items:', response.data);
+            return response.data.id;
+        },
+        function(xhr) {
+            console.error('Error:', xhr);           
+        }
+    );
 
-    // on success returns: {"success":true,"inserted_vendor_id":475940}
-    // on error returns: {"success":false,"error":'some error'}
-    if (!createVendorResult.success) {
-        showExpenseError(createVendorResult.error);
-        return false;
-    }
 
-    return createVendorResult.inserted_vendor_id;
+    // const createVendorResult = await $.ajax({
+    //     url: '/app/invoices/vendors',
+    //     type: 'POST',
+    //     data: {
+    //         new_vendor: vendorName
+    //     },
+    //     dataType: 'json',
+    //     cache: false,
+    //     async: false
+    // }).catch(error => {
+    //     showExpenseError("An error occurred creating vendor. Please try again.");
+    // })
+
+    // // on success returns: {"success":true,"inserted_vendor_id":475940}
+    // // on error returns: {"success":false,"error":'some error'}
+    // if (!createVendorResult.success) {
+    //     showExpenseError(createVendorResult.error);
+    //     return false;
+    // }
+
+    // return createVendorResult.inserted_vendor_id;
 
 }
 
@@ -722,7 +744,31 @@ $('#btnAttachExpense').mouseup(async function () {
         due_date: date,
         payment_source: 100000,
     };
-    const expenseSaved = await $.ajax({
+    let expenseSaved={}
+    wpApiRequest(
+        'POST', 
+        '/v1/saveData', 
+        saveExpenseRequest,
+        {
+            showSpinner: true,
+            toastOptions: {
+                wait: 'wait...',
+                success: 'Items loaded successfully!',
+                error: 'Failed to load items!',
+                complete: 'Request completed'
+            }
+        },
+        function(response) {
+            expenseSaved=response;
+            console.log('Items:', response.data);
+        },
+        function(xhr) {
+            console.error('Error:', xhr);           
+        }
+    );
+
+
+    const expenseSaved1 = await $.ajax({
         url: '/app/invoices/expense-save',
         type: 'POST',
         cache: false,
@@ -1004,7 +1050,7 @@ const invoiceData = collectInvoiceData();
 
     wpApiRequest(
         'POST', 
-        'http://localhost/wordpress1/wp-json/reetech-group/v1/invoices', 
+        '/v1/invoices', 
         invoiceData,
         {
             showSpinner: true,
@@ -1016,12 +1062,10 @@ const invoiceData = collectInvoiceData();
             }
         },
         function(response) {
-           // alert('Invoice saved successfully!');
             console.log('Items:', response.data);
         },
         function(xhr) {
-            console.error('Error:', xhr);
-           // alert('Error saving invoice: ' + xhr);
+            console.error('Error:', xhr);           
         }
     );
 
@@ -1084,7 +1128,7 @@ function loadInvoiceData(invoiceId) {
 function LoadData(invoiceId) {
     wpApiRequest(
         'Get', 
-        `http://localhost/wordpress1/wp-json/reetech-group/v1/getdata/?id=${invoiceId}`,
+        `/v1/getdata/?id=${invoiceId}`,
         null,
         {
             showSpinner: true,
