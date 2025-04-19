@@ -1003,18 +1003,20 @@ from: {
     address: $('#from_address').val()
 },
 to: {
-    id: $('#to_name').val(),
-    name: $('#to_name option:selected').text(),
+    id:$('#to_name option:selected').val(),
+    name:  $('#to_new_customer').val(),
     address: $('#to_address').val()
 },
 logo: $('#customization_logoFilename').val(),
 heading: $('#doc_heading').val(),
 invoice_number: $('#doc_number').val(),
 po_number: $('#po_number').val(),
-invoice_date: $('#dateStart').val(),
-due_date: $('#dateEnd').val(),
+invoice_date: formatDateToYYYYMMDDHHMMSS($('#dateStart').val()),
+due_date: formatDateToYYYYMMDDHHMMSS($('#dateEnd').val()),
 items: [],
 notes: $('#doc_notes').val(),
+discount_total:parseFloat($('#sum_discount').val().replace('$', '') || 0),
+tax_total:parseFloat($('#sum_total').val().replace('$', '') || 0),
 subtotal: parseFloat($('#sum_subtotal').val().replace('$', '') || 0),
 total: parseFloat($('#sum_total').val().replace('$', '') || 0),
 amount_paid: parseFloat($('#amount_paid').val().replace('$', '') || 0),
@@ -1157,17 +1159,15 @@ const result = _.chain(Invoice_type)
   .assign({ '': '' })  
   .value();
             defaultItemsList= result;
-            initializeComboAutoComplete({
-                            selector: '.combo-select',
-                            sourceData: Customer_type,
-                            itemValueKey: 'id',
-                            itemTextKey: 'Name',
-                            minChars: 1,
-                            maxItems: 8
-                        });
-            console.log('Items:', response.data);
-
-           // $('#to_name').empty();
+            // initializeComboAutoComplete({
+            //                 selector: '.combo-select',
+            //                 sourceData: Customer_type,
+            //                 itemValueKey: 'id',
+            //                 itemTextKey: 'Name',
+            //                 minChars: 1,
+            //                 maxItems: 8
+            //             });
+           
             $('#expenseCategory').empty();
           
     $('#to_name').append($('<option selected>', {

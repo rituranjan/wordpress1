@@ -332,14 +332,14 @@ function handle_invoice_submission(WP_REST_Request $request) {
     $invoice_data = array(
         'from_name' => sanitize_text_field($parameters['from']['name'] ?? ''),
         'from_address' => sanitize_textarea_field($parameters['from']['address'] ?? ''),
-        'to_id' => $created_id,// intval($parameters['to']['id'] ?? 0),
-       // 'to_name' => sanitize_text_field($parameters['to']['name'] ?? ''),
-        //'to_address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
+        'to_id' => $created_id,
         'invoice_number' => sanitize_text_field($parameters['invoice_number'] ?? ''),
         'invoice_date' => sanitize_text_field($parameters['invoice_date'] ?? ''),
         'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
         'subtotal' => floatval($parameters['subtotal'] ?? 0),
         'total' => floatval($parameters['total'] ?? 0),
+        'tax_total' => floatval($parameters['tax_total'] ?? 0),
+        'discount_total' => floatval($parameters['discount_total'] ?? 0),
         'status' => 'pending',
         'created_at' => current_time('mysql')
     );
