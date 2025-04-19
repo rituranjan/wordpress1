@@ -3,9 +3,9 @@ require_once 'generic-repository.php';
 
 class tbl_account_expenses_Repository extends WP_Repository {
     public function __construct() {
-        parent::__construct('tbl_account_expenses', [
+        parent::__construct('account_expenses', [
             'primary_key' => 'id',
-            'required_fields' => ['created_at'],
+            'required_fields' => ['vendor'],
             'field_types' => [
                 'id' => '%d',
                 'vendor' => '%s',
@@ -24,7 +24,7 @@ class tbl_account_expenses_Repository extends WP_Repository {
     }
 
     // CREATE operation
-    public function create($data) {
+    public function create1($data) {
         if (empty($data) || !is_array($data)) {
             return new WP_Error('invalid_data', 'Invalid data provided for creation.');
         }

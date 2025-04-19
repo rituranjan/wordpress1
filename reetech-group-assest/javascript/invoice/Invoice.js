@@ -771,7 +771,7 @@ $('#btnAttachExpense').mouseup(async function () {
     const saveExpenseRequest = {
         save: true,
       //  vendor: ven,// ? .[0] ? .value ? ? 0,
-        new_vendor: ven_text,
+        vendor: ven_text,
         category: cat.val(),
         amount:amount,
         paid: true,
@@ -1616,12 +1616,21 @@ reCalculate();
 });
 
 const loadDefaultItemCategories = (row) => {
+    if (defaultItemsList != null) {
 const selectBox = row.find('[name="item[]"]');
 selectBox.html('');
-Object.keys(defaultItemsList).map(category => {
-const option = $("<option>").val(category).text(defaultItemsList[category]);
-selectBox.append(option);
+// Object.keys(defaultItemsList).map(category => {
+// const option = $("<option>").val(category).text(defaultItemsList[category]);
+// selectBox.append(option);
+// });
+
+Object.keys(defaultItemsList).forEach(category => {
+    const option = $("<option>")
+        .val(category)
+        .text(defaultItemsList[category]);
+    selectBox.append(option);
 });
+    }
 }
 
 

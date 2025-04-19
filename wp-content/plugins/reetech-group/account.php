@@ -169,7 +169,7 @@ add_action('rest_api_init', function() {
     
     register_rest_route('reetech-group/v1', '/saveData', array(
             'methods' => 'POST',
-            'callback' => 'SaveExpensive',
+            'callback' => 'saveExpenseRequest',
             'permission_callback' => '__return_true' 
                ));
     
@@ -188,14 +188,98 @@ function SaveExpensive(){
         'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
         'type' => sanitize_text_field($parameters['type'] ?? ''),
     ]);
+    if (is_wp_error($result)) {
+        return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);       
+    } else {
+        return new WP_REST_Response(array(
+            'success' => true,
+            $type => $created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
+            'data' => $created_id
+        ), 200);
+    }
+}
+
+function SaveTax(){
+    require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
+    $repo = new tbl_account_expenses_Repository();    
+    $result = $repo->create([
+        'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
+        'category' => sanitize_text_field($parameters['category'] ?? ''),
+        'amount' => sanitize_text_field($parameters['amount'] ?? ''),
+        'paid' => sanitize_text_field($parameters['paid'] ?? ''),
+        'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
+        'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
+        'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
+        'type' => sanitize_text_field($parameters['type'] ?? ''),
+    ]);
 
     if (is_wp_error($result)) {
-        echo 'Error: ' . $result->get_error_message();
+
+        return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);
+
+       
     } else {
-        echo 'Entity created successfully!';
+        return new WP_REST_Response(array(
+            'success' => true,
+            $type => $created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
+            'data' => $created_id
+        ), 200);
     }
+}
+
+function saveExpenseRequest1(WP_REST_Request $request) {
+
 
 }
+
+function saveExpenseRequest(WP_REST_Request $request) {
+    $parameters = $request->get_json_params();
+    $type=$parameters['type'];
+    if (empty($parameters)) {
+        return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
+        }   
+        
+        require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
+        $repo = new tbl_account_expenses_Repository();  
+        $data=[
+            'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
+            'category' => sanitize_text_field($parameters['category'] ?? ''),
+            'amount' => sanitize_text_field($parameters['amount'] ?? ''),
+            'paid' => sanitize_text_field($parameters['paid'] ?? ''),
+            'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
+            'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
+            'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
+            'type' => sanitize_text_field($parameters['type'] ?? '')
+        ] ; 
+        $created_id = $repo->create1($data);
+   
+    if (is_wp_error($created_id)) {
+
+         return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);
+     
+        error_log('Creation error: ' . $created_id->get_error_message());
+    } else {
+        return new WP_REST_Response(array(
+            'success' => true,
+            $type => $created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
+            'data' => $created_id
+        ), 200);
+       
+      }
+    }    
+
 
 // require_once 'generate_repository_class.php';
     //generate_repository_class('tbl_account_tax',__DIR__ . '/repositories');
@@ -224,7 +308,7 @@ function Create_Entity(WP_REST_Request $request) {
         return new WP_REST_Response(array(
             'success' => true,
             $type => $created_id,
-            'message' => $type.' created successfully,Id='.$created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
             'data' => $created_id
         ), 200);
        
