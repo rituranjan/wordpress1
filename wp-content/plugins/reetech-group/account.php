@@ -167,7 +167,35 @@ add_action('rest_api_init', function() {
         'permission_callback' => '__return_true' 
            ));
     
+    register_rest_route('reetech-group/v1', '/saveData', array(
+            'methods' => 'POST',
+            'callback' => 'SaveExpensive',
+            'permission_callback' => '__return_true' 
+               ));
+    
 });
+
+function SaveExpensive(){
+    require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
+    $repo = new tbl_account_expenses_Repository();    
+    $result = $repo->create([
+        'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
+        'category' => sanitize_text_field($parameters['category'] ?? ''),
+        'amount' => sanitize_text_field($parameters['amount'] ?? ''),
+        'paid' => sanitize_text_field($parameters['paid'] ?? ''),
+        'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
+        'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
+        'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
+        'type' => sanitize_text_field($parameters['type'] ?? ''),
+    ]);
+
+    if (is_wp_error($result)) {
+        echo 'Error: ' . $result->get_error_message();
+    } else {
+        echo 'Entity created successfully!';
+    }
+
+}
 
 function Create_Entity(WP_REST_Request $request) {
     $parameters = $request->get_json_params();
@@ -175,6 +203,8 @@ function Create_Entity(WP_REST_Request $request) {
         return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
     }
     
+    require_once 'generate_repository_class.php';
+    generate_repository_class('tbl_account_expenses',__DIR__ . '/repositories');
     require_once 'entities-repository.php';
     $examples = new EntityExamples();
     $created_id = $examples->createEntity([

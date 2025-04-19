@@ -20,13 +20,7 @@ class EntitiesRepository extends WP_Repository {
         ]);
     }
 
-    // Add entity-specific methods if needed
-    public function findVendorsByCategory($category) {
-        return $this->findBy([
-            'Type' => 'Vendor',
-            'ProductCategory' => $category
-        ]);
-    }
+  
 }
 
 
@@ -57,26 +51,8 @@ class EntityExamples {
         return $this->repo->findBy(['EntityID' => $id]);
     }
 
-    public function findEntitiesByAddress($address) {
-        return $this->repo->findBy(['Address' => $address]);
-    }
-
-    // UPDATE examples
-    public function updateEntityPoints($entityId, $points) {
-        return $this->repo->updateBy(
-            ['LoyaltyPoints' => $points],
-            ['EntityID' => $entityId]
-        );
-    }
-
-    public function updateEntityAddress($name, $oldAddress, $newAddress) {
-        return $this->repo->updateBy(
-            ['Address' => $newAddress],
-            [
-                'Name' => $name,
-                'Address' => $oldAddress
-            ]
-        );
+    public function findEntitiesByType($type) {
+        return $this->repo->findBy(['Type' => $type]);
     }
 
     // DELETE example
@@ -84,34 +60,5 @@ class EntityExamples {
         return $this->repo->delete(['EntityID' => $entityId]);
     }
 
-    // COMPLEX EXAMPLE
-    public function processCustomerUpdate($customerData) {
-        // Find existing customer
-        $existing = $this->repo->findBy([
-            'Name' => $customerData['name'],
-            'ContactInfo' => $customerData['email']
-        ]);
-
-        if(!empty($existing)) {
-            // Update existing
-            return $this->repo->updateBy(
-                [
-                    'LoyaltyPoints' => $customerData['points'],
-                    'Address' => $customerData['address']
-                ],
-                [
-                    'EntityID' => $existing[0]->EntityID
-                ]
-            );
-        }
-
-        // Create new
-        return $this->repo->create([
-            'Type' => 'Customer',
-            'Name' => $customerData['name'],
-            'ContactInfo' => $customerData['email'],
-            'Address' => $customerData['address'],
-            'LoyaltyPoints' => $customerData['points']
-        ]);
-    }
+    
 }
