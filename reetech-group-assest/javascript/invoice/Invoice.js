@@ -159,7 +159,7 @@ function saveSingleTax() {
 
     wpApiRequest(
         'POST', 
-        '/v1/entity', 
+        '/v1/saveData', 
         data,
         {
             showSpinner: true,
@@ -173,19 +173,20 @@ function saveSingleTax() {
         function(response) {
 
             if (response && response.success) {
-                $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
+              //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
                 populateTaxComponents(response.single);
                 $('#salesTaxModal').modal('hide');
-                $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
+                
             } else {
                 var msg = (response ? response.error : "An error occurred while saving. Please try again.");
                 displayTaxError(msg, response.field);
             }
             // console.log('Items:', response.data);
             // return response.data.id;
+            $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
         },
         function(xhr) {
-            aynaxConsoleLog("Response error");
+            //aynaxConsoleLog("Response error");
             displayTaxError("An error occurred while saving. Please try again.");
         }
     );
@@ -215,7 +216,7 @@ function saveSingleTax() {
             }
         },
         error: function () {
-            aynaxConsoleLog("Response error");
+           // aynaxConsoleLog("Response error");
             displayTaxError("An error occurred while saving. Please try again.");
         }
     });

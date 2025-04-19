@@ -3,9 +3,9 @@ require_once 'generic-repository.php';
 
 class tbl_account_tax_Repository extends WP_Repository {
     public function __construct() {
-        parent::__construct('tbl_account_tax', [
+        parent::__construct('account_tax', [
             'primary_key' => 'id',
-            'required_fields' => ['name', 'tax', 'method', 'single_tax_save', 'listSalesTax', 'type'],
+            'required_fields' => ['name', 'tax',  'single_tax_save', 'listSalesTax', 'type'],
             'field_types' => [
                 'id' => '%d',
                 'name' => '%s',
@@ -19,7 +19,7 @@ class tbl_account_tax_Repository extends WP_Repository {
     }
 
     // CREATE operation
-    public function create($data) {
+    public function create1($data) {
         if (empty($data) || !is_array($data)) {
             return new WP_Error('invalid_data', 'Invalid data provided for creation.');
         }
