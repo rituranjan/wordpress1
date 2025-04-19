@@ -128,7 +128,9 @@ function saveSingleTax() {
         tax: $('#singleTaxRate').val().trim(),
         method: $('#singleMethod').val().trim(),
         single_tax_save: true,
-        listSalesTax: true
+        listSalesTax: true,
+        type:'saveSingleTax'
+
     };
 
     if (data.name == '') {
@@ -153,6 +155,40 @@ function saveSingleTax() {
         displayTaxError('Tax rate cannot be greater than 100%.', 'singleTaxRate');
         return;
     }
+
+
+    wpApiRequest(
+        'POST', 
+        '/v1/entity', 
+        data,
+        {
+            showSpinner: true,
+            toastOptions: {
+                wait: 'wait...',
+                success: 'Saved successfully!',
+                error: 'An error occurred creating'+data.type+'. Please try again!',
+                complete: 'Request completed'
+            }
+        },
+        function(response) {
+
+            if (response && response.success) {
+                $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
+                populateTaxComponents(response.single);
+                $('#salesTaxModal').modal('hide');
+                $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
+            } else {
+                var msg = (response ? response.error : "An error occurred while saving. Please try again.");
+                displayTaxError(msg, response.field);
+            }
+            // console.log('Items:', response.data);
+            // return response.data.id;
+        },
+        function(xhr) {
+            aynaxConsoleLog("Response error");
+            displayTaxError("An error occurred while saving. Please try again.");
+        }
+    );
 
 
     $.ajax({

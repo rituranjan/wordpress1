@@ -197,32 +197,39 @@ function SaveExpensive(){
 
 }
 
+// require_once 'generate_repository_class.php';
+    //generate_repository_class('tbl_account_tax',__DIR__ . '/repositories');
 function Create_Entity(WP_REST_Request $request) {
     $parameters = $request->get_json_params();
     if (empty($parameters)) {
         return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
-    }
-    
-    require_once 'generate_repository_class.php';
-    generate_repository_class('tbl_account_expenses',__DIR__ . '/repositories');
+        }    
+   
+    $type=$parameters['type'];
     require_once 'entities-repository.php';
     $examples = new EntityExamples();
     $created_id = $examples->createEntity([
-        'Type' => $parameters['type'],
+        'Type' => $type,
         'Name' => sanitize_text_field($parameters['name'] ?? ''),
         'Address' => sanitize_textarea_field($parameters['address'] ?? '')]);
     if (is_wp_error($created_id)) {
+
+         return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);
+     
         error_log('Creation error: ' . $created_id->get_error_message());
     } else {
         return new WP_REST_Response(array(
             'success' => true,
-            'invoice_id' => $created_id,
-            'message' => $parameters['type'].' created successfully',
+            $type => $created_id,
+            'message' => $type.' created successfully,Id='.$created_id,
             'data' => $created_id
         ), 200);
-        echo "Created entity ID21: $created_id\n";
-    }
-    }    // 'ContactInfo' => '
+       
+      }
+    }    
 
 function handle_invoice_submission(WP_REST_Request $request) {
     global $wpdb;
