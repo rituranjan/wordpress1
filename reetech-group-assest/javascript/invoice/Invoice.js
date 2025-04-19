@@ -173,8 +173,10 @@ function saveSingleTax() {
         function(response) {
 
             if (response && response.success) {
+                let taxes = {"success":true,"error":null,"field":null,"components":[],"id":0,"single":{"uid":"11013508","cid":"10993332","component_name":"Tax","tax":"1.00","sales_tax_type":"0","id":113002}}
+                
               //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
-                populateTaxComponents(response.single);
+                populateTaxComponents(taxes.single);
                 $('#salesTaxModal').modal('hide');
                 
             } else {
@@ -191,35 +193,6 @@ function saveSingleTax() {
         }
     );
 
-
-    $.ajax({
-        url: '/salesTax.php',
-        type: 'POST',
-        cache: false,
-        dataType: 'json',
-        async: true,
-        beforeSend: function () {
-
-        },
-        complete: function () {
-            $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
-        },
-        data: data,
-        success: function (response) {
-            if (response && response.success) {
-                populateTaxComponents(response.single);
-                $('#salesTaxModal').modal('hide');
-                $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
-            } else {
-                var msg = (response ? response.error : "An error occurred while saving. Please try again.");
-                displayTaxError(msg, response.field);
-            }
-        },
-        error: function () {
-           // aynaxConsoleLog("Response error");
-            displayTaxError("An error occurred while saving. Please try again.");
-        }
-    });
 
 
 
@@ -2219,6 +2192,125 @@ if (!$(elem).hasClass('active')) {
     $(this).closest('.dropdown').find('ins').html($(this).text());
 }
 }
+
+
+
+
+
+function getCustomerAddress(customerId) {
+
+    // means 'New Customer' is selected 
+    if (customerId == 0) {
+
+        document.getElementById('rowNewCustomer').style.display = '';
+        document.getElementById('to_new_customer').value = '';
+        document.getElementById('to_address').value = '';
+
+    }
+
+    // means existing customer is selected and an address must be fetched and inserted 
+    else {
+
+        document.getElementById('rowNewCustomer').style.display = 'none';
+
+        ajax_get("/getCustomerAddress.inc.php?customer=" + customerId, function() {
+
+            //alert(xmlhttp.responseText); 
+
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+
+                // get the whole address record 
+                var node = xmlhttp.responseXML.documentElement.getElementsByTagName("address");
+
+                // to_address
+                var to_address = node[0].getElementsByTagName("to_address")[0];
+
+                if (to_address.hasChildNodes()) var address = to_address.firstChild.nodeValue;
+                else var address = '';
+
+                document.getElementById("to_address").value = address;
+                $('#to_address').each(growTextarea);
+
+                //if there are two empty '.line', preselect previous tax: 
+                if (table.find('.line').length == 2 && $('.lineTotal:eq(0)').val() == "0.00" && $('.lineTotal:eq(1)').val() == "0.00") {
+
+                    //Retrieve previous tax-id's for this customer: 
+                    var node = xmlhttp.responseXML.documentElement.getElementsByTagName("taxes");
+
+                    var taxes = node[0].getElementsByTagName("tax_id")[0];
+                    if (taxes.hasChildNodes()) {
+                        if (taxes.firstChild.nodeValue > 0) 
+                            var tax_id = taxes.firstChild.nodeValue ;//? .trim();
+                        else var tax_id = ''
+                    };
+                    taxes = node[0].getElementsByTagName("tax2_id")[0];
+                    if (taxes.hasChildNodes()) {
+                        if (taxes.firstChild.nodeValue > 0) var tax2_id = taxes.firstChild.nodeValue ;//? .trim();
+                        else var tax2_id = ''
+                    };
+                    taxes = node[0].getElementsByTagName("tax3_id")[0];
+                    if (taxes.hasChildNodes()) {
+                        if (taxes.firstChild.nodeValue > 0) var tax3_id = taxes.firstChild.nodeValue ;//? .trim();
+                        else var tax3_id = ''
+                    };
+
+                    //Clear all taxes selected: 
+                    $.each($('.NoTax'), function(i, obj) {
+
+                        $(obj).prop("checked", true);
+                        changeTaxSelect(obj);
+
+                    });
+
+                    //Update taxes: 
+                    if (tax_id > 0 || tax2_id > 0 || tax3_id > 0) {
+
+                        //Select the tax-lines to be checked: 
+                        //ul[data-group='Companies']
+                        tax_lines = $('.SingleTax[data-component_id="' + tax_id + '"], .SingleTax[data-component_id="' + tax2_id + '"], .SingleTax[data-component_id="' + tax3_id + '"]');
+
+                        //Update each tax line with the customer preselected tax: 
+                        $.each(tax_lines, function(i, obj) {
+
+                            $(obj).prop("checked", true);
+                            changeTaxSelect(obj);
+
+                        });
+
+                    }
+
+                }
+
+            }
+        });
+
+
+    }
+}
+
+
+function debounce(callback, delay) {
+    let timer;
+    return function(...args) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            callback(...args);
+        }, delay);
+    }
+}
+
+
+//const getCustomerAddressWithDebouncing = debounce(getCustomerAddress, 300);
+
+
+
+function getCustomerAddressWithDebouncing(Id){
+    const customerId = $(this).val();
+    getCustomerAddress(customerId);
+}
+
+
+
 
 
 //Print Button
