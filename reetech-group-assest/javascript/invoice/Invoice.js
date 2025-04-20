@@ -173,6 +173,7 @@ function saveSingleTax() {
         function(response) {
 
             if (response && response.success) {
+                
                 let taxes = {"success":true,"error":null,"field":null,"components":[],"id":0,"single":{"uid":"11013508","cid":"10993332","component_name":"Tax","tax":response.data.tax,"sales_tax_type":"0","id":113002}}
                 
               //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
@@ -1118,11 +1119,10 @@ function loadInvoiceData(invoiceId) {
                 row.find('.jtaxTotal').text(item.tax_rate);
                 row.find('input[name="total[]"]').val(item.amount.toFixed(2));
             });
+            
+           
             reCalculate();
-            let taxes = {"success":true,"error":null,"field":null,"components":[],"id":0,"single":{"uid":"11013508","cid":"10993332","component_name":"Tax","tax":4,"sales_tax_type":"0","id":113002}}
                 
-              //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
-                populateTaxComponents(taxes.single);
  
         },
         function(xhr) {
@@ -1155,6 +1155,7 @@ function LoadData(invoiceId) {
             const expense_type = _.filter(masterData, { type: "expense" });
             const Customer_type = _.filter(masterData, { type: "Customer" });
             masterVendorData = _.filter(masterData, { type: "Vendor" });
+            const tax_type= _.filter(masterData, { type: "Tax" });
 
 
 
@@ -1199,6 +1200,18 @@ const result = _.chain(Invoice_type)
         }));
         
     });
+
+    debugger;
+    for(let i = 0; i <tax_type.length; i++) {
+        let taxes = {"success":true,"error":null,"field":null,"components":[],"id":tax_type[i].item_id,"single":{"uid":"11013508","cid":"10993332","component_name":tax_type[i].Name,"tax":tax_type[i].value,"sales_tax_type":"0","id":tax_type[i].id,"component_id":tax_type[i].id,"component_type":"Tax","component_rate":tax_type[i].rate,"component_rate_type":"percent","component_rate_value":tax_type[i].rate,"component_rate_value2":"","component_rate_value3":"","component_rate_value4":"","component_rate_value5":"","component_rate_value6":"","component_rate_value7":"","component_rate_value8":"","component_rate_value9":"","component_rate_value10":"","is_default":"0","is_active":"1","is_deleted":"0","is_system":"0","created_at":"2023-10-02 14:23:00","updated_at":"2023-10-02 14:23:00"}};
+            
+          //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
+            populateTaxComponents(taxes.single);
+        }
+        $('#customization_tax2').click();
+        $('#customization_tax2').click();
+    
+    
         },
         function(xhr) {
             console.error('Error:', xhr);

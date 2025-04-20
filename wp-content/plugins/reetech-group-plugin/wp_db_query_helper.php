@@ -51,16 +51,26 @@ class WP_DB_Query_Helper {
         $table_name = $this->wpdb->prefix . 'account_entities'; // Adds WordPress prefix
         $table_name2 = $this->wpdb->prefix . 'account_item_master'; // Adds WordPress prefix
         $table_group_master = $this->wpdb->prefix . 'account_group_master'; // Adds WordPress prefix      
+
+        $table_account_entities = $this->wpdb->prefix . 'account_entities'; // Adds WordPress prefix
+        $table_account_item_master = $this->wpdb->prefix . 'account_item_master'; // Adds WordPress prefix
+        $table_group_master = $this->wpdb->prefix . 'account_group_master'; // Adds WordPress prefix      
       
-        
+      
+        // $sql="SELECT CAST(g_master.group_id AS UNSIGNED) AS id, CAST(i_master.item_id AS UNSIGNED) AS item_id, g_master.group_name AS type, 
+        // i_master.item_value AS Name, 0 AS `value` FROM `tbl_account_item_master` i_master INNER JOIN `tbl_account_group_master` g_master 
+        // ON i_master.group_id = g_master.group_id UNION ALL SELECT CAST(t.EntityID AS UNSIGNED) AS id, 1 AS item_id, t.`Type`, t.`Name`,
+        //  0 AS `value` FROM `tbl_account_entities` t UNION ALL SELECT CAST(g_master.group_id AS UNSIGNED) AS id,
+        //   CAST(tax.id AS UNSIGNED) AS item_id, g_master.group_name AS type, tax.Name, tax.tax AS `value` FROM tbl_account_tax tax 
+        //   INNER JOIN `tbl_account_group_master` g_master ON tax.group_id = g_master.group_id;"
+
+        // echo $sql;
 
 
-        $sql="SELECT CAST(g_master.group_id AS UNSIGNED) as id, CAST(item_id AS UNSIGNED) as item_id, g_master.group_name as type,
-         item_value as Name FROM `{$table_name2}` i_master INNER JOIN `{$table_group_master}` g_master on 
- i_master.group_id = g_master.group_id UNION SELECT CAST(EntityID AS UNSIGNED) as id
-         , 1 as item_id,`Type` ,`Name` FROM `{$table_name}` order by Name;";
+        $sql="SELECT * FROM getMaster;";
 
-        
+
+    
                 
         return $this->execute_query(
             $this->wpdb->prepare($sql, 4),
