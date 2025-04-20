@@ -189,7 +189,13 @@
     .alert-danger:before {
         content: none !important;
     }
-
+    .form-invoice
+{
+    width: 100%!important;
+}
+.date-position{
+    width: 35%!important;
+}
     /* hack to avoid having the icon in v3 overlaping the icon in v2 */
 </style>
 
@@ -531,7 +537,8 @@
                                         </tr>
                                     </table>
 
-                                    <div class="form-invoice input-daterange dateRange">
+                                    <div class="form-invoice date-position input-daterange dateRange">
+                                        
                                         <span class="label">Invoice Date</span>
                                         <input type="text" name="invoice_date" id="dateStart" value="03/31/2025"
                                             maxlength="55" class="form-control">

@@ -19,11 +19,11 @@ class tbl_account_tax_Repository extends WP_Repository {
     }
 
     // CREATE operation
-    public function create1($data) {
+    public function create1($data,$all) {
         if (empty($data) || !is_array($data)) {
             return new WP_Error('invalid_data', 'Invalid data provided for creation.');
         }
-        return $this->create($data);
+        return $this->create($data,$all);
     }
 
     // READ operation

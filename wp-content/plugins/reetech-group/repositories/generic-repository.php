@@ -70,7 +70,7 @@ class WP_Repository {
     /**
      * Create new record
      */
-    public function create($data) {
+    public function create($data, $all = 0) {
         global $wpdb;
         
         $validation = $this->validate_data($data);
@@ -93,7 +93,9 @@ class WP_Repository {
                 $wpdb->last_error
             );
         }
-
+        if($all==1) {
+            return $data;
+        }
         return $wpdb->insert_id;
     }
 

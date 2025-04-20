@@ -173,7 +173,7 @@ function saveSingleTax() {
         function(response) {
 
             if (response && response.success) {
-                let taxes = {"success":true,"error":null,"field":null,"components":[],"id":0,"single":{"uid":"11013508","cid":"10993332","component_name":"Tax","tax":"1.00","sales_tax_type":"0","id":113002}}
+                let taxes = {"success":true,"error":null,"field":null,"components":[],"id":0,"single":{"uid":"11013508","cid":"10993332","component_name":"Tax","tax":response.data.tax,"sales_tax_type":"0","id":113002}}
                 
               //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
                 populateTaxComponents(taxes.single);
@@ -947,7 +947,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('id');
 if (myParam){
     loadInvoiceData(myParam);
-    LoadData(myParam);}
+    LoadData(myParam);
+    
+}
 
     let defaultItemsList = null;
 
@@ -1116,6 +1118,12 @@ function loadInvoiceData(invoiceId) {
                 row.find('.jtaxTotal').text(item.tax_rate);
                 row.find('input[name="total[]"]').val(item.amount.toFixed(2));
             });
+            reCalculate();
+            let taxes = {"success":true,"error":null,"field":null,"components":[],"id":0,"single":{"uid":"11013508","cid":"10993332","component_name":"Tax","tax":4,"sales_tax_type":"0","id":113002}}
+                
+              //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
+                populateTaxComponents(taxes.single);
+ 
         },
         function(xhr) {
             console.error('Error:', xhr);
@@ -2005,38 +2013,6 @@ reCalculateTax();
 
 }
 
-
-// jQuery(document).ready(function($) {
-
-
-//     wpApiRequest(
-//         'GET',
-//         'http://localhost/wordpress1/wp-json/items/v1/all',
-//         {},
-//         {showSpinner: true},
-//         successGetData
-//     );
-
-//     function successGetData(data){
-//             const response =data; 
-//             const mySelect = new CustomSelect('#mySelect', {
-//                 placeholder: 'Choose item type',
-//                 data: data.data,
-//                 initialValue: 'Expense' // Optional default value
-//             });
-    
-//             // Get selected value
-//             mySelect.on('change', () => {
-//                 console.log('Selected value:', mySelect.getValue());
-//                 console.log('Selected text:', mySelect.getSelectedText());
-//             });           
-    
-//             }    
-
-
-
-// });
-// FUNCTIONS ON PAGE LOAD //
 
 (function ($) {
 

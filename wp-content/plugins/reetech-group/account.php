@@ -249,11 +249,12 @@ function saveTax(WP_REST_Request $request) {
             'listSalesTax' => sanitize_text_field($parameters['listSalesTax'] ?? ''),
             'type' => sanitize_text_field($parameters['type'] ?? '')
                     ] ; 
-      return  saveExpenseRequest1($repo,$data,$type);
+      return  saveExpenseRequest1($repo,$data,$type,1);
+        //return saveExpenseRequest1($repo,$data,$type);
 }
 
-function saveExpenseRequest1($repo,$data,$type) {
-    $created_id = $repo->create1($data);   
+function saveExpenseRequest1($repo,$data,$type,$all=0) {
+    $created_id = $repo->create1($data,$all);   
     if (is_wp_error($created_id)) {
          return new WP_REST_Response(array(
             'success' => false,            
