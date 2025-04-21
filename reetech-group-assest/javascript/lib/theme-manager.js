@@ -106,6 +106,10 @@ themes: [
 };
 class ThemeManager {
     constructor() {
+        if (window.location.href.indexOf("theme-master") === -1) {
+            return; // Exit if "theme-master" not found in URL
+        }
+    
         this.currentUrl = window.location.href;
         this.shouldApplyTheme = this.checkDomain() && !this.isExcludedPage();
         
@@ -157,7 +161,65 @@ class ThemeManager {
         link.href = themeUrl;
     }
 
+    
     injectSwitcher() {
+        // Check if URL contains "theme-master"
+        if (window.location.href.indexOf("theme-master") === -1) {
+            return; // Exit if "theme-master" not found in URL
+        }
+    
+        // Get current theme from localStorage or use default
+        const currentThemeUrl = localStorage.getItem('selectedTheme') || themeConfig.themes[0].url;
+        const currentTheme = themeConfig.themes.find(theme => theme.url === currentThemeUrl) || themeConfig.themes[0];
+    
+        const switcherHTML = `
+            <div class="theme-switcher" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" 
+                            type="button" 
+                            data-bs-toggle="dropdown">
+                        <i class="bi ${currentTheme.icon}"></i> ${currentTheme.name}
+                    </button>
+                    <ul class="dropdown-menu">
+                        ${themeConfig.themes.map(theme => `
+                            <li><a class="dropdown-item ${theme.url === currentThemeUrl ? 'active' : ''}" href="#" 
+                                data-theme="${theme.url}">
+                                <i class="bi ${theme.icon}"></i> ${theme.name}
+                                ${theme.url === currentThemeUrl ? '<i class="bi bi-check float-end"></i>' : ''}
+                            </a></li>
+                        `).join('')}
+                    </ul>
+                </div>
+            </div>
+        `; 
+        
+        const container = document.createElement('div');
+        container.innerHTML = switcherHTML;
+        document.body.appendChild(container);
+        
+        container.querySelectorAll('.dropdown-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.setTheme(item.dataset.theme);
+                
+                // Update the button text after theme change
+                const selectedTheme = themeConfig.themes.find(theme => theme.url === item.dataset.theme);
+                if (selectedTheme) {
+                    const button = container.querySelector('.dropdown-toggle');
+                    button.innerHTML = `<i class="bi ${selectedTheme.icon}"></i> ${selectedTheme.name}`;
+                    
+                    // Update active state in dropdown
+                    container.querySelectorAll('.dropdown-item').forEach(el => {
+                        el.classList.remove('active');
+                        el.querySelector('.bi-check')?.remove();
+                    });
+                    item.classList.add('active');
+                    item.insertAdjacentHTML('beforeend', '<i class="bi bi-check float-end"></i>');
+                }
+            });
+        });
+    }
+    injectSwitcher2() {
         const switcherHTML = `
             <div class="theme-switcher" style="position: fixed; top: 10px; right: 10px; z-index: 1000;">
                 <div class="dropdown">

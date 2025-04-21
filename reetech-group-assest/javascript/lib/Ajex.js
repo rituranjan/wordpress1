@@ -14,6 +14,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
         showSpinner: true,
         toastOptions: null
     };
+    endpoint='http://localhost/wordpress1/wp-json/reetech-group'+endpoint+'?XDEBUG_SESSION_START=VSCODE'
     
     const settings = {...defaults, ...options};
     const $spinner = $('#apiSpinner');
@@ -48,9 +49,13 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
 
         $('#apiToastContainer').append(toastHtml);
         const toastEl = document.getElementById(toastId);
+        // const toast = new bootstrap.Toast(toastEl, {
+        //     autohide: autoHide,
+        //     delay: type === 'loading' ? false : 3000
+        // });
         const toast = new bootstrap.Toast(toastEl, {
             autohide: autoHide,
-            delay: type === 'loading' ? false : 3000
+            delay:  3000
         });
         
         toast.show();
@@ -81,7 +86,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
             'Content-Type': 'application/json'
         },
         data: method === 'GET' ? data : JSON.stringify(data),
-        dataType: 'json',
+                dataType: 'json',
         xhrFields: {withCredentials: true},
         
         beforeSend: function() {
@@ -94,7 +99,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
             if(settings.toastOptions?.success) {
                 toastQueue.push({
                     type: 'success',
-                    message: settings.toastOptions.success
+                    message: response.message || settings.toastOptions.success
                 });
             }
             
@@ -104,10 +109,18 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
         },
         
         error: function(xhr) {
+
+            if(xhr.status === 200) {
+                toastQueue.push({
+                    type: 'success',
+                    message: settings.toastOptions.success
+                });
+            }else{
+
             const errorMessage = xhr.responseJSON?.message || 'An error occurred';
             toastQueue.push({
                 type: 'error',
-                message: settings.toastOptions?.error || errorMessage
+                message: errorMessage || settings.toastOptions?.error 
             });
             
             if(typeof errorCallback === 'function') {
@@ -116,7 +129,7 @@ function wpApiRequest(method, endpoint, data = {}, options = {}, successCallback
             
             if(xhr.status === 401) {
                 window.location.href = '/wp-login.php?redirect_to=' + encodeURIComponent(window.location.href);
-            }
+            }}
         },
         
         complete: function() {

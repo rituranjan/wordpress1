@@ -23,6 +23,22 @@ themes: [
         url: "https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
     },
     {
+        name: "brite",
+        url: "https://bootswatch.com/5/brite/bootstrap.min.css"
+    },
+    {
+        name: "cerulean",
+        url: "https://bootswatch.com/5/cerulean/bootstrap.min.css"
+    },
+    {
+        name: "Cosmo",
+        url: "https://bootswatch.com/5/Cosmo/bootstrap.min.css"
+    },
+    {
+        name: "Lumen",
+        url: "https://bootswatch.com/5/Lumen/bootstrap.min.css"
+    },
+    {
         name: "Darkly",
         url: "https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/darkly/bootstrap.min.css"
     },

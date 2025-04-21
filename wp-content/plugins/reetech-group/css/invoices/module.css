@@ -72,7 +72,7 @@ input[type="submit"] {
     background-clip: padding-box;
 }
 
-.btn {
+.btn1 {
     display: inline-block;
     vertical-align: top;
     margin: 0;
@@ -108,7 +108,7 @@ input[type="submit"] {
     width: 100%;
 }
 
-.btn-primary,
+/* .btn-primary,
 .btn-green {
     color: #fff;
     background-color: #73bd0b;
@@ -126,23 +126,23 @@ input[type="submit"] {
     color: #fff;
     background-color: #1b5fa1;
     background-image: linear-gradient(to bottom, #3776b3, #1b5fa1);
-}
+} */
 
-.btn-primary,
+/* .btn-primary,
 .btn-green,
 .btn-danger,
 .btn-red,
 .btn-blue {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15);
-}
-
+} */
+/* 
 .btn-primary:focus,
 .btn-green:focus,
 .btn-danger:focus,
 .btn-red:focus,
 .btn-blue:focus {
     box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15), inset 0 0 0 2px rgba(255, 255, 255, .3);
-}
+} */
 
 .btn-select {
     filter: none;
@@ -1047,7 +1047,7 @@ input[type="checkbox"]+span {
 .focus,
 td.focus,
 #upload_area.focus {
-    background-color: #fffbe6;
+    /* background-color: #fffbe6; */
 }
 
 .input-wrapper {
@@ -2049,8 +2049,8 @@ td.day:last-child {
 #options {
     display: none;
     margin: 9px 0 20px 0;
-    background-color: #fafafa;
-    border: thin solid #d2d2d2;
+    /* background-color: #fafafa;
+    border: thin solid #d2d2d2; */
     padding: 14px 0;
     font-size: 12px;
 }
@@ -2489,6 +2489,7 @@ input[type="text"].meta-title {
 
 .form-invoice.dates {
     line-height: 26px;
+    width: 100%;
 }
 
 .logoShown .form-invoice.dates {
@@ -2702,7 +2703,7 @@ table.sums .sum-number input:focus {
 }
 
 .sum-balance td {
-    background-color: #fbff9e;
+    /* background-color: #fbff9e; */
 }
 
 table.sums .sum-discount td {
@@ -3065,10 +3066,10 @@ th.text-right a {
     resize: none;
 }
 
-.table-record td.amount,
+/* .table-record td.amount,
 .table-record td.amount.focus {
     background-color: #f8f8f8 !important;
-}
+} */
 
 .isDiscount .taxItem.focus,
 .isExpense .taxItem.focus {

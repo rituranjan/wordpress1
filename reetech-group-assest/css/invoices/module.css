@@ -2990,9 +2990,9 @@ th.text-right a {
 }
 
 .table-record th {
-    background-color: #54a0e7;
+    /* background-color: #54a0e7;
     border: thin solid #54a0e7;
-    color: #fff;
+    color: #fff; */
     font-size: 14px;
     line-height: 30px;
     padding: 0 6px;

@@ -8,7 +8,11 @@ class GenericDataTable {
             filters: [],
             columns: [],
             actions: [],
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             translations: {
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+
                 emptyTable: "No data found",
                 processing: "<i class='fa fa-spinner fa-spin'></i> Loading...",
                 paginate: { // Added pagination translations
@@ -102,18 +106,20 @@ class GenericDataTable {
     }
 
     initDataTable() {
+        let path='http://localhost/wordpress1/wp-json/reetech-group';
         this.dataTable = $(this.config.tableId).DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: this.config.ajax.url,
+                url: path+this.config.ajax.url,
                 type: this.config.ajax.method,
                 headers: this.config.ajax.headers,
                 data: (d) => this.getRequestData(d)
             },
             paging: true, // Explicitly enable pagination
             pagingType: 'full_numbers', // Show full pagination controls
-            lengthMenu: [10, 25, 50, 100], // Configure page length options
+            lengthMenu: [2, 4, 3, 10], // Configure page length options
+            //lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "All"]],
             columns: this.getColumnsConfig(),
             language: this.config.translations,
             createdRow: (row, data) => this.handleRowCreation(row, data),
@@ -213,8 +219,8 @@ class GenericDataTable {
 
         return {
             draw: d.draw,
-            start: d.start,
-            length: d.length,
+            page: d.start,
+            per_page: d.length,
             search: d.search.value,
             orderby: d.columns[d.order[0].column].data,
             order: d.order[0].dir,
@@ -246,7 +252,7 @@ class GenericDataTable {
 
     renderActions(row) {
         return `
-            <div class="dropdown">
+            <div class="dropdown1">
                 <button class="btn btn-sm btn-outline-secondary dropdown-toggle" 
                         type="button" data-bs-toggle="dropdown">
                     Actions

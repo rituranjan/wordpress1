@@ -1,6 +1,6 @@
  
 <?php
-namespace Reetech;
+//namespace Reetech;
 
 class CacheManager {
     public static function get_cached_data($cache_key, $callback, $expiration = 3600) {

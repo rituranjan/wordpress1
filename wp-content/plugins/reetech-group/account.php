@@ -153,80 +153,202 @@ add_action('rest_api_init', function() {
         'callback' => 'get_cached_items',
         'permission_callback' => '__return_true'
     ]);
+
+    register_rest_route('reetech-group/v1', '/getdata', [
+        'methods' => 'GET',
+        'callback' => 'getdata',
+        'permission_callback' => '__return_true'
+    ]);
+
+
+    register_rest_route('reetech-group/v1', '/entity', array(
+        'methods' => 'POST',
+        'callback' => 'Create_Entity',
+        'permission_callback' => '__return_true' 
+           ));
+    
+    register_rest_route('reetech-group/v1', '/saveData', array(
+            'methods' => 'POST',
+            'callback' => 'saveDataPost',
+            'permission_callback' => '__return_true' 
+               ));
+    
 });
+
+function SaveExpensive(){
+    require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
+    $repo = new tbl_account_expenses_Repository();    
+    $result = $repo->create([
+        'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
+        'category' => sanitize_text_field($parameters['category'] ?? ''),
+        'amount' => sanitize_text_field($parameters['amount'] ?? ''),
+        'paid' => sanitize_text_field($parameters['paid'] ?? ''),
+        'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
+        'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
+        'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
+        'type' => sanitize_text_field($parameters['type'] ?? ''),
+    ]);
+    if (is_wp_error($result)) {
+        return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);       
+    } else {
+        return new WP_REST_Response(array(
+            'success' => true,
+            $type => $created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
+            'data' => $created_id
+        ), 200);
+    }
+}
+
+
+
+function saveDataPost(WP_REST_Request $request) {
+    $parameters = $request->get_json_params();
+    $type=$parameters['type'];
+    if (empty($parameters)) {
+        return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
+        }   
+    if($type=='saveSingleTax'){
+        return saveTax($request);
+    }else if($type=='saveExpenseRequest'){
+        return saveSingleExpense($request,1);
+        }
+}
+
+function saveSingleExpense(WP_REST_Request $request,$all) {
+    $parameters = $request->get_json_params();
+
+    require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
+    $repo = new tbl_account_expenses_Repository();  
+    $data=[
+        'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
+        'category' => sanitize_text_field($parameters['category'] ?? ''),
+        'amount' => sanitize_text_field($parameters['amount'] ?? ''),
+        'paid' => sanitize_text_field($parameters['paid'] ?? ''),
+        'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
+        'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
+        'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
+        'type' => sanitize_text_field($parameters['type'] ?? '')
+        
+    ] ; 
+  return  saveExpenseRequest1($repo,$data,$type,$all);
+
+}
+
+function saveTax(WP_REST_Request $request) {
+
+    //{"name":"Tax11","tax":"11.00","method":"0","single_tax_save":true,"listSalesTax":true,"type":"saveSingleTax"}
+    $parameters = $request->get_json_params();
+    $type=$parameters['type'];
+    if (empty($parameters)) {
+        return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
+        }   
+        
+        require_once __DIR__ . '/repositories/tbl_account_tax_Repository.php';
+        $repo = new tbl_account_tax_Repository();  
+        $data=[
+            'name' => sanitize_text_field($parameters['name'] ?? ''),
+            'tax' => sanitize_text_field($parameters['tax'] ?? ''),
+            'method' => sanitize_text_field($parameters['method'] ?? ''),
+            'single_tax_save' => sanitize_text_field($parameters['single_tax_save'] ?? ''),
+            'listSalesTax' => sanitize_text_field($parameters['listSalesTax'] ?? ''),
+            'type' => sanitize_text_field($parameters['type'] ?? '')
+                    ] ; 
+      return  saveExpenseRequest1($repo,$data,$type,1);
+        //return saveExpenseRequest1($repo,$data,$type);
+}
+
+function saveExpenseRequest1($repo,$data,$type,$all=0) {
+    $created_id = $repo->create1($data,$all);   
+    if (is_wp_error($created_id)) {
+         return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);     
+       
+    } else {
+        return new WP_REST_Response(array(
+            'success' => true,
+            $type => $created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
+            'data' => $created_id
+        ), 200);       
+      }
+    }    
+
+
+// require_once 'generate_repository_class.php';
+    //generate_repository_class('tbl_account_tax',__DIR__ . '/repositories');
+function Create_Entity(WP_REST_Request $request) {
+    $parameters = $request->get_json_params();
+    if (empty($parameters)) {
+        return new WP_Error('invalid_data', 'Invalid entity data', array('status' => 400));
+        }    
+   
+    $type=$parameters['type'];
+    require_once 'entities-repository.php';
+    $examples = new EntityExamples();
+    $created_id = $examples->createEntity([
+        'Type' => $type,
+        'Name' => sanitize_text_field($parameters['name'] ?? ''),
+        'Address' => sanitize_textarea_field($parameters['address'] ?? '')]);
+    if (is_wp_error($created_id)) {
+
+         return new WP_REST_Response(array(
+            'success' => false,            
+             'message' => $type.' created failed, error='.$created_id->get_error_message(),         
+         ), 500);
+     
+        error_log('Creation error: ' . $created_id->get_error_message());
+    } else {
+        return new WP_REST_Response(array(
+            'success' => true,
+            $type => $created_id,
+            'message' => $type.'ID='.$created_id.'  created successfully',
+            'data' => $created_id
+        ), 200);
+       
+      }
+    }    
 
 function handle_invoice_submission(WP_REST_Request $request) {
     global $wpdb;
-    
-    // require_once 'customer.php';
-    // require_once 'generic-repository.php';
-    //  // Get and validate the data
      $parameters = $request->get_json_params();
    
-
-    // Initialize repository for entities table
-    // $entities_repo = new WP_Repository('account_entities', [
-    //     'primary_key' => 'EntityID',
-    //     'required_fields' => ['Type', 'Name'],
-    //     'field_types' => [
-    //         'EntityID' => '%d',
-    //         'Type' => '%s',
-    //         'Name' => '%s',
-    //         'Address' => '%s',
-    //         'LoyaltyPoints' => '%d'
-    //     ]
-    // ]);
     require_once 'entities-repository.php';
 
     $examples = new EntityExamples();
-
-// Scenario 1: Create new entity
-
-    
-    // // Example 1: Create new entity
-    // $new_entity = [
-    //     'Type' => 'Customer',
-    //     'Name' => sanitize_text_field($parameters['to']['name'] ?? ''),
-    //     'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
-    //     'LoyaltyPoints' => 1000
-    // ];
     if (empty($parameters)) {
         return new WP_Error('invalid_data', 'Invalid invoice data', array('status' => 400));
-    }
-    
+    }    
     $created_id= intval($parameters['to']['id']??0);
     if($created_id==0){
         $created_id = $examples->createEntity([
             'Type' => 'Customer',
             'Name' => sanitize_text_field($parameters['to']['name'] ?? ''),
-            'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
-            'ContactInfo' => 'john@example.com',
-            'LoyaltyPoints' => 500
-        ]);
-   // $created_id = $entities_repo->create($new_entity);
+            'Address' => sanitize_textarea_field($parameters['to']['address'] ?? '')
+           // 'ContactInfo' => 'john@example.com',
+            //'LoyaltyPoints' => 500
+        ]);  
     if (is_wp_error($created_id)) {
         error_log('Creation error: ' . $created_id->get_error_message());
     } else {
-        echo "Created entity ID: $created_id\n";
+       // echo "Created entity ID: $created_id\n";
     }}
-    // else {
-    //     $created_id
-    // }
-
-    
-    
-    // Process the invoice data
     $invoice_data = array(
         'from_name' => sanitize_text_field($parameters['from']['name'] ?? ''),
         'from_address' => sanitize_textarea_field($parameters['from']['address'] ?? ''),
-        'to_id' => $created_id,// intval($parameters['to']['id'] ?? 0),
-       // 'to_name' => sanitize_text_field($parameters['to']['name'] ?? ''),
-        //'to_address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
+        'to_id' => $created_id,
         'invoice_number' => sanitize_text_field($parameters['invoice_number'] ?? ''),
         'invoice_date' => sanitize_text_field($parameters['invoice_date'] ?? ''),
         'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
         'subtotal' => floatval($parameters['subtotal'] ?? 0),
         'total' => floatval($parameters['total'] ?? 0),
+        'tax_total' => floatval($parameters['tax_total'] ?? 0),
+        'discount_total' => floatval($parameters['discount_total'] ?? 0),
         'status' => 'pending',
         'created_at' => current_time('mysql')
     );
@@ -344,15 +466,20 @@ function get_invoices_summary(WP_REST_Request $request) {
     
     // Base query
     $table_name = $wpdb->prefix . 'invoices';
-    $query = "SELECT 
-                id,
-                invoice_number,
-                to_name AS customer,
-                invoice_date AS date,
-                total,
-                balance_due AS balance,
-                status
-              FROM $table_name";
+    $query = "SELECT
+    id,
+    invoice_number,
+    ti.to_id AS customerId,
+    tae.Name AS customer,
+    invoice_date AS DATE,
+    total,
+    balance_due AS balance,
+`status`,
+    created_at AS created_at
+FROM
+    $table_name ti
+INNER JOIN tbl_account_entities tae ON
+    ti.to_id = tae.EntityID ";
     
     // Where clauses
     $where_clauses = [];
@@ -569,3 +696,18 @@ $results = array_map(function($item) {
 add_action('save_item', function ($item_id) {
     delete_transient('account_item_all');
 });
+
+
+ function getData(WP_REST_Request $request) {
+    global $wpdb;
+     $parameters = $request->get_json_params();
+     define('REETECH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+     require_once REETECH_PLUGIN_DIR . 'wp_db_query_helper.php';
+     $db_helper = new WP_DB_Query_Helper();
+    // Get account entities as objects (default)
+    $entities = $db_helper->get_account_entities();
+    return new WP_REST_Response([
+        'success' => true,
+        'data' => $entities,
+    ], 200);
+}

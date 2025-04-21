@@ -6,42 +6,42 @@ use WP_REST_Request;
 use WP_Error;
 
 class RestApi {
-    private static $namespace = 'reetech-group/v1';
+    private static $namespace = 'reetech-group2/v2';
 
     public static function init() {
         add_action('rest_api_init', [__CLASS__, 'register_routes']);
+        
     }
-
     public static function register_routes() {
         register_rest_route(self::$namespace, '/invoices', [
             'methods' => 'POST',
-            'callback' => [__CLASS__, 'handle_invoice_submission'],
+            'callback' =>[__CLASS__, 'handle_invoice_submission'],
             'permission_callback' => '__return_true'
         ]);
 
         register_rest_route(self::$namespace, '/invoices-summary', [
             'methods' => 'GET',
-            'callback' => [__CLASS__, 'get_invoices_summary'],
+            'callback' =>'get_invoices_summary',// [__CLASS__, 'get_invoices_summary'],
             'permission_callback' => '__return_true'
         ]);
 
-        register_rest_route('items/v1', '/all', [
+        register_rest_route(self::$namespace, '/all', [
             'methods' => 'GET',
-            'callback' => [__CLASS__, 'get_cached_items'],
+            'callback' =>'get_cached_items',// [__CLASS__, 'get_cached_items'],
+            'permission_callback' => '__return_true'
+        ]);
+
+        register_rest_route(self::$namespace, '/get-invoice', [
+            'methods' => 'GET',
+            'callback' =>'get_invoice_data',// [__CLASS__, 'get_cached_items'],
+            'permission_callback' => '__return_true'
+        ]);
+        register_rest_route(self::$namespace, '/getdata', [
+            'methods' => 'GET',
+            'callback' =>'getData',// [__CLASS__, 'get_cached_items'],
             'permission_callback' => '__return_true'
         ]);
     }
-
-    public static function handle_invoice_submission1(WP_REST_Request $request) {
-
-    
-        // Implementation from original code
-    }
-
-    public static function get_invoices_summary12(WP_REST_Request $request) {
-        // Implementation from original code
-    }
-
     function get_invoices_summary(WP_REST_Request $request) {
         global $wpdb;
         
@@ -154,22 +154,21 @@ class RestApi {
     }
 
 
-   // function handle_invoice_submission(WP_REST_Request $request) {
+  
+
     public static function handle_invoice_submission(WP_REST_Request $request) {
         global $wpdb;
-        
          $parameters = $request->get_json_params();
+         define('REETECH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+         require_once REETECH_PLUGIN_DIR . 'includes/Reetech/EntityExamples.php';
+
        
-    
-    
-        require_once 'entities-repository.php';
+       // require_once 'EntityExamples.php';
     
         $examples = new EntityExamples();
-    
         if (empty($parameters)) {
             return new WP_Error('invalid_data', 'Invalid invoice data', array('status' => 400));
-        }
-        
+        }    
         $created_id= intval($parameters['to']['id']??0);
         if($created_id==0){
             $created_id = $examples->createEntity([
@@ -178,20 +177,12 @@ class RestApi {
                 'Address' => sanitize_textarea_field($parameters['to']['address'] ?? ''),
                 'ContactInfo' => 'john@example.com',
                 'LoyaltyPoints' => 500
-            ]);
-       // $created_id = $entities_repo->create($new_entity);
+            ]);  
         if (is_wp_error($created_id)) {
             error_log('Creation error: ' . $created_id->get_error_message());
         } else {
             echo "Created entity ID: $created_id\n";
         }}
-        // else {
-        //     $created_id
-        // }
-    
-        
-        
-        // Process the invoice data
         $invoice_data = array(
             'from_name' => sanitize_text_field($parameters['from']['name'] ?? ''),
             'from_address' => sanitize_textarea_field($parameters['from']['address'] ?? ''),
@@ -290,9 +281,86 @@ class RestApi {
             'data' => $invoice_data
         ), 200);
     }
+    
+    //get_invoice_data
 
+// Callback function to get invoice data
+public static function get_invoice_data(WP_REST_Request $request) {
+//function get_invoice_data(WP_REST_Request $request) {
+    global $wpdb;
+    $invoice_id = $request->get_param('id');
+
+    // Get main invoice data
+    $table_name = $wpdb->prefix . 'invoices';
+    $invoice = $wpdb->get_row($wpdb->prepare(
+        "SELECT * FROM $table_name WHERE id = %d", 
+        $invoice_id
+    ));
+
+    if (!$invoice) {
+        return new WP_Error('no_invoice', 'Invoice not found', array('status' => 404));
+    }
+
+    // Get line items
+    $items_table = $wpdb->prefix . 'invoice_items';
+    $items = $wpdb->get_results($wpdb->prepare(
+        "SELECT * FROM $items_table WHERE invoice_id = %d",
+        $invoice_id
+    ));
+
+    // $examples = new EntityExamples();
+    // $customer = $examples->findEntityByID(9)
     
 
+    // Format response
+    $response = array(
+        'from' => array(
+            'name' => $invoice->from_name,
+            'address' => $invoice->from_address
+        ),
+        'to' => array(
+            'id' => $invoice->to_id,
+            'name' =>"AAA",// $customer->name,
+            'address' =>"bbb",// $customer->address
+        ),
+        'invoice_number' => $invoice->invoice_number,
+        'invoice_date' => $invoice->invoice_date,
+        'due_date' => $invoice->due_date,
+        'subtotal' => floatval($invoice->subtotal),
+        'total' => floatval($invoice->total),
+        'items' => array(),
+        'notes' => $invoice->notes
+    );
 
+    foreach ($items as $item) {
+        $response['items'][] = array(
+            'description' => $item->description,
+            'unit_price' => floatval($item->unit_price),
+            'quantity' => floatval($item->quantity),
+            'tax_rate' => $item->tax_rate,
+            'amount' => floatval($item->amount),
+            'item'=> $item->item_type,
+        );
+    }
+
+    return new WP_REST_Response($response, 200);
+}
+
+
+public static function getData(WP_REST_Request $request) {
+    global $wpdb;
+     $parameters = $request->get_json_params();
+     define('REETECH_PLUGIN_DIR', plugin_dir_path(__FILE__));
+     require_once REETECH_PLUGIN_DIR . 'includes/Reetech/wp_db_query_helper.php';
+     $db_helper = new WP_DB_Query_Helper();
+    // Get account entities as objects (default)
+    $entities = $db_helper->get_account_entities();
+    return new WP_REST_Response([
+        'success' => true,
+        'data' => $entities,
+    ], 200);
+}
 
 } 
+
+
