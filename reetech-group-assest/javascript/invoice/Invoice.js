@@ -723,6 +723,16 @@ btnShowVendors.mouseup(function () {
     dropdown.toggleClass('open');
 });
 
+function toggleCheckboxByComponentId(componentId, shouldCheck) {
+    const $checkbox = $(`input[type="checkbox"][data-component_id="${componentId}"]`);
+    if ($checkbox.length) {
+      $checkbox.prop('checked', shouldCheck);       // Set the checkbox checked/unchecked
+      changeTaxSelect($checkbox[0]);                // Call your onclick handler directly
+    }
+  }
+  
+  
+  
 
 $('#btnAttachExpense').mouseup(async function () {
     modalClosedBySubmit = true;
@@ -1114,6 +1124,7 @@ function loadInvoiceData(invoiceId) {
             response.items.forEach((item, index) => {
                 if(index > 0) {
                     addRow();
+                    toggleCheckboxByComponentId("42", true);
                 // addNewRow();
                 }
                 
