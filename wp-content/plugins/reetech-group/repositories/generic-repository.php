@@ -94,6 +94,7 @@ class WP_Repository {
             );
         }
         if($all==1) {
+            $data['id'] =$wpdb->insert_id;;
             return $data;
         }
         return $wpdb->insert_id;

@@ -67,7 +67,7 @@ class WP_DB_Query_Helper {
         // echo $sql;
 
 
-        $sql="SELECT * FROM getMaster;";
+        $sql="SELECT * FROM getMaster order by Name;";
 
 
     

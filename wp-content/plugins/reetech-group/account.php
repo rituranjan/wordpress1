@@ -169,7 +169,7 @@ add_action('rest_api_init', function() {
     
     register_rest_route('reetech-group/v1', '/saveData', array(
             'methods' => 'POST',
-            'callback' => 'saveExpenseRequest',
+            'callback' => 'saveDataPost',
             'permission_callback' => '__return_true' 
                ));
     
@@ -205,7 +205,7 @@ function SaveExpensive(){
 
 
 
-function saveExpenseRequest(WP_REST_Request $request) {
+function saveDataPost(WP_REST_Request $request) {
     $parameters = $request->get_json_params();
     $type=$parameters['type'];
     if (empty($parameters)) {
@@ -213,21 +213,29 @@ function saveExpenseRequest(WP_REST_Request $request) {
         }   
     if($type=='saveSingleTax'){
         return saveTax($request);
-    }else if($type=='saveSingleExpense'){
-        require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
-        $repo = new tbl_account_expenses_Repository();  
-        $data=[
-            'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
-            'category' => sanitize_text_field($parameters['category'] ?? ''),
-            'amount' => sanitize_text_field($parameters['amount'] ?? ''),
-            'paid' => sanitize_text_field($parameters['paid'] ?? ''),
-            'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
-            'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
-            'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
-            'type' => sanitize_text_field($parameters['type'] ?? '')
-        ] ; 
-      return  saveExpenseRequest1($repo,$data,$type);
+    }else if($type=='saveExpenseRequest'){
+        return saveSingleExpense($request,1);
         }
+}
+
+function saveSingleExpense(WP_REST_Request $request,$all) {
+    $parameters = $request->get_json_params();
+
+    require_once __DIR__ . '/repositories/tbl_account_expenses_Repository.php';
+    $repo = new tbl_account_expenses_Repository();  
+    $data=[
+        'vendor' => sanitize_text_field($parameters['vendor'] ?? ''),
+        'category' => sanitize_text_field($parameters['category'] ?? ''),
+        'amount' => sanitize_text_field($parameters['amount'] ?? ''),
+        'paid' => sanitize_text_field($parameters['paid'] ?? ''),
+        'payment_date' => sanitize_text_field($parameters['payment_date'] ?? ''),
+        'bill_date' => sanitize_text_field($parameters['bill_date'] ?? ''),
+        'due_date' => sanitize_text_field($parameters['due_date'] ?? ''),
+        'type' => sanitize_text_field($parameters['type'] ?? '')
+        
+    ] ; 
+  return  saveExpenseRequest1($repo,$data,$type,$all);
+
 }
 
 function saveTax(WP_REST_Request $request) {

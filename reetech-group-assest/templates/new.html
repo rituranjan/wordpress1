@@ -321,27 +321,27 @@
 
 
                             <td class="minify">
-                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary" tabindex="-1"
+                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary saveFirst" tabindex="-1"
                                     sel="btnView">View <i class="tip">Please save your invoice
                                         first.</i></button>
                             </td>
                             <td class="minify">
-                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary" tabindex="-1"
+                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary saveFirst" tabindex="-1"
                                     sel="btnPrint">Print <i class="tip">Please save your invoice
                                         first.</i></button>
                             </td>
                             <td class="minify">
-                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary" tabindex="-1"
+                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary saveFirst" tabindex="-1"
                                     sel="btnPDF">PDF <i class="tip">Please save your invoice
                                         first.</i></button>
                             </td>
                             <td class="minify">
-                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary" tabindex="-1"
+                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary saveFirst" tabindex="-1"
                                     sel="btnSend">Send <i class="tip">Please save your invoice
                                         first.</i></button>
                             </td>
                             <td class="minify">
-                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary" tabindex="-1"
+                                <button type="button" class="btn has-tooltip tooltip-bottom btn-primary saveFirst" tabindex="-1"
                                     sel="btnPaid">Mark as Paid <i class="tip">Please save your invoice
                                         first.</i></button>
 
@@ -390,7 +390,7 @@
                                         <td>
 
                                             <input type="text" name="from_name" id="from_name"
-                                                onkeyup="sanitizeNames(this);" value="test" maxlength="500"
+                                                onkeyup="sanitizeNames(this);"  maxlength="500"
                                                 placeholder="Your Name" class="form-control">
 
                                         </td>
@@ -402,7 +402,7 @@
 
                                             <textarea name="from_address" id="from_address" rows="1"
                                                 style="min-height:86px" class="growTextarea form-control"
-                                                maxlength="1000" placeholder="Your address">test1</textarea>
+                                                maxlength="1000" placeholder="Your address"></textarea>
 
 
                                         </td>
@@ -421,7 +421,7 @@
                                             <select name="to_id" id="to_name" class="form-select"
                                                 onchange="getCustomerAddress(this.value);">
                                                 <optgroup label="-----------------------------">
-                                                    <option value="0" selected>Add New Customer1</option>
+                                                    <option value="0" selected>Add New Customer</option>
                                                 </optgroup>
 
                                             </select>
@@ -516,9 +516,9 @@
                                             </td>
                                             <td>
 
-                                                <input type="text" name="invoice_number" id="doc_number"
+                                                <input type="text" name="invoice_number" id="doc_number" disabled="disabled"
                                                     class="form-control" onkeyup="onlyNumbersLettersOrDashes(this)"
-                                                    value="0000003" maxlength="55">
+                                                    value="" maxlength="55">
 
                                             </td>
                                         </tr>
@@ -532,7 +532,6 @@
 
                                                 <input type="text" name="po_number" id="po_number" class="form-control"
                                                     onkeyup="onlyNumbersLettersOrDashes(this)" value="" maxlength="55">
-
                                             </td>
                                         </tr>
                                     </table>
@@ -540,11 +539,11 @@
                                     <div class="form-invoice date-position input-daterange dateRange">
                                         
                                         <span class="label">Invoice Date</span>
-                                        <input type="text" name="invoice_date" id="dateStart" value="03/31/2025"
+                                        <input type="text" name="invoice_date" id="dateStart" 
                                             maxlength="55" class="form-control">
 
                                         <span class="label end">Due Date</span>
-                                        <input type="text" name="payment_due_date" id="dateEnd" value="03/31/2025"
+                                        <input type="text" name="payment_due_date" id="dateEnd" 
                                             maxlength="55" class="form-control">
                                     </div>
 
@@ -610,13 +609,13 @@
                                         <select class="noborder selectItem permEx" onfocusin="objSelected=this;"
                                             name="item[]" id="itemSelect0">
 
-                                            <option value=""></option>
+                                            
                                             <option value="Service">Service</option>
                                             <option value="Hours">Hours</option>
                                             <option value="Days">Days</option>
                                             <option value="Product">Product</option>
                                             <option value="Expense" selected="selected">Expense</option>
-                                            <option value="Discount_aynax">Discount</option>
+                                            <option value="Discount_aynax">Discount</option> 
                                         </select>
                                     </td>
 
@@ -855,7 +854,7 @@
 
                         <div class="button-row clearfix">
                             <button type="button" class="btn btn-xs left" sel="btnAddRow" onclick="newLineClick()">
-                                <i class="icon-new">&nbsp;</i><span>New Line</span>
+                                <i class="icon-new">&nbsp;</i><span>New Row</span>
                             </button>
 
 
@@ -1174,7 +1173,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary btnSubmit"
-                                        onclick="document.getElementById('submitButton').value='Save'">Save</button>
+                                        onclick="submitInvoiceToWordPress();">Save</button>
                                     <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
                                 </div>
 

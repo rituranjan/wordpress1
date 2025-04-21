@@ -771,20 +771,32 @@ $('#btnAttachExpense').mouseup(async function () {
             }
         },
         function(response) {
-            expenseSaved=response;
+            if(response.success)
+            expenseSaved={"success":response.success,"expense":{"id":response.data.id,"amount":response.data.amount,"vendor_id":response.data.vendor}}
             console.log('Items:', response.data);
+            row.find('.lineDescription').val(cat.text() + ' from ' + ven_text + ' on ' + date);
+            row.find('.linePrice').val(amount);
+            row.find('.lineTotal').val(amount);
+            row.find('.lineQty').val('1.00');
+            row.find('[name="expense_id[]"]').val(expenseSaved.expense.id);
+            row.find('.growTextarea').each(growTextarea);
+            modalExpense.modal('hide');
+    
         },
         function(xhr) {
-            console.error('Error:', xhr);           
+            showExpenseError(response.message);
+                    
         }
-    );    
+      
+    );  
+    $(this).prop('disabled! btn-outline-primary', false).removeClass('btn-spinner');  
 
-    $(this).prop('disabled1 btn-outline-primary', false).removeClass('btn-spinner');
+  
 
     if (!expenseSaved.success) {
         showExpenseError(expenseSaved.error);
     }
-
+    
     if (valid && expenseSaved.success) {
         row.find('.lineDescription').val(cat.text() + ' from ' + ven_text + ' on ' + date);
         row.find('.linePrice').val(amount);
@@ -841,7 +853,6 @@ if (key === 'customer') {
 
 
 preselectCustomer();
-// const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
 
 const account_upgrade_url = '';
 
@@ -946,15 +957,13 @@ NREUM.info = {
 
 const urlParams = new URLSearchParams(window.location.search);
 const myParam = urlParams.get('id');
+LoadData(myParam);
 if (myParam){
-    loadInvoiceData(myParam);
-    LoadData(myParam);
+    loadInvoiceData(myParam);   
     
 }
 
     let defaultItemsList = null;
-
-//const defaultItemsList = JSON.parse(`{"":"","Service":"Service","Hours":"Hours","Days":"Days","Product":"Product","Expense":"Expense","Discount_aynax":"Discount"}`);
 
 // Add row
 
@@ -1168,14 +1177,6 @@ const result = _.chain(Invoice_type)
   .assign({ '': '' })  
   .value();
             defaultItemsList= result;
-            // initializeComboAutoComplete({
-            //                 selector: '.combo-select',
-            //                 sourceData: Customer_type,
-            //                 itemValueKey: 'id',
-            //                 itemTextKey: 'Name',
-            //                 minChars: 1,
-            //                 maxItems: 8
-            //             });
            
             $('#expenseCategory').empty();
           
@@ -1203,7 +1204,7 @@ const result = _.chain(Invoice_type)
 
     debugger;
     for(let i = 0; i <tax_type.length; i++) {
-        let taxes = {"success":true,"error":null,"field":null,"components":[],"id":tax_type[i].item_id,"single":{"uid":"11013508","cid":"10993332","component_name":tax_type[i].Name,"tax":tax_type[i].value,"sales_tax_type":"0","id":tax_type[i].id,"component_id":tax_type[i].id,"component_type":"Tax","component_rate":tax_type[i].rate,"component_rate_type":"percent","component_rate_value":tax_type[i].rate,"component_rate_value2":"","component_rate_value3":"","component_rate_value4":"","component_rate_value5":"","component_rate_value6":"","component_rate_value7":"","component_rate_value8":"","component_rate_value9":"","component_rate_value10":"","is_default":"0","is_active":"1","is_deleted":"0","is_system":"0","created_at":"2023-10-02 14:23:00","updated_at":"2023-10-02 14:23:00"}};
+        let taxes = {"success":true,"error":null,"field":null,"components":[],"id":tax_type[i].item_id,"single":{"uid":tax_type[i].item_id,"cid":tax_type[i].item_id,"component_name":tax_type[i].Name,"tax":tax_type[i].value,"sales_tax_type":"0","id":tax_type[i].item_id,"component_id":tax_type[i].item_id,"component_type":tax_type[i].Name,"component_rate":tax_type[i].rate,"component_rate_type":"percent","component_rate_value":tax_type[i].rate,"component_rate_value2":"","component_rate_value3":"","component_rate_value4":"","component_rate_value5":"","component_rate_value6":"","component_rate_value7":"","component_rate_value8":"","component_rate_value9":"","component_rate_value10":"","is_default":"0","is_active":"1","is_deleted":"0","is_system":"0","created_at":"2023-10-02 14:23:00","updated_at":"2023-10-02 14:23:00"}};
             
           //  $('#btnSaveTax').prop("disabled1 btn-outline-primary", false).removeClass('btn-spinner');
             populateTaxComponents(taxes.single);
@@ -1614,11 +1615,6 @@ const loadDefaultItemCategories = (row) => {
     if (defaultItemsList != null) {
 const selectBox = row.find('[name="item[]"]');
 selectBox.html('');
-// Object.keys(defaultItemsList).map(category => {
-// const option = $("<option>").val(category).text(defaultItemsList[category]);
-// selectBox.append(option);
-// });
-
 Object.keys(defaultItemsList).forEach(category => {
     const option = $("<option>")
         .val(category)
@@ -2503,7 +2499,7 @@ if (code == 38 || code == 40) {
 $(".btnPDF").on('click', function () {
 
 $(".btnPDF").addClass('btn-spinner');
-setTimeout(function () { $(".btnPDF").removeClass('btn-spinner'); }, 3000);
+    setTimeout(function () { $(".btnPDF").removeClass('btn-spinner'); }, 3000);
 
 });
 
@@ -2520,8 +2516,8 @@ if (elem.val() == "Expense") {
         row.addClass('onlyPositive');
     }
 }
-if (elem.val().includes("Inventory_aynax")) row.addClass('isInventory');
-});
+// if (elem.val().includes("Inventory_aynax")) row.addClass('isInventory');
+ });
 
 reCalculate();
 
@@ -2577,6 +2573,7 @@ var newdata = $.param($.map(form.serializeArray(), function (v, i) {
     return (v.name == "cf-turnstile-response" || v.name == "emailaddress" || v.name == "password") ? null : v;
 }));
 if (newdata != formdata) {
+  //  return false
     return 'edited';
 }
 
